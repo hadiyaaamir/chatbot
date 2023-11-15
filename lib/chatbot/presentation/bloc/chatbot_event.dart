@@ -5,13 +5,12 @@ abstract class ChatbotEvent extends Equatable {
 
   @override
   List<Object> get props => [];
-
 }
 
-class ChatbotCustomEvent extends ChatbotEvent {
-  const ChatbotCustomEvent({required this.property});
-  final String property;
+class ChatbotMessageSent extends ChatbotEvent {
+  const ChatbotMessageSent({required this.message});
+  final String message;
 
   @override
-  List<Object> get props => [property];
+  List<Object> get props => [message];
 }

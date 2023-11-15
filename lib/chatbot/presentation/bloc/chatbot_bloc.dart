@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,13 +10,17 @@ part 'chatbot_state.dart';
 
 class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
   ChatbotBloc() : super(const ChatbotInitial()) {
-    on<ChatbotCustomEvent>(_onChatbotEvent);
+    on<ChatbotMessageSent>(_onChatbotMessageSent);
   }
 
-  FutureOr<void> _onChatbotEvent(
-    ChatbotCustomEvent event,
+  FutureOr<void> _onChatbotMessageSent(
+    ChatbotMessageSent event,
     Emitter<ChatbotState> emit,
   ) {
-    // TODO: Add Logic
+    emit(
+      state.copyWith(
+        messages: [...state.messages, ChatMessage(event.message)],
+      ),
+    );
   }
 }

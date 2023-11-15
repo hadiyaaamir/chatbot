@@ -9,21 +9,21 @@ void main() {
       group('supports value equality', () {
         test('when comparing two objects with the same values', () {
           expect(
-            ChatbotCustomEvent(property: 'default'),
-            equals(ChatbotCustomEvent(property: 'default')),
+            ChatbotMessageSent(message: 'default'),
+            equals(ChatbotMessageSent(message: 'default')),
           );
         });
         test('when comparing two nonequal objects', () {
           expect(
-            ChatbotCustomEvent(property: 'one'),
-            isNot(equals(ChatbotCustomEvent(property: 'two'))),
+            ChatbotMessageSent(message: 'one'),
+            isNot(equals(ChatbotMessageSent(message: 'two'))),
           );
         });
       });
     });
     group('constructor', () {
       test('can be instantiated', () {
-        expect(const ChatbotCustomEvent(property: 'default'), isNotNull);
+        expect(const ChatbotMessageSent(message: 'default'), isNotNull);
       });
     });
   });

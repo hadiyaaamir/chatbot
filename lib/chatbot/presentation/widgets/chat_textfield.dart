@@ -1,3 +1,4 @@
+import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:flutter/material.dart';
 
 class ChatTextfield extends StatefulWidget {
@@ -17,6 +18,7 @@ class _ChatTextfieldState extends State<ChatTextfield> {
       child: Stack(
         children: [
           TextField(
+            controller: _messageController,
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: const InputDecoration(
               contentPadding:
@@ -29,7 +31,15 @@ class _ChatTextfieldState extends State<ChatTextfield> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
+              IconButton(
+                onPressed: () {
+                  context.read<ChatbotBloc>().add(
+                        ChatbotMessageSent(message: _messageController.text),
+                      );
+                  _messageController.clear();
+                },
+                icon: const Icon(Icons.send),
+              ),
             ],
           )
         ],
