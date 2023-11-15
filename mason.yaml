@@ -1,0 +1,5 @@
+bricks:
+  feature_template:
+    git:
+      url: "https://github.com/hadiyaaamir/mason-bricks.git"
+      path: bricks/feature_template
