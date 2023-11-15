@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';

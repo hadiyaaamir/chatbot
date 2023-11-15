@@ -1,26 +1,28 @@
 part of 'chatbot_bloc.dart';
 
-
 class ChatbotState extends Equatable {
-
   const ChatbotState({
-    this.customProperty = 'Default Value',
+    this.messages = const [
+      ChatMessage(
+        'hello, i\'m writing a lot of stuff just to see how long the text box will stretch.',
+      ),
+      ChatMessage('hi', sentMessage: false),
+    ],
   });
 
-  final String customProperty;
+  final List<ChatMessage> messages;
 
   @override
-  List<Object> get props => [customProperty];
+  List<Object> get props => [messages];
 
   ChatbotState copyWith({
-    String? customProperty,
+    List<ChatMessage>? messages,
   }) {
     return ChatbotState(
-      customProperty: customProperty ?? this.customProperty,
+      messages: messages ?? this.messages,
     );
   }
 }
-
 
 class ChatbotInitial extends ChatbotState {
   const ChatbotInitial() : super();
