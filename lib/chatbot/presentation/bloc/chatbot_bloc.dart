@@ -9,17 +9,43 @@ part 'chatbot_event.dart';
 part 'chatbot_state.dart';
 
 class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
-  ChatbotBloc() : super(const ChatbotInitial()) {
+  ChatbotBloc({required ChatbotRepository chatbotRepository})
+      : _chatbotRepository = chatbotRepository,
+        super(const ChatbotInitial()) {
+    on<ChatbotSubscription>(_onChatbotSubscribed);
     on<ChatbotMessageSent>(_onChatbotMessageSent);
   }
 
-  FutureOr<void> _onChatbotMessageSent(
+  final ChatbotRepository _chatbotRepository;
+
+  Future<void> _onChatbotSubscribed(
+    ChatbotSubscription event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    await _chatbotRepository.initialise();
+  }
+
+  Future<void> _onChatbotMessageSent(
     ChatbotMessageSent event,
     Emitter<ChatbotState> emit,
-  ) {
+  ) async {
+    if (event.message.isEmpty) return;
+
+    emit(
+      state.copyWith(messages: [ChatMessage(event.message), ...state.messages]),
+    );
+
+    final response = await _chatbotRepository.sendMessage(event.message);
+
     emit(
       state.copyWith(
-        messages: [...state.messages, ChatMessage(event.message)],
+        messages: [
+          ChatMessage(
+            response ?? 'Unexpected error occurred',
+            sentMessage: false,
+          ),
+          ...state.messages,
+        ],
       ),
     );
   }

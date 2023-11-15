@@ -10,8 +10,12 @@ class ChatbotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChatbotBloc(),
+      create: (context) => ChatbotBloc(
+        chatbotRepository: ChatbotRepositoryImpl(
+          chatbotApi: DialogflowChatbotApi(),
+        ),
+      )..add(ChatbotSubscription()),
       child: const ChatbotView(),
-    );  
+    );
   }
 }
