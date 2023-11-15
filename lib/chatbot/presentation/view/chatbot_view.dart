@@ -6,9 +6,9 @@ class ChatbotView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chatbot')),
+      appBar: AppBar(title: const Text('Chatbot'), centerTitle: true),
       body: const Column(
-        children: [Messages()],
+        children: [Messages(), ChatTextfield()],
       ),
     );
   }

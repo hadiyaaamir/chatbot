@@ -96,21 +96,22 @@ class _TextRectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double borderRadius = 14;
+
     return Flexible(
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 18,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.only(
-            topLeft:
-                message.sentMessage ? const Radius.circular(14) : Radius.zero,
-            topRight:
-                message.sentMessage ? Radius.zero : const Radius.circular(14),
-            bottomLeft: const Radius.circular(14),
-            bottomRight: const Radius.circular(14),
+            topLeft: message.sentMessage
+                ? const Radius.circular(borderRadius)
+                : Radius.zero,
+            topRight: message.sentMessage
+                ? Radius.zero
+                : const Radius.circular(borderRadius),
+            bottomLeft: const Radius.circular(borderRadius),
+            bottomRight: const Radius.circular(borderRadius),
           ),
         ),
         child: Text(message.message, style: TextStyle(color: textColor)),
