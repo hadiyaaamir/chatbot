@@ -2,12 +2,7 @@ part of 'chatbot_bloc.dart';
 
 class ChatbotState extends Equatable {
   const ChatbotState({
-    this.messages = const [
-      ChatMessage(
-        'hello, i\'m writing a lot of stuff just to see how long the text box will stretch.',
-      ),
-      ChatMessage('hi', sentMessage: false),
-    ],
+    this.messages = const [],
   });
 
   final List<ChatMessage> messages;

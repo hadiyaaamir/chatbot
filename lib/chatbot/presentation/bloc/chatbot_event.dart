@@ -7,6 +7,8 @@ abstract class ChatbotEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class ChatbotSubscription extends ChatbotEvent {}
+
 class ChatbotMessageSent extends ChatbotEvent {
   const ChatbotMessageSent({required this.message});
   final String message;
