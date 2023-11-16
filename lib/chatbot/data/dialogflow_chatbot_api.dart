@@ -6,9 +6,7 @@ class DialogflowChatbotApi extends ChatbotApi {
   @override
   Future<void> initialise() async {
     String sessionId = DateTime.now().toIso8601String();
-    DialogFlowtter.fromFile(sessionId: sessionId).then(
-      (instance) => dialogFlowtter = instance,
-    );
+    dialogFlowtter = await DialogFlowtter.fromFile(sessionId: sessionId);
   }
 
   @override
