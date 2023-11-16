@@ -7,17 +7,20 @@ class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<ChatbotBloc, ChatbotState>(
-        builder: (context, state) {
-          return ListView.builder(
-            reverse: true,
-            shrinkWrap: true,
-            itemBuilder: (context, index) => MessageBubble(
-              message: state.messages[index],
-            ),
-            itemCount: state.messages.length,
-          );
-        },
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: BlocBuilder<ChatbotBloc, ChatbotState>(
+          builder: (context, state) {
+            return ListView.builder(
+              reverse: true,
+              shrinkWrap: true,
+              itemBuilder: (context, index) => MessageBubble(
+                message: state.messages[index],
+              ),
+              itemCount: state.messages.length,
+            );
+          },
+        ),
       ),
     );
   }
