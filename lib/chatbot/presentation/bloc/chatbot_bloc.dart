@@ -41,7 +41,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       state.copyWith(
         messages: [
           ChatMessage(
-            response ?? 'Unexpected error occurred',
+            response?.text ?? 'Unexpected error occurred',
+            suggestions: response?.suggestions ?? [],
             sentMessage: false,
           ),
           ...state.messages,

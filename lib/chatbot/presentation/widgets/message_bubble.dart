@@ -12,7 +12,7 @@ class MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatbotBloc, ChatbotState>(
       builder: (context, state) {
-        const double startPadding = 15;
+        const double startPadding = 0;
         const double endPadding = 60;
 
         return message.sentMessage
@@ -114,7 +114,7 @@ class _TextRectangle extends StatelessWidget {
             bottomRight: const Radius.circular(borderRadius),
           ),
         ),
-        child: Text(message.message, style: TextStyle(color: textColor)),
+        child: Text(message.text, style: TextStyle(color: textColor)),
       ),
     );
   }
