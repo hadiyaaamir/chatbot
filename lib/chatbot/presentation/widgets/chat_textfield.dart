@@ -17,18 +17,24 @@ class _ChatTextfieldState extends State<ChatTextfield> {
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Stack(
         children: [
-          TextField(
-            controller: _messageController,
-            style: Theme.of(context).textTheme.bodyMedium,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 15,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-              ),
-            ),
+          BlocBuilder<ChatbotBloc, ChatbotState>(
+            builder: (context, state) {
+              final enabled = !state.messages.first.message.onlySuggestions;
+              return TextField(
+                enabled: enabled,
+                controller: _messageController,
+                style: Theme.of(context).textTheme.bodyMedium,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 15,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                ),
+              );
+            },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

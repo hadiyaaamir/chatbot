@@ -49,6 +49,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
             message: MessagePayload(
               response?.text ?? 'Unexpected error occurred',
               suggestions: response?.suggestions ?? [],
+              options: response?.options,
+              onlySuggestions: response?.onlySuggestions ?? false,
             ),
             sentMessage: false,
           ),
