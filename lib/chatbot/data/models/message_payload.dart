@@ -13,6 +13,10 @@ class MessagePayload extends Equatable {
   final List<ApiObject>? options;
   final bool onlySuggestions;
 
+  static final Map<String, Function> typeParsers = {
+    'events': (eventJson) => EventObject.fromJson(eventJson)
+  };
+
   factory MessagePayload.fromJson(Map<String, dynamic> json) {
     List<ChatSuggestion> suggestions = [];
     List<ApiObject>? options;
@@ -34,13 +38,14 @@ class MessagePayload extends Equatable {
         String objectType = objectsJson.keys.first;
         dynamic objectData = objectsJson[objectType];
 
-        switch (objectType) {
-          case 'events':
-            options = (objectData as List<dynamic>)
-                .map((eventJson) => EventObject.fromJson(eventJson))
-                .toList();
+        final parser = typeParsers[objectType];
 
-            break;
+        if (parser != null) {
+          options = (objectData as List<dynamic>)
+              .map((json) => parser(json) as ApiObject)
+              .toList();
+        } else {
+          throw UnimplementedError('Parser not implemented for $objectType');
         }
       }
     }
