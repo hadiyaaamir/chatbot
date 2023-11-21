@@ -1,21 +1,26 @@
 part of 'chatbot_api.dart';
 
-class DialogflowChatbotApi extends ChatbotApi {
+class DialogflowESChatbotApi extends ChatbotApi {
   late DialogFlowtter dialogFlowtter;
 
   @override
   Future<void> initialise() async {
     String sessionId = DateTime.now().toIso8601String();
-    DialogFlowtter.fromFile(sessionId: sessionId).then(
-      (instance) => dialogFlowtter = instance,
-    );
+    dialogFlowtter = await DialogFlowtter.fromFile(sessionId: sessionId);
   }
 
   @override
-  Future<String?> sendMessage(String message) async {
+  Future<MessagePayload?> sendMessage(String message) async {
     DetectIntentResponse response = await dialogFlowtter.detectIntent(
       queryInput: QueryInput(text: TextInput(text: message)),
     );
-    return response.text;
+
+    if (response.message == null) return null;
+
+    if (response.message!.payload == null) {
+      return MessagePayload(response.text ?? 'Unexpected Error Occurred');
+    }
+
+    return MessagePayload.fromJson(response.message!.payload!);
   }
 }

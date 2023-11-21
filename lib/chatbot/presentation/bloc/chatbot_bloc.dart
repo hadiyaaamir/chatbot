@@ -32,7 +32,12 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     if (event.message.isEmpty) return;
 
     emit(
-      state.copyWith(messages: [ChatMessage(event.message), ...state.messages]),
+      state.copyWith(
+        messages: [
+          ChatMessage(message: MessagePayload(event.message)),
+          ...state.messages
+        ],
+      ),
     );
 
     final response = await _chatbotRepository.sendMessage(event.message);
@@ -41,7 +46,10 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       state.copyWith(
         messages: [
           ChatMessage(
-            response ?? 'Unexpected error occurred',
+            message: MessagePayload(
+              response?.text ?? 'Unexpected error occurred',
+              suggestions: response?.suggestions ?? [],
+            ),
             sentMessage: false,
           ),
           ...state.messages,
