@@ -114,7 +114,7 @@ class _TextRectangle extends StatelessWidget {
             bottomRight: const Radius.circular(borderRadius),
           ),
         ),
-        child: Text(message.text, style: TextStyle(color: textColor)),
+        child: Text(message.message.text, style: TextStyle(color: textColor)),
       ),
     );
   }

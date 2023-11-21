@@ -16,9 +16,10 @@ class SuggestionTiles extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Wrap(
                     children: List.generate(
-                      state.messages.first.suggestions.length,
+                      state.messages.first.message.suggestions.length,
                       (index) => _SuggestionTile(
-                        suggestion: state.messages.first.suggestions[index],
+                        suggestion:
+                            state.messages.first.message.suggestions[index],
                       ),
                     ),
                   ),

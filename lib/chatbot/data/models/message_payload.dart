@@ -1,7 +1,7 @@
 part of 'models.dart';
 
 class MessagePayload extends Equatable {
-  const MessagePayload({required this.text, this.suggestions = const []});
+  const MessagePayload(this.text, {this.suggestions = const []});
 
   final String text;
   final List<ChatSuggestion> suggestions;
@@ -20,7 +20,7 @@ class MessagePayload extends Equatable {
     }
 
     return MessagePayload(
-      text: json['text'] as String? ?? '',
+      json['text'] as String? ?? '',
       suggestions: suggestions,
     );
   }
