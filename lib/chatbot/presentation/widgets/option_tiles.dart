@@ -14,9 +14,7 @@ class OptionTiles extends StatelessWidget {
         ? Column(
             children: List.generate(
               options!.length,
-              (index) => EventTile(
-                event: options![index] as EventObject,
-              ),
+              (index) => OptionTile.create(option: options![index]),
             ),
           )
         : Container();
@@ -25,6 +23,13 @@ class OptionTiles extends StatelessWidget {
 
 abstract class OptionTile extends StatelessWidget {
   const OptionTile({super.key, required this.option});
+
+  factory OptionTile.create({Key? key, required ApiObject option}) {
+    if (option is EventObject) {
+      return EventTile(key: key, event: option);
+    }
+    throw UnimplementedError('Tile not implemented for $option');
+  }
 
   final ApiObject option;
 }
@@ -79,11 +84,11 @@ class EventTile extends OptionTile {
                 ),
                 const SizedBox(height: 10),
                 CustomButton(
-                  label: 'Book a Ticket',
+                  label: 'Book Tickets',
                   onPressed: () => context.read<ChatbotBloc>().add(
                         ChatbotMessageSent(
                           message:
-                              'I want to book a ticket for event ${event.id}',
+                              'I want to book tickets for event ${event.id}',
                         ),
                       ),
                 )
