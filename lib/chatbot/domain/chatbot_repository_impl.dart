@@ -11,7 +11,7 @@ class ChatbotRepositoryImpl extends ChatbotRepository {
   }
 
   @override
-  Future<String?> sendMessage(String message) async {
+  Future<MessagePayload?> sendMessage(String message) async {
     return await _api.sendMessage(message);
   }
 }

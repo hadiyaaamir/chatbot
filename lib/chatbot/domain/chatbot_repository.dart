@@ -4,5 +4,5 @@ part 'chatbot_repository_impl.dart';
 
 abstract class ChatbotRepository {
   Future<void> initialise();
-  Future<String?> sendMessage(String message);
+  Future<MessagePayload?> sendMessage(String message);
 }
