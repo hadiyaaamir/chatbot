@@ -29,18 +29,13 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     ChatbotMessageSent event,
     Emitter<ChatbotState> emit,
   ) async {
-    if (event.message.isEmpty) return;
+    if (event.message.message.text.isEmpty) return;
 
-    emit(
-      state.copyWith(
-        messages: [
-          ChatMessage(message: MessagePayload(event.message)),
-          ...state.messages
-        ],
-      ),
+    emit(state.copyWith(messages: [event.message, ...state.messages]));
+
+    final response = await _chatbotRepository.sendMessage(
+      event.message.message.text,
     );
-
-    final response = await _chatbotRepository.sendMessage(event.message);
 
     emit(
       state.copyWith(
