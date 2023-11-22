@@ -3,12 +3,15 @@ part of 'models.dart';
 class MessagePayload extends Equatable {
   const MessagePayload(
     this.text, {
+    this.displayText,
     this.suggestions = const [],
     this.options,
     this.onlySuggestions = false,
   });
 
   final String text;
+  final String? displayText;
+
   final List<ChatSuggestion> suggestions;
   final List<ApiObject>? options;
   final bool onlySuggestions;
@@ -52,6 +55,7 @@ class MessagePayload extends Equatable {
 
     return MessagePayload(
       json['text'] as String? ?? '',
+      displayText: json['displayText'] as String?,
       suggestions: suggestions,
       options: options,
       onlySuggestions: json['onlySuggestions'] as bool? ?? false,
@@ -59,5 +63,11 @@ class MessagePayload extends Equatable {
   }
 
   @override
-  List<Object?> get props => [text, suggestions, options, onlySuggestions];
+  List<Object?> get props => [
+        text,
+        displayText,
+        suggestions,
+        options,
+        onlySuggestions,
+      ];
 }
