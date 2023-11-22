@@ -50,11 +50,13 @@ class _SuggestionTile extends StatelessWidget {
           suggestion.tileText,
           style: Theme.of(context).textTheme.bodySmall,
         ),
-        onPressed: () {
-          context
-              .read<ChatbotBloc>()
-              .add(ChatbotMessageSent(message: suggestion.messageText));
-        },
+        onPressed: () => context.read<ChatbotBloc>().add(
+              ChatbotMessageSent(
+                message: ChatMessage(
+                  message: MessagePayload(suggestion.messageText),
+                ),
+              ),
+            ),
       ),
     );
   }

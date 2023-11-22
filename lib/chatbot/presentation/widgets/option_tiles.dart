@@ -1,4 +1,5 @@
 import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:chatbot/chatbot/utils/constants.dart';
 import 'package:chatbot/chatbot/utils/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -87,8 +88,13 @@ class EventTile extends OptionTile {
                   label: 'Book Tickets',
                   onPressed: () => context.read<ChatbotBloc>().add(
                         ChatbotMessageSent(
-                          message:
-                              'I want to book tickets for event ${event.id}',
+                          message: ChatMessage(
+                            message: MessagePayload(
+                              'I want to book tickets for event ${event.id}. My username is $kHardcodedUsername.',
+                              displayText:
+                                  'I want to book tickets for ${event.title}',
+                            ),
+                          ),
                         ),
                       ),
                 )

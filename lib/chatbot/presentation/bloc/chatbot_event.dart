@@ -11,7 +11,7 @@ class ChatbotSubscription extends ChatbotEvent {}
 
 class ChatbotMessageSent extends ChatbotEvent {
   const ChatbotMessageSent({required this.message});
-  final String message;
+  final ChatMessage message;
 
   @override
   List<Object> get props => [message];

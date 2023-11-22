@@ -42,7 +42,11 @@ class _ChatTextfieldState extends State<ChatTextfield> {
               IconButton(
                 onPressed: () {
                   context.read<ChatbotBloc>().add(
-                        ChatbotMessageSent(message: _messageController.text),
+                        ChatbotMessageSent(
+                          message: ChatMessage(
+                            message: MessagePayload(_messageController.text),
+                          ),
+                        ),
                       );
                   _messageController.clear();
                 },
