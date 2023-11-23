@@ -38,11 +38,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     String message = event.message.message.text;
     if (event.attachUsername) message += usernameAttachment;
 
-    print('sending message: $message');
-
     final response = await _chatbotRepository.sendMessage(message);
-
-    print('sending message: $message');
 
     emit(
       state.copyWith(

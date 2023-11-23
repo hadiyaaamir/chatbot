@@ -18,5 +18,5 @@ class ChatbotMessageSent extends ChatbotEvent {
   final bool attachUsername;
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, attachUsername];
 }
