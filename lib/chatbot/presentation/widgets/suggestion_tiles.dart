@@ -17,10 +17,13 @@ class SuggestionTiles extends StatelessWidget {
                   child: Wrap(
                     children: List.generate(
                       state.messages.first.message.suggestions.length,
-                      (index) => _SuggestionTile(
-                        suggestion:
-                            state.messages.first.message.suggestions[index],
-                      ),
+                      (index) {
+                        final message = state.messages.first.message;
+                        return _SuggestionTile(
+                          suggestion: message.suggestions[index],
+                          usernameRequired: message.requireUsername,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -31,9 +34,13 @@ class SuggestionTiles extends StatelessWidget {
 }
 
 class _SuggestionTile extends StatelessWidget {
-  const _SuggestionTile({required this.suggestion});
+  const _SuggestionTile({
+    required this.suggestion,
+    required this.usernameRequired,
+  });
 
   final ChatSuggestion suggestion;
+  final bool usernameRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +59,7 @@ class _SuggestionTile extends StatelessWidget {
         ),
         onPressed: () => context.read<ChatbotBloc>().add(
               ChatbotMessageSent(
+                attachUsername: usernameRequired,
                 message: ChatMessage(
                   message: MessagePayload(suggestion.messageText),
                 ),

@@ -1,13 +1,13 @@
 import 'package:chatbot/chatbot/chatbot.dart';
-import 'package:chatbot/chatbot/utils/constants.dart';
 import 'package:chatbot/chatbot/utils/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OptionTiles extends StatelessWidget {
-  const OptionTiles({super.key, this.options});
+  const OptionTiles({super.key, this.options, required this.usernameRequired});
 
   final List<Option>? options;
+  final bool usernameRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,10 @@ class OptionTiles extends StatelessWidget {
         ? Column(
             children: List.generate(
               options!.length,
-              (index) => OptionTile.create(option: options![index]),
+              (index) => OptionTile.create(
+                option: options![index],
+                usernameRequired: usernameRequired,
+              ),
             ),
           )
         : Container();
@@ -23,11 +26,31 @@ class OptionTiles extends StatelessWidget {
 }
 
 abstract class OptionTile extends StatelessWidget {
-  const OptionTile({super.key, required this.option});
+  const OptionTile({
+    super.key,
+    required this.option,
+    required this.usernameRequired,
+  });
 
-  factory OptionTile.create({Key? key, required Option option}) {
-    if (option is EventOption) return EventTile(event: option);
-    if (option is TicketOption) return TicketTile(ticket: option);
+  final bool usernameRequired;
+
+  factory OptionTile.create({
+    Key? key,
+    required Option option,
+    required bool usernameRequired,
+  }) {
+    if (option is EventOption) {
+      return EventTile(
+        event: option,
+        usernameRequired: usernameRequired,
+      );
+    }
+    if (option is TicketOption) {
+      return TicketTile(
+        ticket: option,
+        usernameRequired: usernameRequired,
+      );
+    }
 
     throw UnimplementedError('Tile not implemented for $option');
   }
@@ -36,7 +59,9 @@ abstract class OptionTile extends StatelessWidget {
 }
 
 class EventTile extends OptionTile {
-  const EventTile({super.key, required this.event}) : super(option: event);
+  const EventTile(
+      {super.key, required this.event, required super.usernameRequired})
+      : super(option: event);
 
   final EventOption event;
 
@@ -88,9 +113,10 @@ class EventTile extends OptionTile {
                   label: 'Book Tickets',
                   onPressed: () => context.read<ChatbotBloc>().add(
                         ChatbotMessageSent(
+                          attachUsername: usernameRequired,
                           message: ChatMessage(
                             message: MessagePayload(
-                              'I want to book tickets for event ${event.id}. My username is $kHardcodedUsername.',
+                              'I want to book tickets for event ${event.id}',
                               displayText:
                                   'I want to book tickets for ${event.title}',
                             ),
@@ -108,7 +134,9 @@ class EventTile extends OptionTile {
 }
 
 class TicketTile extends OptionTile {
-  const TicketTile({super.key, required this.ticket}) : super(option: ticket);
+  const TicketTile(
+      {super.key, required this.ticket, required super.usernameRequired})
+      : super(option: ticket);
 
   final TicketOption ticket;
 

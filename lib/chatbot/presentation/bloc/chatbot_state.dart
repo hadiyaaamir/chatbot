@@ -7,9 +7,14 @@ class ChatbotState extends Equatable {
         message: MessagePayload(
           'Welcome to the Event Ticket Booking System. What would you like to do today?',
           suggestions: [
-            // ChatSuggestion(tileText: 'Get a list of Events'),
-            ChatSuggestion(tileText: 'Book a Ticket for an event'),
-            // ChatSuggestion(tileText: 'Fake suggestion'),
+            ChatSuggestion(
+              tileText: 'Book tickets for an event',
+              messageText: 'I want to book tickets for an event',
+            ),
+            ChatSuggestion(
+              tileText: 'View my tickets',
+              messageText: 'I want to view my tickets',
+            )
           ],
         ),
         sentMessage: false,

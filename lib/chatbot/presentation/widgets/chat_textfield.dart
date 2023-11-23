@@ -15,12 +15,14 @@ class _ChatTextfieldState extends State<ChatTextfield> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Stack(
-        children: [
-          BlocBuilder<ChatbotBloc, ChatbotState>(
-            builder: (context, state) {
-              final enabled = !state.messages.first.message.onlySuggestions;
-              return TextField(
+      child: BlocBuilder<ChatbotBloc, ChatbotState>(
+        builder: (context, state) {
+          final enabled = !state.messages.first.message.onlySuggestions;
+          final attachUsername = state.messages.first.message.requireUsername;
+
+          return Stack(
+            children: [
+              TextField(
                 enabled: enabled,
                 controller: _messageController,
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -33,28 +35,30 @@ class _ChatTextfieldState extends State<ChatTextfield> {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                 ),
-              );
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: () {
-                  context.read<ChatbotBloc>().add(
-                        ChatbotMessageSent(
-                          message: ChatMessage(
-                            message: MessagePayload(_messageController.text),
-                          ),
-                        ),
-                      );
-                  _messageController.clear();
-                },
-                icon: const Icon(Icons.send),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      context.read<ChatbotBloc>().add(
+                            ChatbotMessageSent(
+                              attachUsername: attachUsername,
+                              message: ChatMessage(
+                                message:
+                                    MessagePayload(_messageController.text),
+                              ),
+                            ),
+                          );
+                      _messageController.clear();
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              )
             ],
-          )
-        ],
+          );
+        },
       ),
     );
   }

@@ -7,6 +7,7 @@ class MessagePayload extends Equatable {
     this.suggestions = const [],
     this.options,
     this.onlySuggestions = false,
+    this.requireUsername = false,
   });
 
   final String text;
@@ -15,6 +16,7 @@ class MessagePayload extends Equatable {
   final List<ChatSuggestion> suggestions;
   final List<Option>? options;
   final bool onlySuggestions;
+  final bool requireUsername;
 
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => EventOption.fromJson(eventJson),
@@ -60,6 +62,7 @@ class MessagePayload extends Equatable {
       suggestions: suggestions,
       options: options,
       onlySuggestions: json['onlySuggestions'] as bool? ?? false,
+      requireUsername: json['requireUsername'] as bool? ?? false,
     );
   }
 
@@ -70,5 +73,6 @@ class MessagePayload extends Equatable {
         suggestions,
         options,
         onlySuggestions,
+        requireUsername,
       ];
 }
