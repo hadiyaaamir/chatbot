@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class OptionTiles extends StatelessWidget {
   const OptionTiles({super.key, this.options});
 
-  final List<ApiObject>? options;
+  final List<Option>? options;
 
   @override
   Widget build(BuildContext context) {
@@ -25,20 +25,20 @@ class OptionTiles extends StatelessWidget {
 abstract class OptionTile extends StatelessWidget {
   const OptionTile({super.key, required this.option});
 
-  factory OptionTile.create({Key? key, required ApiObject option}) {
-    if (option is EventObject) {
-      return EventTile(key: key, event: option);
-    }
+  factory OptionTile.create({Key? key, required Option option}) {
+    if (option is EventOption) return EventTile(event: option);
+    if (option is TicketOption) return TicketTile(ticket: option);
+
     throw UnimplementedError('Tile not implemented for $option');
   }
 
-  final ApiObject option;
+  final Option option;
 }
 
 class EventTile extends OptionTile {
   const EventTile({super.key, required this.event}) : super(option: event);
 
-  final EventObject event;
+  final EventOption event;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +102,22 @@ class EventTile extends OptionTile {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class TicketTile extends OptionTile {
+  const TicketTile({super.key, required this.ticket}) : super(option: ticket);
+
+  final TicketOption ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [Text(ticket.id), Text(ticket.event.title)],
       ),
     );
   }

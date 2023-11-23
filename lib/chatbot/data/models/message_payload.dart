@@ -13,16 +13,17 @@ class MessagePayload extends Equatable {
   final String? displayText;
 
   final List<ChatSuggestion> suggestions;
-  final List<ApiObject>? options;
+  final List<Option>? options;
   final bool onlySuggestions;
 
   static final Map<String, Function> typeParsers = {
-    'events': (eventJson) => EventObject.fromJson(eventJson)
+    'events': (eventJson) => EventOption.fromJson(eventJson),
+    'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
   };
 
   factory MessagePayload.fromJson(Map<String, dynamic> json) {
     List<ChatSuggestion> suggestions = [];
-    List<ApiObject>? options;
+    List<Option>? options;
 
     if (json['suggestions'] != null) {
       suggestions = List<ChatSuggestion>.from(
@@ -34,21 +35,21 @@ class MessagePayload extends Equatable {
       );
     }
 
-    if (json['objects'] != null) {
-      Map<String, dynamic> objectsJson = json['objects'];
+    if (json['options'] != null) {
+      Map<String, dynamic> optionsJson = json['options'];
 
-      if (objectsJson.isNotEmpty) {
-        String objectType = objectsJson.keys.first;
-        dynamic objectData = objectsJson[objectType];
+      if (optionsJson.isNotEmpty) {
+        String optionType = optionsJson.keys.first;
+        dynamic objectData = optionsJson[optionType];
 
-        final parser = typeParsers[objectType];
+        final parser = typeParsers[optionType];
 
         if (parser != null) {
           options = (objectData as List<dynamic>)
-              .map((json) => parser(json) as ApiObject)
+              .map((json) => parser(json) as Option)
               .toList();
         } else {
-          throw UnimplementedError('Parser not implemented for $objectType');
+          throw UnimplementedError('Parser not implemented for $optionType');
         }
       }
     }
