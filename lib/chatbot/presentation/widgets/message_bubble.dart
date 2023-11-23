@@ -34,7 +34,10 @@ class MessageBubble extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     message: message,
                   ),
-            OptionTiles(options: message.message.options),
+            OptionTiles(
+              options: message.message.options,
+              usernameRequired: message.message.requireUsername,
+            ),
           ],
         );
       },
