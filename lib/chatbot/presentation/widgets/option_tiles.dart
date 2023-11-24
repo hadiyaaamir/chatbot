@@ -1,5 +1,6 @@
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/chatbot/utils/widgets/button.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -67,8 +68,6 @@ class EventTile extends OptionTile {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -79,35 +78,7 @@ class EventTile extends OptionTile {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(event.title, style: textTheme.titleMedium),
-                          Text(
-                            DateFormat('dd MMM yyyy').format(event.date),
-                            style: textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                      Text('\$${event.price}', style: textTheme.titleLarge),
-                    ],
-                  ),
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      size: textTheme.bodyLarge?.fontSize,
-                    ),
-                    Expanded(child: Text('${event.city}, ${event.country}')),
-                  ],
-                ),
+                _EventDetailsBlock(event: event),
                 const SizedBox(height: 10),
                 CustomButton(
                   label: 'Book Tickets',
@@ -142,11 +113,120 @@ class TicketTile extends OptionTile {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Text(ticket.id), Text(ticket.event.title)],
-      ),
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _EventDetailsBlock(event: ticket.event),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: DottedLine(
+                      dashColor: colorScheme.outlineVariant,
+                      dashGapLength: 5,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 3,
+                          horizontal: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: ticket.paymentCompleted
+                                ? colorScheme.primary
+                                : colorScheme.error,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          color: ticket.paymentCompleted
+                              ? colorScheme.primaryContainer
+                              : colorScheme.errorContainer,
+                        ),
+                        child: Text(
+                          ticket.paymentCompleted ? 'Paid' : 'Payment Pending',
+                          style: textTheme.labelSmall,
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            'Quantity: ${ticket.quantity}',
+                            style: textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Total: \$${ticket.quantity * ticket.event.price}',
+                            style: textTheme.labelMedium,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _EventDetailsBlock extends StatelessWidget {
+  const _EventDetailsBlock({required this.event});
+
+  final EventOption event;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(event.title, style: textTheme.titleMedium),
+                  Text(
+                    DateFormat('dd MMM yyyy').format(event.date),
+                    style: textTheme.bodySmall,
+                  ),
+                ],
+              ),
+              Text('\$${event.price}', style: textTheme.titleLarge),
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Icon(
+              Icons.location_on_outlined,
+              size: textTheme.bodyLarge?.fontSize,
+            ),
+            Expanded(child: Text('${event.city}, ${event.country}')),
+          ],
+        ),
+      ],
     );
   }
 }
