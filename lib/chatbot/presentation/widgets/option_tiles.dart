@@ -1,6 +1,6 @@
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/events/events.dart';
-import 'package:dotted_line/dotted_line.dart';
+import 'package:chatbot/tickets/tickets.dart';
 import 'package:flutter/material.dart';
 
 class OptionTiles extends StatelessWidget {
@@ -43,92 +43,12 @@ abstract class OptionTile extends StatelessWidget {
       return EventOptionTile(event: option, usernameRequired: usernameRequired);
     }
     if (option is TicketOption) {
-      return TicketTile(ticket: option, usernameRequired: usernameRequired);
+      return TicketOptionTile(
+          ticket: option, usernameRequired: usernameRequired);
     }
 
     throw UnimplementedError('Tile not implemented for $option');
   }
 
   final Option option;
-}
-
-class TicketTile extends OptionTile {
-  const TicketTile(
-      {super.key, required this.ticket, required super.usernameRequired})
-      : super(option: ticket);
-
-  final TicketOption ticket;
-
-  @override
-  Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  EventDetailsBlock(event: ticket.event),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: DottedLine(
-                      dashColor: colorScheme.outlineVariant,
-                      dashGapLength: 5,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 3,
-                          horizontal: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: ticket.paymentCompleted
-                                ? colorScheme.primary
-                                : colorScheme.error,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          color: ticket.paymentCompleted
-                              ? colorScheme.primaryContainer
-                              : colorScheme.errorContainer,
-                        ),
-                        child: Text(
-                          ticket.paymentCompleted ? 'Paid' : 'Payment Pending',
-                          style: textTheme.labelSmall,
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            'Quantity: ${ticket.quantity}',
-                            style: textTheme.bodySmall,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Total: \$${ticket.quantity * ticket.event.price}',
-                            style: textTheme.labelMedium,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }
