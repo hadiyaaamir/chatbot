@@ -19,7 +19,7 @@ class MessagePayload extends Equatable {
   final bool requireUsername;
 
   static final Map<String, Function> typeParsers = {
-    'events': (eventJson) => EventOption.fromJson(eventJson),
+    'events': (eventJson) => Event.fromJson(eventJson),
     'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
   };
 
