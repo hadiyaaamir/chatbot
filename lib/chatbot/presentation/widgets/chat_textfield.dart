@@ -15,36 +15,50 @@ class _ChatTextfieldState extends State<ChatTextfield> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Stack(
-        children: [
-          TextField(
-            controller: _messageController,
-            style: Theme.of(context).textTheme.bodyMedium,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 15,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+      child: BlocBuilder<ChatbotBloc, ChatbotState>(
+        builder: (context, state) {
+          final enabled = !state.messages.first.message.onlySuggestions;
+          final attachUsername = state.messages.first.message.requireUsername;
+
+          return Stack(
             children: [
-              IconButton(
-                onPressed: () {
-                  context.read<ChatbotBloc>().add(
-                        ChatbotMessageSent(message: _messageController.text),
-                      );
-                  _messageController.clear();
-                },
-                icon: const Icon(Icons.send),
+              TextField(
+                enabled: enabled,
+                controller: _messageController,
+                style: Theme.of(context).textTheme.bodyMedium,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 15,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      context.read<ChatbotBloc>().add(
+                            ChatbotMessageSent(
+                              attachUsername: attachUsername,
+                              message: ChatMessage(
+                                message:
+                                    MessagePayload(_messageController.text),
+                              ),
+                            ),
+                          );
+                      _messageController.clear();
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              )
             ],
-          )
-        ],
+          );
+        },
       ),
     );
   }

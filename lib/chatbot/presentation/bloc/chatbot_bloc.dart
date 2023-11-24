@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:chatbot/chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,27 +30,22 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     ChatbotMessageSent event,
     Emitter<ChatbotState> emit,
   ) async {
-    if (event.message.isEmpty) return;
+    if (event.message.message.text.isEmpty) return;
 
-    emit(
-      state.copyWith(
-        messages: [
-          ChatMessage(message: MessagePayload(event.message)),
-          ...state.messages
-        ],
-      ),
-    );
+    emit(state.copyWith(messages: [event.message, ...state.messages]));
 
-    final response = await _chatbotRepository.sendMessage(event.message);
+    const String usernameAttachment = '. My username is $kHardcodedUsername';
+    String message = event.message.message.text;
+    if (event.attachUsername) message += usernameAttachment;
+
+    final response = await _chatbotRepository.sendMessage(message);
 
     emit(
       state.copyWith(
         messages: [
           ChatMessage(
-            message: MessagePayload(
-              response?.text ?? 'Unexpected error occurred',
-              suggestions: response?.suggestions ?? [],
-            ),
+            message:
+                response ?? const MessagePayload('Unexpected error occured'),
             sentMessage: false,
           ),
           ...state.messages,

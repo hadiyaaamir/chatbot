@@ -1,7 +1,10 @@
 part of 'models.dart';
 
 class ChatMessage extends Equatable {
-  const ChatMessage({this.sentMessage = true, required this.message});
+  const ChatMessage({
+    this.sentMessage = true,
+    required this.message,
+  });
 
   final bool sentMessage;
   final MessagePayload message;

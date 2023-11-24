@@ -11,7 +11,11 @@ class ChatbotView extends StatelessWidget {
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
-          children: [Messages(), SuggestionTiles(), ChatTextfield()],
+          children: [
+            Messages(),
+            SuggestionTiles(),
+            ChatTextfield(),
+          ],
         ),
       ),
     );
