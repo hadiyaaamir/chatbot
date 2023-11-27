@@ -1,8 +1,7 @@
 part of 'widgets.dart';
 
 class TicketOptionTile extends OptionTile {
-  const TicketOptionTile(
-      {super.key, required this.ticket, required super.usernameRequired})
+  const TicketOptionTile({super.key, required this.ticket})
       : super(option: ticket);
 
   final TicketOption ticket;
