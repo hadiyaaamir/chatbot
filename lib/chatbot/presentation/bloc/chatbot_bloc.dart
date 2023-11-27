@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chatbot/chatbot/chatbot.dart';
-import 'package:chatbot/chatbot/utils/constants.dart';
+import 'package:chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';

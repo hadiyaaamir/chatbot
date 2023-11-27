@@ -19,7 +19,7 @@ class TicketOptionTile extends OptionTile {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   EventDetailsBlock(event: ticket.event),
-                  _DottedLineDivider(),
+                  const DottedDivider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -83,19 +83,6 @@ class _PaidTag extends StatelessWidget {
       child: Text(
         paid ? 'Paid' : 'Payment Pending',
         style: textTheme.labelSmall,
-      ),
-    );
-  }
-}
-
-class _DottedLineDivider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: DottedLine(
-        dashColor: Theme.of(context).colorScheme.outlineVariant,
-        dashGapLength: 5,
       ),
     );
   }

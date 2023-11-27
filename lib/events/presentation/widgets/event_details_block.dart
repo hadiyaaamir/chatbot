@@ -1,14 +1,17 @@
 part of 'widgets.dart';
 
 class EventDetailsBlock extends StatelessWidget {
-  const EventDetailsBlock({super.key, required this.event});
+  const EventDetailsBlock({
+    super.key,
+    required this.event,
+    this.smallerPrice = false,
+  });
 
   final Event event;
+  final bool smallerPrice;
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -19,12 +22,29 @@ class EventDetailsBlock extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _NameAndDateBlock(event: event),
-              Text('\$${event.price}', style: textTheme.titleLarge),
+              _Price(price: event.price, smallerPrice: smallerPrice),
             ],
           ),
         ),
         _LocationDetails(event: event),
       ],
+    );
+  }
+}
+
+class _Price extends StatelessWidget {
+  const _Price({required this.price, required this.smallerPrice});
+
+  final int price;
+  final bool smallerPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '\$$price',
+      style: smallerPrice
+          ? Theme.of(context).textTheme.titleMedium
+          : Theme.of(context).textTheme.titleLarge,
     );
   }
 }
