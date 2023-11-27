@@ -10,11 +10,14 @@ class PaymentButtonOptionTile extends OptionTile {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          width: 2,
+        ),
         borderRadius: BorderRadius.circular(15),
-        color: Theme.of(context).colorScheme.primaryContainer,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             TicketOptionTile(ticket: paymentOption.ticket),
@@ -39,8 +42,6 @@ class PaymentOptionButton extends StatelessWidget {
         context,
         PaymentPage.route(ticket: paymentOption.ticket),
       ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
   }
 }
