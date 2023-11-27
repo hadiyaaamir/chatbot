@@ -31,6 +31,10 @@ class TicketOptionTile extends OptionTile {
                       ),
                     ],
                   ),
+                  if (!ticket.paymentCompleted) ...[
+                    const SizedBox(height: 15),
+                    PaymentButton(ticket: ticket),
+                  ],
                 ],
               ),
             ),

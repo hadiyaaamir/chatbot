@@ -1,5 +1,4 @@
 import 'package:chatbot/events/events.dart';
-import 'package:chatbot/payment/data/models/models.dart';
 import 'package:chatbot/tickets/tickets.dart';
 import 'package:equatable/equatable.dart';
 

@@ -21,7 +21,6 @@ class MessagePayload extends Equatable {
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
     'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
-    'paymentButton': (buttonJson) => PaymentButtonOption.fromJson(buttonJson),
   };
 
   factory MessagePayload.fromJson(Map<String, dynamic> json) {
