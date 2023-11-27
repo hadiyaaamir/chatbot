@@ -32,7 +32,12 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
   ) async {
     if (event.message.message.text.isEmpty) return;
 
-    emit(state.copyWith(messages: [event.message, ...state.messages]));
+    emit(
+      state.copyWith(
+        messages: [event.message, ...state.messages],
+        status: ChatbotStatus.loading,
+      ),
+    );
 
     const String usernameAttachment = '. My username is $kHardcodedUsername';
     String message = event.message.message.text;
@@ -50,6 +55,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
           ),
           ...state.messages,
         ],
+        status:
+            response != null ? ChatbotStatus.success : ChatbotStatus.failure,
       ),
     );
   }
