@@ -2,10 +2,11 @@ part of 'widgets.dart';
 
 class EventOptionTile extends OptionTile {
   const EventOptionTile(
-      {super.key, required this.event, required super.usernameRequired})
+      {super.key, required this.event, required this.usernameRequired})
       : super(option: event);
 
   final Event event;
+  final bool usernameRequired;
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,7 @@
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/events/events.dart';
+import 'package:chatbot/payment/data/models/models.dart';
+import 'package:chatbot/payment/presentation/widgets/widgets.dart';
 import 'package:chatbot/tickets/tickets.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +31,7 @@ abstract class OptionTile extends StatelessWidget {
   const OptionTile({
     super.key,
     required this.option,
-    required this.usernameRequired,
   });
-
-  final bool usernameRequired;
 
   factory OptionTile.create({
     Key? key,
@@ -43,8 +42,10 @@ abstract class OptionTile extends StatelessWidget {
       return EventOptionTile(event: option, usernameRequired: usernameRequired);
     }
     if (option is TicketOption) {
-      return TicketOptionTile(
-          ticket: option, usernameRequired: usernameRequired);
+      return TicketOptionTile(ticket: option);
+    }
+    if (option is PaymentButtonOption) {
+      return PaymentButtonOptionTile(paymentOption: option);
     }
 
     throw UnimplementedError('Tile not implemented for $option');

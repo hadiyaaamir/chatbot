@@ -15,18 +15,18 @@ class MessageBubble extends StatelessWidget {
         const double startPadding = 0;
         const double endPadding = 60;
 
-        return Column(
-          children: [
-            message.sentMessage
-                ? _Bubble(
-                    bubbleColor: Theme.of(context).colorScheme.primary,
-                    textColor: Colors.white,
-                    paddingLeft: endPadding,
-                    paddingRight: startPadding,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    message: message,
-                  )
-                : _Bubble(
+        return message.sentMessage
+            ? _Bubble(
+                bubbleColor: Theme.of(context).colorScheme.primary,
+                textColor: Colors.white,
+                paddingLeft: endPadding,
+                paddingRight: startPadding,
+                mainAxisAlignment: MainAxisAlignment.end,
+                message: message,
+              )
+            : Column(
+                children: [
+                  _Bubble(
                     bubbleColor: Theme.of(context).colorScheme.primaryContainer,
                     textColor: Colors.black,
                     paddingLeft: startPadding,
@@ -34,12 +34,12 @@ class MessageBubble extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     message: message,
                   ),
-            OptionTiles(
-              options: message.message.options,
-              usernameRequired: message.message.requireUsername,
-            ),
-          ],
-        );
+                  OptionTiles(
+                    options: message.message.options,
+                    usernameRequired: message.message.requireUsername,
+                  ),
+                ],
+              );
       },
     );
   }
