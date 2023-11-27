@@ -19,7 +19,7 @@ class MessagePayload extends Equatable {
   final bool requireUsername;
 
   static final Map<String, Function> typeParsers = {
-    'events': (eventJson) => EventOption.fromJson(eventJson),
+    'events': (eventJson) => Event.fromJson(eventJson),
     'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
   };
 
@@ -47,9 +47,9 @@ class MessagePayload extends Equatable {
         final parser = typeParsers[optionType];
 
         if (parser != null) {
-          options = (objectData as List<dynamic>)
-              .map((json) => parser(json) as Option)
-              .toList();
+          options = objectData is List
+              ? objectData.map((json) => parser(json) as Option).toList()
+              : [parser(objectData) as Option];
         } else {
           throw UnimplementedError('Parser not implemented for $optionType');
         }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chatbot/chatbot/chatbot.dart';
-import 'package:chatbot/chatbot/utils/constants.dart';
+import 'package:chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +32,12 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
   ) async {
     if (event.message.message.text.isEmpty) return;
 
-    emit(state.copyWith(messages: [event.message, ...state.messages]));
+    emit(
+      state.copyWith(
+        messages: [event.message, ...state.messages],
+        status: ChatbotStatus.loading,
+      ),
+    );
 
     const String usernameAttachment = '. My username is $kHardcodedUsername';
     String message = event.message.message.text;
@@ -50,6 +55,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
           ),
           ...state.messages,
         ],
+        status:
+            response != null ? ChatbotStatus.success : ChatbotStatus.failure,
       ),
     );
   }

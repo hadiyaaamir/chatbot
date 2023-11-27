@@ -1,4 +1,5 @@
-import 'package:dialog_flowtter/dialog_flowtter.dart';
+import 'package:chatbot/events/events.dart';
+import 'package:chatbot/tickets/tickets.dart';
 import 'package:equatable/equatable.dart';
 
 part 'option.dart';
