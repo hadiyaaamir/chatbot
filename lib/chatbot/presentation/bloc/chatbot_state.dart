@@ -1,41 +1,28 @@
 part of 'chatbot_bloc.dart';
 
+enum ChatbotStatus { initial, loading, success, failure }
+
 class ChatbotState extends Equatable {
-  const ChatbotState({
-    this.messages = const [
-      ChatMessage(
-        message: MessagePayload(
-          'Welcome to the Event Ticket Booking System. What would you like to do today?',
-          suggestions: [
-            ChatSuggestion(
-              tileText: 'Book tickets for an event',
-              messageText: 'I want to book tickets for an event',
-            ),
-            ChatSuggestion(
-              tileText: 'View my tickets',
-              messageText: 'I want to view my tickets',
-            )
-          ],
-        ),
-        sentMessage: false,
-      ),
-    ],
-  });
+  const ChatbotState({required this.messages, required this.status});
 
   final List<ChatMessage> messages;
+  final ChatbotStatus status;
 
   @override
   List<Object> get props => [messages];
 
-  ChatbotState copyWith({
-    List<ChatMessage>? messages,
-  }) {
+  ChatbotState copyWith({List<ChatMessage>? messages, ChatbotStatus? status}) {
     return ChatbotState(
       messages: messages ?? this.messages,
+      status: status ?? this.status,
     );
   }
 }
 
 class ChatbotInitial extends ChatbotState {
-  const ChatbotInitial() : super();
+  const ChatbotInitial()
+      : super(
+          messages: ChatMessage.initialMessages,
+          status: ChatbotStatus.initial,
+        );
 }

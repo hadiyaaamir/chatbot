@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:chatbot/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({super.key, required this.message});
@@ -12,27 +14,26 @@ class MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ChatbotBloc, ChatbotState>(
       builder: (context, state) {
-        const double startPadding = 0;
-        const double endPadding = 60;
-
         return message.sentMessage
             ? _Bubble(
                 bubbleColor: Theme.of(context).colorScheme.primary,
                 textColor: Colors.white,
-                paddingLeft: endPadding,
-                paddingRight: startPadding,
+                paddingLeft: kMessageBubbleEndPadding,
+                paddingRight: kMessageBubbleStartPadding,
                 mainAxisAlignment: MainAxisAlignment.end,
                 message: message,
+                sentMessage: message.sentMessage,
               )
             : Column(
                 children: [
                   _Bubble(
                     bubbleColor: Theme.of(context).colorScheme.primaryContainer,
                     textColor: Colors.black,
-                    paddingLeft: startPadding,
-                    paddingRight: endPadding,
+                    paddingLeft: kMessageBubbleStartPadding,
+                    paddingRight: kMessageBubbleEndPadding,
                     mainAxisAlignment: MainAxisAlignment.start,
                     message: message,
+                    sentMessage: message.sentMessage,
                   ),
                   OptionTiles(
                     options: message.message.options,
@@ -45,6 +46,22 @@ class MessageBubble extends StatelessWidget {
   }
 }
 
+class LoadingMessageBubble extends StatelessWidget {
+  const LoadingMessageBubble({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _Bubble(
+      bubbleColor: Theme.of(context).colorScheme.primaryContainer,
+      textColor: Colors.black,
+      paddingLeft: kMessageBubbleStartPadding,
+      paddingRight: kMessageBubbleEndPadding,
+      mainAxisAlignment: MainAxisAlignment.start,
+      sentMessage: false,
+    );
+  }
+}
+
 class _Bubble extends StatelessWidget {
   const _Bubble({
     required this.bubbleColor,
@@ -52,7 +69,8 @@ class _Bubble extends StatelessWidget {
     required this.paddingLeft,
     required this.paddingRight,
     required this.mainAxisAlignment,
-    required this.message,
+    this.message,
+    required this.sentMessage,
   });
 
   final Color bubbleColor;
@@ -62,7 +80,8 @@ class _Bubble extends StatelessWidget {
   final double paddingRight;
   final MainAxisAlignment mainAxisAlignment;
 
-  final ChatMessage message;
+  final ChatMessage? message;
+  final bool sentMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +91,7 @@ class _Bubble extends StatelessWidget {
         mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!message.sentMessage)
+          if (!sentMessage)
             Transform(
               alignment: Alignment.center,
               transform: Matrix4.rotationY(pi),
@@ -80,11 +99,11 @@ class _Bubble extends StatelessWidget {
             ),
           _TextRectangle(
             message: message,
+            sentMessage: sentMessage,
             backgroundColor: bubbleColor,
             textColor: textColor,
           ),
-          if (message.sentMessage)
-            CustomPaint(painter: _Triangle(color: bubbleColor)),
+          if (sentMessage) CustomPaint(painter: _Triangle(color: bubbleColor)),
         ],
       ),
     );
@@ -93,12 +112,14 @@ class _Bubble extends StatelessWidget {
 
 class _TextRectangle extends StatelessWidget {
   const _TextRectangle({
-    required this.message,
+    this.message,
+    required this.sentMessage,
     required this.backgroundColor,
     required this.textColor,
   });
 
-  final ChatMessage message;
+  final ChatMessage? message;
+  final bool sentMessage;
   final Color backgroundColor;
   final Color textColor;
 
@@ -112,20 +133,25 @@ class _TextRectangle extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.only(
-            topLeft: message.sentMessage
-                ? const Radius.circular(borderRadius)
-                : Radius.zero,
-            topRight: message.sentMessage
-                ? Radius.zero
-                : const Radius.circular(borderRadius),
+            topLeft:
+                sentMessage ? const Radius.circular(borderRadius) : Radius.zero,
+            topRight:
+                sentMessage ? Radius.zero : const Radius.circular(borderRadius),
             bottomLeft: const Radius.circular(borderRadius),
             bottomRight: const Radius.circular(borderRadius),
           ),
         ),
-        child: Text(
-          message.message.displayText ?? message.message.text,
-          style: TextStyle(color: textColor),
-        ),
+        child: message != null
+            ? Text(
+                message!.message.displayText ?? message!.message.text,
+                style: TextStyle(color: textColor),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SpinKitThreeBounce(size: 12, color: textColor),
+                ],
+              ),
       ),
     );
   }
