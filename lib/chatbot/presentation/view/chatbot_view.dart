@@ -8,13 +8,18 @@ class ChatbotView extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(title: const Text('Chatbot'), centerTitle: true),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
-            Messages(),
-            SuggestionTiles(),
-            ChatTextfield(),
+            const Messages(),
+            BlocBuilder<ChatbotBloc, ChatbotState>(
+              builder: (context, state) => state.status == ChatbotStatus.loading
+                  ? const LoadingMessageBubble()
+                  : Container(),
+            ),
+            const SuggestionTiles(),
+            const ChatTextfield(),
           ],
         ),
       ),
