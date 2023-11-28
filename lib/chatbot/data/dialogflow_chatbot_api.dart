@@ -17,10 +17,9 @@ class DialogflowESChatbotApi extends ChatbotApi {
 
     if (response.message == null) return null;
 
-    if (response.message!.payload == null) {
-      return MessagePayload(response.text ?? 'Unexpected Error Occurred');
-    }
-
-    return MessagePayload.fromJson(response.message!.payload!);
+    return response.message!.payload == null
+        ? MessagePayload(response.text ?? 'Unexpected Error Occurred')
+        : MessagePayload.fromJson(response.message!.payload!)
+            .copyWith(audio: response.outputAudioBytes);
   }
 }
