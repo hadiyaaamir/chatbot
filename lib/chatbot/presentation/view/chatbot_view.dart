@@ -16,7 +16,7 @@ class ChatbotView extends StatelessWidget {
             BlocBuilder<ChatbotBloc, ChatbotState>(
               builder: (context, state) => state.status == ChatbotStatus.loading
                   ? const LoadingMessageBubble()
-                  : Container(),
+                  : const SizedBox(height: 0),
             ),
             const SuggestionTiles(),
             const ChatTextfield(),
