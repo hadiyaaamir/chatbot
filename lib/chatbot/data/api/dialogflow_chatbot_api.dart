@@ -1,6 +1,7 @@
-part of 'chatbot_api.dart';
+import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:dialog_flowtter/dialog_flowtter.dart';
 
-class DialogflowESChatbotApi extends ChatbotApi {
+class DialogFlowtterChatbotApi extends ChatbotApi {
   late DialogFlowtter dialogFlowtter;
 
   @override
@@ -17,10 +18,9 @@ class DialogflowESChatbotApi extends ChatbotApi {
 
     if (response.message == null) return null;
 
-    if (response.message!.payload == null) {
-      return MessagePayload(response.text ?? 'Unexpected Error Occurred');
-    }
-
-    return MessagePayload.fromJson(response.message!.payload!);
+    return response.message!.payload == null
+        ? MessagePayload(response.text ?? 'Unexpected Error Occurred')
+        : MessagePayload.fromJson(response.message!.payload!)
+            .copyWith(audio: response.outputAudioBytes);
   }
 }

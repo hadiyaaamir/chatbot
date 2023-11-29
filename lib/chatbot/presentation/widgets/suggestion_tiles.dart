@@ -9,7 +9,7 @@ class SuggestionTiles extends StatelessWidget {
     return BlocBuilder<ChatbotBloc, ChatbotState>(
       builder: (context, state) {
         return state.messages.isEmpty
-            ? Container()
+            ? const SizedBox(height: 0)
             : Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Align(

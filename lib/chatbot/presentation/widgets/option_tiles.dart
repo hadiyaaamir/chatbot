@@ -21,7 +21,7 @@ class OptionTiles extends StatelessWidget {
               ),
             ),
           )
-        : Container();
+        : const SizedBox(height: 0);
   }
 }
 
