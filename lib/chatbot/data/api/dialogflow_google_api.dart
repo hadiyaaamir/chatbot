@@ -64,7 +64,6 @@ class DialogflowGoogleApi extends ChatbotApi {
 
       return MessagePayload(fulfillmentText ?? 'Unexpected Error Occurred');
     } on Exception catch (e) {
-      print('error: $e');
       return MessagePayload('Error occured: ${e.toString()}');
     }
   }
