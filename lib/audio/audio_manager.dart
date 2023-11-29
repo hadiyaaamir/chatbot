@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,6 +7,10 @@ import 'package:path_provider/path_provider.dart';
 
 abstract class AudioManager {
   Future<void> playAudio(Uint8List audioBytes);
+
+  static Uint8List? stringToByte(String? outputAudio) {
+    return outputAudio != null ? base64.decode(outputAudio) : null;
+  }
 }
 
 class AudioManagerImpl extends AudioManager {

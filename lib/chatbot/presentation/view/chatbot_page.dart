@@ -13,7 +13,7 @@ class ChatbotPage extends StatelessWidget {
       create: (context) => ChatbotBloc(
         audioManager: AudioManagerImpl(),
         chatbotRepository: ChatbotRepositoryImpl(
-          chatbotApi: DialogflowESChatbotApi(),
+          chatbotApi: DialogflowGoogleApi(),
         ),
       )..add(ChatbotSubscription()),
       child: const ChatbotView(),
