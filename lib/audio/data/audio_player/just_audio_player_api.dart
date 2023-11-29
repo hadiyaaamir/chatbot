@@ -1,19 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
+part of 'audio_player_api.dart';
 
-import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
-
-abstract class AudioManager {
-  Future<void> playAudio(Uint8List audioBytes);
-
-  static Uint8List? stringToByte(String? outputAudio) {
-    return outputAudio != null ? base64.decode(outputAudio) : null;
-  }
-}
-
-class AudioManagerImpl extends AudioManager {
+class JustAudioPlayerApi extends AudioPlayerApi {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chatbot/audio/audio_manager.dart';
+import 'package:chatbot/audio/audio.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
@@ -9,6 +9,8 @@ import 'package:googleapis_auth/auth_io.dart';
 
 class DialogflowGoogleApi extends ChatbotApi {
   late DialogflowApi _dialogflowApi;
+  late ProjectsAgentSessionsResource _resource;
+
   late String _sessionId;
 
   Future<Map<String, dynamic>> _loadCredentials() async {
@@ -29,10 +31,12 @@ class DialogflowGoogleApi extends ChatbotApi {
       [DialogflowApi.cloudPlatformScope],
     );
     _dialogflowApi = DialogflowApi(client);
+    _resource = _dialogflowApi.projects.agent.sessions;
   }
 
   @override
-  Future<MessagePayload?> sendMessage(String message) async {
+  Future<MessagePayload?> sendMessage(String message,
+      {String? inputAudio}) async {
     try {
       final textInput = GoogleCloudDialogflowV2TextInput(
         text: message,
@@ -40,9 +44,11 @@ class DialogflowGoogleApi extends ChatbotApi {
       );
       final queryInput = GoogleCloudDialogflowV2QueryInput(text: textInput);
 
-      final response =
-          await _dialogflowApi.projects.agent.sessions.detectIntent(
-        GoogleCloudDialogflowV2DetectIntentRequest(queryInput: queryInput),
+      final response = await _resource.detectIntent(
+        GoogleCloudDialogflowV2DetectIntentRequest(
+          queryInput: queryInput,
+          inputAudio: inputAudio,
+        ),
         _sessionId,
       );
 
@@ -52,6 +58,7 @@ class DialogflowGoogleApi extends ChatbotApi {
 
       final fulfillmentMessages = response.queryResult!.fulfillmentMessages!;
       final fulfillmentText = response.queryResult?.fulfillmentText;
+
       final audioOutputBytes = AudioManager.stringToByte(response.outputAudio);
 
       for (final message in fulfillmentMessages) {
@@ -62,7 +69,8 @@ class DialogflowGoogleApi extends ChatbotApi {
         }
       }
 
-      return MessagePayload(fulfillmentText ?? 'Unexpected Error Occurred');
+      return MessagePayload(fulfillmentText ?? 'Unexpected Error Occurred')
+          .copyWith(audio: audioOutputBytes);
     } on Exception catch (e) {
       return MessagePayload('Error occured: ${e.toString()}');
     }
