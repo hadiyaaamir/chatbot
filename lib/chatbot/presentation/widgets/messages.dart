@@ -12,6 +12,7 @@ class Messages extends StatelessWidget {
         child: BlocBuilder<ChatbotBloc, ChatbotState>(
           builder: (context, state) {
             return ListView.builder(
+              padding: EdgeInsets.zero,
               reverse: true,
               shrinkWrap: true,
               itemBuilder: (context, index) => MessageBubble(

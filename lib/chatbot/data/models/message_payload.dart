@@ -8,6 +8,7 @@ class MessagePayload extends Equatable {
     this.options,
     this.onlySuggestions = false,
     this.requireUsername = false,
+    this.audio,
   });
 
   final String text;
@@ -17,6 +18,8 @@ class MessagePayload extends Equatable {
   final List<Option>? options;
   final bool onlySuggestions;
   final bool requireUsername;
+
+  final Uint8List? audio;
 
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
@@ -63,6 +66,26 @@ class MessagePayload extends Equatable {
       options: options,
       onlySuggestions: json['onlySuggestions'] as bool? ?? false,
       requireUsername: json['requireUsername'] as bool? ?? false,
+    );
+  }
+
+  MessagePayload copyWith({
+    String? text,
+    String? displayText,
+    List<ChatSuggestion>? suggestions,
+    List<Option>? options,
+    bool? onlySuggestions,
+    bool? requireUsername,
+    Uint8List? audio,
+  }) {
+    return MessagePayload(
+      text ?? this.text,
+      displayText: displayText ?? this.displayText,
+      suggestions: suggestions ?? this.suggestions,
+      options: options ?? this.options,
+      onlySuggestions: onlySuggestions ?? this.onlySuggestions,
+      requireUsername: requireUsername ?? this.requireUsername,
+      audio: audio ?? this.audio,
     );
   }
 

@@ -11,8 +11,9 @@ class ChatbotPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ChatbotBloc(
+        audioManager: AudioManagerImpl(),
         chatbotRepository: ChatbotRepositoryImpl(
-          chatbotApi: DialogflowESChatbotApi(),
+          chatbotApi: DialogflowGoogleApi(),
         ),
       )..add(ChatbotSubscription()),
       child: const ChatbotView(),
