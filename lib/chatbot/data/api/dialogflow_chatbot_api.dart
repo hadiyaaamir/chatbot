@@ -1,6 +1,7 @@
-part of 'chatbot_api.dart';
+import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:dialog_flowtter/dialog_flowtter.dart';
 
-class DialogflowESChatbotApi extends ChatbotApi {
+class DialogFlowtterChatbotApi extends ChatbotApi {
   late DialogFlowtter dialogFlowtter;
 
   @override
