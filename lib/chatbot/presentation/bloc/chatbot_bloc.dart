@@ -29,42 +29,73 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit,
   ) async {
     await _chatbotRepository.initialise();
+    await _sendHelloMessage(emit);
+  }
+
+  Future<void> _sendHelloMessage(Emitter<ChatbotState> emit) async {
+    const helloMessage = ChatbotMessageSent(
+      message: ChatMessage(message: MessagePayload('hello')),
+    );
+
+    await _onChatbotMessageSent(
+      helloMessage,
+      emit,
+      showSentMessage: false,
+    );
   }
 
   Future<void> _onChatbotMessageSent(
     ChatbotMessageSent event,
-    Emitter<ChatbotState> emit,
-  ) async {
+    Emitter<ChatbotState> emit, {
+    bool showSentMessage = true,
+  }) async {
     if (event.message.message.text.isEmpty) return;
 
-    emit(
-      state.copyWith(
-        messages: [event.message, ...state.messages],
-        status: ChatbotStatus.loading,
-      ),
-    );
+    try {
+      emit(
+        state.copyWith(
+          messages: showSentMessage
+              ? [event.message, ...state.messages]
+              : state.messages,
+          status: ChatbotStatus.loading,
+        ),
+      );
 
-    const String usernameAttachment = '. My username is $kHardcodedUsername';
-    String message = event.message.message.text;
-    if (event.attachUsername) message += usernameAttachment;
+      const String usernameAttachment = '. My username is $kHardcodedUsername';
+      String message = event.message.message.text;
+      if (event.attachUsername) message += usernameAttachment;
 
-    final response = await _chatbotRepository.sendMessage(message);
+      final response = await _chatbotRepository.sendMessage(message);
 
-    if (response?.audio != null) _audioManager.playAudio(response!.audio!);
+      if (response?.audio != null) _audioManager.playAudio(response!.audio!);
 
-    emit(
-      state.copyWith(
-        messages: [
-          ChatMessage(
-            message:
-                response ?? const MessagePayload('Unexpected error occured'),
-            sentMessage: false,
-          ),
-          ...state.messages,
-        ],
-        status:
-            response != null ? ChatbotStatus.success : ChatbotStatus.failure,
-      ),
-    );
+      emit(
+        state.copyWith(
+          messages: [
+            ChatMessage(
+              message:
+                  response ?? const MessagePayload('Unexpected error occured'),
+              sentMessage: false,
+            ),
+            ...state.messages,
+          ],
+          status:
+              response != null ? ChatbotStatus.success : ChatbotStatus.failure,
+        ),
+      );
+    } on Exception catch (_) {
+      emit(
+        state.copyWith(
+          messages: [
+            const ChatMessage(
+              message: MessagePayload('Unexpected error occured'),
+              sentMessage: false,
+            ),
+            ...state.messages,
+          ],
+          status: ChatbotStatus.failure,
+        ),
+      );
+    }
   }
 }

@@ -1,1 +1,2 @@
-export 'audio_manager.dart';
+export 'data/data.dart';
+export 'domain/domain.dart';

@@ -21,8 +21,5 @@ class ChatbotState extends Equatable {
 
 class ChatbotInitial extends ChatbotState {
   const ChatbotInitial()
-      : super(
-          messages: ChatMessage.initialMessages,
-          status: ChatbotStatus.initial,
-        );
+      : super(messages: const [], status: ChatbotStatus.initial);
 }
