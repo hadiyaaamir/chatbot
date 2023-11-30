@@ -46,6 +46,7 @@ dependencies:
   path_provider: ^2.1.1
   googleapis: ^11.4.0
   googleapis_auth: ^1.4.1
+  flutter_sound: ^9.2.13
 
 dev_dependencies:
   flutter_test:

@@ -35,22 +35,44 @@ class DialogflowGoogleApi extends ChatbotApi {
   }
 
   @override
-  Future<MessagePayload?> sendMessage(String message,
-      {String? inputAudio}) async {
-    try {
-      final textInput = GoogleCloudDialogflowV2TextInput(
-        text: message,
-        languageCode: "en",
-      );
-      final queryInput = GoogleCloudDialogflowV2QueryInput(text: textInput);
+  Future<MessagePayload?> sendTextMessage(String message) async {
+    final textInput = GoogleCloudDialogflowV2TextInput(
+      text: message,
+      languageCode: "en",
+    );
+    final queryInput = GoogleCloudDialogflowV2QueryInput(text: textInput);
 
-      final response = await _resource.detectIntent(
-        GoogleCloudDialogflowV2DetectIntentRequest(
-          queryInput: queryInput,
-          inputAudio: inputAudio,
-        ),
-        _sessionId,
-      );
+    return await _sendMessage(
+      request: GoogleCloudDialogflowV2DetectIntentRequest(
+        queryInput: queryInput,
+      ),
+    );
+  }
+
+  @override
+  Future<MessagePayload?> sendAudioMessage(String audioInput) async {
+    final audioConfig = GoogleCloudDialogflowV2InputAudioConfig(
+      audioEncoding: 'AUDIO_ENCODING_FLAC',
+      languageCode: 'en',
+      sampleRateHertz: 16000,
+    );
+    final queryInput = GoogleCloudDialogflowV2QueryInput(
+      audioConfig: audioConfig,
+    );
+
+    return await _sendMessage(
+      request: GoogleCloudDialogflowV2DetectIntentRequest(
+        queryInput: queryInput,
+        inputAudio: audioInput,
+      ),
+    );
+  }
+
+  Future<MessagePayload?> _sendMessage({
+    required GoogleCloudDialogflowV2DetectIntentRequest request,
+  }) async {
+    try {
+      final response = await _resource.detectIntent(request, _sessionId);
 
       if (response.queryResult == null ||
           response.queryResult?.fulfillmentMessages == null) return null;
@@ -64,11 +86,10 @@ class DialogflowGoogleApi extends ChatbotApi {
       for (final message in fulfillmentMessages) {
         if (message.payload != null) {
           return MessagePayload.fromJson(
-                  message.payload as Map<String, dynamic>)
-              .copyWith(audio: audioOutputBytes);
+            message.payload as Map<String, dynamic>,
+          ).copyWith(audio: audioOutputBytes);
         }
       }
-
       return MessagePayload(fulfillmentText ?? 'Unexpected Error Occurred')
           .copyWith(audio: audioOutputBytes);
     } on Exception catch (e) {

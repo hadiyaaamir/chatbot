@@ -5,5 +5,6 @@ export 'dialog_flowtter_chatbot_api.dart';
 
 abstract class ChatbotApi {
   Future<void> initialise();
-  Future<MessagePayload?> sendMessage(String message);
+  Future<MessagePayload?> sendTextMessage(String message);
+  Future<MessagePayload?> sendAudioMessage(String audioInput);
 }

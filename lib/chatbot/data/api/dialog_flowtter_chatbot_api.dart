@@ -11,7 +11,7 @@ class DialogFlowtterChatbotApi extends ChatbotApi {
   }
 
   @override
-  Future<MessagePayload?> sendMessage(String message) async {
+  Future<MessagePayload?> sendTextMessage(String message) async {
     DetectIntentResponse response = await dialogFlowtter.detectIntent(
       queryInput: QueryInput(text: TextInput(text: message)),
     );
@@ -23,5 +23,11 @@ class DialogFlowtterChatbotApi extends ChatbotApi {
             .copyWith(audio: response.outputAudioBytes)
         : MessagePayload.fromJson(response.message!.payload!)
             .copyWith(audio: response.outputAudioBytes);
+  }
+
+  @override
+  Future<MessagePayload?> sendAudioMessage(String audioInput) {
+    // TODO: implement sendAudioMessage
+    throw UnimplementedError();
   }
 }

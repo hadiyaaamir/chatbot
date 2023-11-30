@@ -11,7 +11,12 @@ class MessagePayload extends Equatable {
     this.audio,
   });
 
+  factory MessagePayload.error() {
+    return const MessagePayload('Unexpected error occured');
+  }
+
   final String text;
+
   final String? displayText;
 
   final List<ChatSuggestion> suggestions;
