@@ -65,7 +65,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       String message = event.message.message.text;
       if (event.attachUsername) message += usernameAttachment;
 
-      final response = await _chatbotRepository.sendMessage(message);
+      final response = await _chatbotRepository.sendTextMessage(message);
 
       if (response?.audio != null) _audioManager.playAudio(response!.audio!);
 
@@ -73,8 +73,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         state.copyWith(
           messages: [
             ChatMessage(
-              message:
-                  response ?? const MessagePayload('Unexpected error occured'),
+              message: response ?? MessagePayload.error(),
               sentMessage: false,
             ),
             ...state.messages,
@@ -87,10 +86,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       emit(
         state.copyWith(
           messages: [
-            const ChatMessage(
-              message: MessagePayload('Unexpected error occured'),
-              sentMessage: false,
-            ),
+            ChatMessage(message: MessagePayload.error(), sentMessage: false),
             ...state.messages,
           ],
           status: ChatbotStatus.failure,
