@@ -19,7 +19,6 @@ class ChatbotView extends StatelessWidget {
                   : const SizedBox(height: 0),
             ),
             const SuggestionTiles(),
-            const RecordingButton(),
             const ChatTextfield(),
           ],
         ),

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:chatbot/audio/audio.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
@@ -81,17 +80,15 @@ class DialogflowGoogleApi extends ChatbotApi {
       final fulfillmentMessages = response.queryResult!.fulfillmentMessages!;
       final fulfillmentText = response.queryResult?.fulfillmentText;
 
-      final audioOutputBytes = AudioManager.stringToByte(response.outputAudio);
-
       for (final message in fulfillmentMessages) {
         if (message.payload != null) {
           return MessagePayload.fromJson(
             message.payload as Map<String, dynamic>,
-          ).copyWith(audio: audioOutputBytes);
+          ).copyWith(audio: response.outputAudio);
         }
       }
       return MessagePayload(fulfillmentText ?? 'Unexpected Error Occurred')
-          .copyWith(audio: audioOutputBytes);
+          .copyWith(audio: response.outputAudio);
     } on Exception catch (e) {
       return MessagePayload('Error occured: ${e.toString()}');
     }

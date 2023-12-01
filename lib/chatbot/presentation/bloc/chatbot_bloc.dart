@@ -49,7 +49,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit, {
     bool showSentMessage = true,
   }) async {
-    if (event.message.message.text.isEmpty) return;
+    if (event.message.message.text.isEmpty &&
+        event.message.message.audio == null) return;
 
     try {
       emit(
@@ -67,7 +68,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
 
       final response = await _chatbotRepository.sendTextMessage(message);
 
-      if (response?.audio != null) _audioManager.playAudio(response!.audio!);
+      final outputAudio = _audioManager.stringToByte(response?.audio);
+      if (outputAudio != null) _audioManager.playAudioFromBytes(outputAudio);
 
       emit(
         state.copyWith(
