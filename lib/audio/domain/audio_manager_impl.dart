@@ -4,6 +4,17 @@ class AudioManagerImpl extends AudioManager {
   AudioManagerImpl({super.audioPlayerApi, super.audioRecorderApi});
 
   @override
+  Uint8List? stringToByte(String? outputAudio) {
+    return outputAudio != null ? base64.decode(outputAudio) : null;
+  }
+
+  @override
+  Future<String> audioFromPath(String filePath) async {
+    final fileBytes = await File(filePath).readAsBytes();
+    return base64.encode(fileBytes);
+  }
+
+  @override
   Future<void> initialise() async {
     await audioRecorderApi.initialise();
   }

@@ -51,7 +51,7 @@ class DialogflowGoogleApi extends ChatbotApi {
   @override
   Future<MessagePayload?> sendAudioMessage(String audioInput) async {
     final audioConfig = GoogleCloudDialogflowV2InputAudioConfig(
-      audioEncoding: 'AUDIO_ENCODING_FLAC',
+      audioEncoding: 'AUDIO_ENCODING_LINEAR_16',
       languageCode: 'en',
       sampleRateHertz: 16000,
     );
@@ -87,6 +87,7 @@ class DialogflowGoogleApi extends ChatbotApi {
           ).copyWith(audio: response.outputAudio);
         }
       }
+
       return MessagePayload(
         text: fulfillmentText ?? 'Unexpected Error Occurred',
       ).copyWith(audio: response.outputAudio);

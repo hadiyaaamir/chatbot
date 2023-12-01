@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chatbot/audio/audio.dart';
@@ -23,7 +24,6 @@ abstract class AudioManager {
   Future<void> startRecording();
   Future<String?> stopRecording();
 
-  Uint8List? stringToByte(String? outputAudio) {
-    return outputAudio != null ? base64.decode(outputAudio) : null;
-  }
+  Uint8List? stringToByte(String? outputAudio);
+  Future<String> audioFromPath(String filePath);
 }
