@@ -69,7 +69,9 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
 
       final response = messagePayload.isTextMessage
           ? await _chatbotRepository.sendTextMessage(message)
-          : await _chatbotRepository.sendAudioMessage(messagePayload.audio!);
+          : await _chatbotRepository.sendAudioMessage(
+              await _audioManager.audioFromPath(messagePayload.audio!),
+            );
 
       final outputAudio = _audioManager.stringToByte(response?.audio);
       if (outputAudio != null) _audioManager.playAudioFromBytes(outputAudio);
