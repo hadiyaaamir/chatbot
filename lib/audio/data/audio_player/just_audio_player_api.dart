@@ -9,10 +9,9 @@ class JustAudioPlayerApi extends AudioPlayerApi {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
-  Future<void> playAudio(Uint8List audioBytes) async {
+  Future<void> playAudioFromBytes(Uint8List audioBytes) async {
     final filePath = await _saveAudioToFile(audioBytes);
-    await _audioPlayer.setFilePath(filePath);
-    await _audioPlayer.play();
+    await playAudioFromFile(filePath);
   }
 
   Future<String> _saveAudioToFile(Uint8List audioBytes) async {
@@ -23,5 +22,11 @@ class JustAudioPlayerApi extends AudioPlayerApi {
     await file.writeAsBytes(audioBytes);
 
     return filePath;
+  }
+
+  @override
+  Future<void> playAudioFromFile(String filePath) async {
+    await _audioPlayer.setFilePath(filePath);
+    await _audioPlayer.play();
   }
 }

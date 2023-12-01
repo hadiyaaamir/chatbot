@@ -14,11 +14,12 @@ abstract class AudioManager {
   final AudioPlayerApi audioPlayerApi;
   final AudioRecorderApi audioRecorderApi;
 
-  Future<void> playAudio(Uint8List audioBytes);
+  Future<void> playAudioFromBytes(Uint8List audioBytes);
+  Future<void> playAudioFromFile(String filePath);
   Future<void> startRecording();
   Future<String?> stopRecording();
 
-  static Uint8List? stringToByte(String? outputAudio) {
+  Uint8List? stringToByte(String? outputAudio) {
     return outputAudio != null ? base64.decode(outputAudio) : null;
   }
 }

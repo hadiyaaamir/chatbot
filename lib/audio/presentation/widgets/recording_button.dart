@@ -12,23 +12,15 @@ class _RecordingButtonState extends State<RecordingButton> {
 
   @override
   Widget build(BuildContext context) {
-    final audioManager = context.read<AudioManager>();
+    // final audioManager = context.read<AudioManager>();
 
-    return ElevatedButton.icon(
-      icon: isRecording ? const Icon(Icons.pause) : const Icon(Icons.mic),
-      label: Text(isRecording ? 'Pause' : 'Record'),
-      onPressed: () async {
-        if (isRecording) {
-          final result = await audioManager.stopRecording();
-          print(result);
-        } else {
-          await audioManager.startRecording();
-        }
-
-        setState(() {
-          isRecording = !isRecording;
-        });
+    return FloatingActionButton(
+      onPressed: () {
+        setState(() => isRecording = !isRecording);
       },
+      shape: const CircleBorder(),
+      mini: true,
+      child: Icon(isRecording ? Icons.mic_none : Icons.mic),
     );
   }
 }

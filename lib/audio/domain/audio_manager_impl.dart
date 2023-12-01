@@ -4,8 +4,8 @@ class AudioManagerImpl extends AudioManager {
   AudioManagerImpl({super.audioPlayerApi, super.audioRecorderApi});
 
   @override
-  Future<void> playAudio(Uint8List audioBytes) async {
-    await audioPlayerApi.playAudio(audioBytes);
+  Future<void> playAudioFromBytes(Uint8List audioBytes) async {
+    await audioPlayerApi.playAudioFromBytes(audioBytes);
   }
 
   @override
@@ -16,5 +16,11 @@ class AudioManagerImpl extends AudioManager {
   @override
   Future<String?> stopRecording() async {
     return await audioRecorderApi.stopRecording();
+  }
+
+  @override
+  Future<void> playAudioFromFile(String filePath) {
+    // TODO: implement playAudioFromFile
+    throw UnimplementedError();
   }
 }

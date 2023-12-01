@@ -24,7 +24,7 @@ class MessagePayload extends Equatable {
   final bool onlySuggestions;
   final bool requireUsername;
 
-  final Uint8List? audio;
+  final String? audio;
 
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
@@ -81,7 +81,7 @@ class MessagePayload extends Equatable {
     List<Option>? options,
     bool? onlySuggestions,
     bool? requireUsername,
-    Uint8List? audio,
+    String? audio,
   }) {
     return MessagePayload(
       text ?? this.text,

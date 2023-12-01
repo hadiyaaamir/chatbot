@@ -1,3 +1,4 @@
+import 'package:chatbot/audio/audio.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:flutter/material.dart';
 
@@ -25,16 +26,24 @@ class _ChatTextfieldState extends State<ChatTextfield> {
               ? false
               : state.messages.first.message.requireUsername;
 
-          return Stack(
+          return Row(
             children: [
-              _TextEntryArea(
-                enabled: enabled,
-                messageController: _messageController,
+              Expanded(
+                child: Stack(
+                  children: [
+                    _TextEntryArea(
+                      enabled: enabled,
+                      messageController: _messageController,
+                    ),
+                    _SendButton(
+                      attachUsername: attachUsername,
+                      messageController: _messageController,
+                    )
+                  ],
+                ),
               ),
-              _SendButton(
-                attachUsername: attachUsername,
-                messageController: _messageController,
-              )
+              const SizedBox(width: 5),
+              const RecordingButton(),
             ],
           );
         },
@@ -65,10 +74,7 @@ class _TextEntryArea extends StatelessWidget {
       controller: _messageController,
       style: Theme.of(context).textTheme.bodyMedium,
       decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 15,
-        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(50)),
         ),
