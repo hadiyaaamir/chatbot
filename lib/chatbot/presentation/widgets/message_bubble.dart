@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chatbot/audio/audio.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -142,10 +143,12 @@ class _TextRectangle extends StatelessWidget {
           ),
         ),
         child: message != null
-            ? Text(
-                message!.message.displayText ?? message!.message.text,
-                style: TextStyle(color: textColor),
-              )
+            ? message!.message.isTextMessage
+                ? Text(
+                    message!.message.displayText ?? message!.message.text,
+                    style: TextStyle(color: textColor),
+                  )
+                : PlayButton(path: message!.message.audio!)
             : Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

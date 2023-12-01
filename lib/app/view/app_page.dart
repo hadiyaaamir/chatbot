@@ -12,7 +12,7 @@ class _AppPageState extends State<AppPage> {
 
   @override
   void initState() {
-    _audioManager = AudioManagerImpl();
+    _audioManager = AudioManagerImpl()..initialise();
     super.initState();
   }
 
@@ -22,5 +22,11 @@ class _AppPageState extends State<AppPage> {
       value: _audioManager,
       child: const AppView(),
     );
+  }
+
+  @override
+  void dispose() {
+    _audioManager.dispose();
+    super.dispose();
   }
 }

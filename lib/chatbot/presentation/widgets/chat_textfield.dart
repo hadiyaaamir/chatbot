@@ -103,7 +103,7 @@ class _SendButton extends StatelessWidget {
                   ChatbotMessageSent(
                     attachUsername: attachUsername,
                     message: ChatMessage(
-                      message: MessagePayload(_messageController.text),
+                      message: MessagePayload(text: _messageController.text),
                     ),
                   ),
                 );

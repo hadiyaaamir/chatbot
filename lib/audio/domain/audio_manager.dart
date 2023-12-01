@@ -14,8 +14,12 @@ abstract class AudioManager {
   final AudioPlayerApi audioPlayerApi;
   final AudioRecorderApi audioRecorderApi;
 
+  Future<void> initialise();
+  Future<void> dispose();
+
   Future<void> playAudioFromBytes(Uint8List audioBytes);
   Future<void> playAudioFromFile(String filePath);
+
   Future<void> startRecording();
   Future<String?> stopRecording();
 
