@@ -6,15 +6,27 @@ class FlutterSoundApi extends AudioRecorderApi {
   late final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
 
   @override
+  Future<void> initialise() async {
+    await _recorder.openRecorder();
+  }
+
+  @override
   Future<void> startRecoding() async {
     final tempDir = await getTemporaryDirectory();
-    final filePath = '${tempDir.path}/audio_file.aac';
 
-    await _recorder.startRecorder(toFile: filePath, codec: Codec.aacADTS);
+    String timestamp = DateTime.now().toIso8601String();
+    final filePath = '${tempDir.path}/audio_record_$timestamp.wav';
+
+    await _recorder.startRecorder(toFile: filePath, codec: Codec.pcm16WAV);
   }
 
   @override
   Future<String?> stopRecording() async {
     return await _recorder.stopRecorder();
+  }
+
+  @override
+  Future<void> dispose() async {
+    _recorder.closeRecorder();
   }
 }

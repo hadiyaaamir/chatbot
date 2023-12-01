@@ -1,8 +1,8 @@
 part of 'models.dart';
 
 class MessagePayload extends Equatable {
-  const MessagePayload(
-    this.text, {
+  const MessagePayload({
+    this.text = '',
     this.displayText,
     this.suggestions = const [],
     this.options,
@@ -12,7 +12,7 @@ class MessagePayload extends Equatable {
   });
 
   factory MessagePayload.error() {
-    return const MessagePayload('Unexpected error occured');
+    return const MessagePayload(text: 'Unexpected error occured');
   }
 
   final String text;
@@ -25,6 +25,10 @@ class MessagePayload extends Equatable {
   final bool requireUsername;
 
   final String? audio;
+
+  bool get isAudioMessage => text.isEmpty && audio != null;
+  bool get isTextMessage => text.isNotEmpty;
+  bool get isEmpty => text.isEmpty && audio == null;
 
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
@@ -65,7 +69,7 @@ class MessagePayload extends Equatable {
     }
 
     return MessagePayload(
-      json['text'] as String? ?? '',
+      text: json['text'] as String? ?? '',
       displayText: json['displayText'] as String?,
       suggestions: suggestions,
       options: options,
@@ -84,7 +88,7 @@ class MessagePayload extends Equatable {
     String? audio,
   }) {
     return MessagePayload(
-      text ?? this.text,
+      text: text ?? this.text,
       displayText: displayText ?? this.displayText,
       suggestions: suggestions ?? this.suggestions,
       options: options ?? this.options,

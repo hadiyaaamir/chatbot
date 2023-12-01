@@ -53,7 +53,7 @@ class _BookTicketsButton extends StatelessWidget {
               attachUsername: usernameRequired,
               message: ChatMessage(
                 message: MessagePayload(
-                  'I want to book tickets for event ${event.id}',
+                  text: 'I want to book tickets for event ${event.id}',
                   displayText: 'I want to book tickets for ${event.title}',
                 ),
               ),

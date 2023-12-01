@@ -87,10 +87,11 @@ class DialogflowGoogleApi extends ChatbotApi {
           ).copyWith(audio: response.outputAudio);
         }
       }
-      return MessagePayload(fulfillmentText ?? 'Unexpected Error Occurred')
-          .copyWith(audio: response.outputAudio);
+      return MessagePayload(
+        text: fulfillmentText ?? 'Unexpected Error Occurred',
+      ).copyWith(audio: response.outputAudio);
     } on Exception catch (e) {
-      return MessagePayload('Error occured: ${e.toString()}');
+      return MessagePayload(text: 'Error occured: ${e.toString()}');
     }
   }
 }

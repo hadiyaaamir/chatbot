@@ -34,7 +34,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
 
   Future<void> _sendHelloMessage(Emitter<ChatbotState> emit) async {
     const helloMessage = ChatbotMessageSent(
-      message: ChatMessage(message: MessagePayload('hello')),
+      message: ChatMessage(message: MessagePayload(text: 'hello')),
     );
 
     await _onChatbotMessageSent(
@@ -49,8 +49,9 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit, {
     bool showSentMessage = true,
   }) async {
-    if (event.message.message.text.isEmpty &&
-        event.message.message.audio == null) return;
+    final messagePayload = event.message.message;
+
+    if (messagePayload.isEmpty) return;
 
     try {
       emit(
@@ -63,10 +64,12 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       );
 
       const String usernameAttachment = '. My username is $kHardcodedUsername';
-      String message = event.message.message.text;
+      String message = messagePayload.text;
       if (event.attachUsername) message += usernameAttachment;
 
-      final response = await _chatbotRepository.sendTextMessage(message);
+      final response = messagePayload.isTextMessage
+          ? await _chatbotRepository.sendTextMessage(message)
+          : await _chatbotRepository.sendAudioMessage(messagePayload.audio!);
 
       final outputAudio = _audioManager.stringToByte(response?.audio);
       if (outputAudio != null) _audioManager.playAudioFromBytes(outputAudio);

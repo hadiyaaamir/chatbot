@@ -19,7 +19,7 @@ class DialogFlowtterChatbotApi extends ChatbotApi {
     if (response.message == null) return null;
 
     return response.message!.payload == null
-        ? MessagePayload(response.text ?? 'Unexpected Error Occurred')
+        ? MessagePayload(text: response.text ?? 'Unexpected Error Occurred')
             .copyWith(audio: response.outputAudio)
         : MessagePayload.fromJson(response.message!.payload!)
             .copyWith(audio: response.outputAudio);
