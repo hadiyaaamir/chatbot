@@ -1,4 +1,4 @@
-import 'package:chatbot/audio/domain/audio_manager.dart';
+import 'package:audio_manager/audio_manager.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:flutter/material.dart';
 

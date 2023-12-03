@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:chatbot/audio/audio.dart';
+import 'package:audio_manager/audio_manager.dart';
+
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
