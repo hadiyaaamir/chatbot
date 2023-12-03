@@ -183,17 +183,40 @@ class _Triangle extends CustomPainter {
   }
 }
 
-class _AudioMessage extends StatelessWidget {
+class _AudioMessage extends StatefulWidget {
   const _AudioMessage({required this.path});
 
   final String path;
 
   @override
+  State<_AudioMessage> createState() => _AudioMessageState();
+}
+
+class _AudioMessageState extends State<_AudioMessage> {
+  bool isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final audioManager = context.read<AudioManager>();
     return GestureDetector(
-      onTap: () => audioManager.playAudioFromFile(path),
-      child: const Icon(Icons.play_arrow),
+      onTap: () {
+        setState(() => isPlaying = !isPlaying);
+        if (!isPlaying) {
+          audioManager.pauseAudio();
+        } else {
+          audioManager.playAudioFromFile(widget.path);
+        }
+      },
+      child: Icon(
+        isPlaying ? Icons.pause : Icons.play_arrow,
+        color: Theme.of(context).colorScheme.onPrimary,
+        size: Theme.of(context).textTheme.bodyLarge?.fontSize,
+      ),
     );
   }
 }

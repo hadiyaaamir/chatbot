@@ -20,6 +20,7 @@ abstract class AudioManager {
 
   Future<void> playAudioFromBytes(Uint8List audioBytes);
   Future<void> playAudioFromFile(String filePath);
+  Future<void> pauseAudio();
 
   Future<void> startRecording();
   Future<String?> stopRecording();

@@ -29,4 +29,9 @@ class JustAudioPlayerApi extends AudioPlayerApi {
     await _audioPlayer.setFilePath(filePath);
     await _audioPlayer.play();
   }
+
+  @override
+  Future<void> pauseAudio() async {
+    await _audioPlayer.pause();
+  }
 }
