@@ -8,45 +8,29 @@ class RecordingButton extends StatefulWidget {
 }
 
 class _RecordingButtonState extends State<RecordingButton> {
-  bool isRecording = false;
-
   List<File> messages = [];
 
   @override
   Widget build(BuildContext context) {
-    final audioManager = context.read<AudioManager>();
-
-    return Row(
-      children: [
-        FloatingActionButton(
-          onPressed: () async {
-            if (isRecording) {
-              final output = await audioManager.stopRecording();
-
-              if (output != null) {
-                if (mounted) {
-                  context.read<ChatbotBloc>().add(
-                        ChatbotMessageSent(
-                          message: ChatMessage(
-                            message: MessagePayload(audio: output),
-                          ),
-                        ),
-                      );
-                }
-              }
-            } else {
-              await audioManager.startRecording();
-            }
-
-            setState(() {
-              isRecording = !isRecording;
-            });
-          },
-          shape: const CircleBorder(),
-          mini: true,
-          child: Icon(isRecording ? Icons.pause : Icons.mic),
-        ),
-      ],
+    return BlocBuilder<ChatbotBloc, ChatbotState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                context.read<ChatbotBloc>().add(
+                      state.isRecordingMessage
+                          ? ChatbotMessageRecordingStopped()
+                          : ChatbotMessageRecordingStarted(),
+                    );
+              },
+              shape: const CircleBorder(),
+              mini: true,
+              child: Icon(state.isRecordingMessage ? Icons.pause : Icons.mic),
+            ),
+          ],
+        );
+      },
     );
   }
 }

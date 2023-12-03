@@ -19,6 +19,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         super(const ChatbotInitial()) {
     on<ChatbotSubscription>(_onChatbotSubscribed);
     on<ChatbotMessageSent>(_onChatbotMessageSent);
+    on<ChatbotMessageRecordingStarted>(_onChatbotMessageRecordingStarted);
+    on<ChatbotMessageRecordingStopped>(_onChatbotMessageRecordingStopped);
   }
 
   final ChatbotRepository _chatbotRepository;
@@ -97,6 +99,65 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
             ...state.messages,
           ],
           status: ChatbotStatus.failure,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onChatbotMessageRecordingStarted(
+    ChatbotMessageRecordingStarted event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    try {
+      await _audioManager.startRecording();
+      emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
+    } on Exception catch (e) {
+      emit(
+        state.copyWith(
+          messages: [
+            ChatMessage(
+              message: MessagePayload(
+                text: 'Error recording voice message. $e',
+              ),
+            ),
+            ...state.messages,
+          ],
+          isRecordingMessage: _audioManager.isRecording,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onChatbotMessageRecordingStopped(
+    ChatbotMessageRecordingStopped event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    try {
+      final output = await _audioManager.stopRecording();
+      emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
+
+      if (output != null) {
+        await _onChatbotMessageSent(
+          ChatbotMessageSent(
+            message: ChatMessage(
+              message: MessagePayload(audio: output),
+            ),
+          ),
+          emit,
+        );
+      }
+    } on Exception catch (e) {
+      emit(
+        state.copyWith(
+          messages: [
+            ChatMessage(
+              message: MessagePayload(
+                text: 'Error recording voice message. $e',
+              ),
+            ),
+            ...state.messages,
+          ],
+          isRecordingMessage: _audioManager.isRecording,
         ),
       );
     }

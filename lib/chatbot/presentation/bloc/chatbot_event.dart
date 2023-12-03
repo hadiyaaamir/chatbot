@@ -20,3 +20,7 @@ class ChatbotMessageSent extends ChatbotEvent {
   @override
   List<Object> get props => [message, attachUsername];
 }
+
+class ChatbotMessageRecordingStarted extends ChatbotEvent {}
+
+class ChatbotMessageRecordingStopped extends ChatbotEvent {}

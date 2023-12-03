@@ -23,6 +23,7 @@ abstract class AudioManager {
 
   Future<void> startRecording();
   Future<String?> stopRecording();
+  bool get isRecording;
 
   Uint8List? stringToByte(String? outputAudio);
   Future<String> audioFromPath(String filePath);
