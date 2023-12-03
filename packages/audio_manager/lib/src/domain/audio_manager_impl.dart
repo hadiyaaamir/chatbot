@@ -9,19 +9,29 @@ class AudioManagerImpl extends AudioManager {
   }
 
   @override
+  Future<void> initialise() async {
+    await audioRecorderApi.initialise();
+  }
+
+  @override
   Future<String> audioFromPath(String filePath) async {
     final fileBytes = await File(filePath).readAsBytes();
     return base64.encode(fileBytes);
   }
 
   @override
-  Future<void> initialise() async {
-    await audioRecorderApi.initialise();
+  Future<void> playAudioFromBytes(Uint8List audioBytes) async {
+    await audioPlayerApi.playAudioFromBytes(audioBytes);
   }
 
   @override
-  Future<void> playAudioFromBytes(Uint8List audioBytes) async {
-    await audioPlayerApi.playAudioFromBytes(audioBytes);
+  Future<void> playAudioFromFile(String filePath) async {
+    await audioPlayerApi.playAudioFromFile(filePath);
+  }
+
+  @override
+  Future<void> pauseAudio() async {
+    await audioPlayerApi.pauseAudio();
   }
 
   @override
@@ -36,11 +46,6 @@ class AudioManagerImpl extends AudioManager {
 
   @override
   bool get isRecording => audioRecorderApi.isRecording;
-
-  @override
-  Future<void> playAudioFromFile(String filePath) async {
-    await audioPlayerApi.playAudioFromFile(filePath);
-  }
 
   @override
   Future<void> dispose() async {
