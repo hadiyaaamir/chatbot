@@ -82,7 +82,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         state.copyWith(
           messages: [
             ChatMessage(
-              message: response ?? MessagePayload.error(),
+              message: response ?? MessagePayload.fallback(),
               sentMessage: false,
             ),
             ...state.messages,

@@ -15,6 +15,10 @@ class MessagePayload extends Equatable {
     return const MessagePayload(text: 'Unexpected error occured');
   }
 
+  factory MessagePayload.fallback() {
+    return const MessagePayload(text: 'Sorry, can you please say that again?');
+  }
+
   final String text;
 
   final String? displayText;

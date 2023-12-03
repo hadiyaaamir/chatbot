@@ -148,7 +148,7 @@ class _TextRectangle extends StatelessWidget {
                     message!.message.displayText ?? message!.message.text,
                     style: TextStyle(color: textColor),
                   )
-                : PlayButton(path: message!.message.audio!)
+                : _AudioMessage(path: message!.message.audio!)
             : Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -179,5 +179,20 @@ class _Triangle extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class _AudioMessage extends StatelessWidget {
+  const _AudioMessage({required this.path});
+
+  final String path;
+
+  @override
+  Widget build(BuildContext context) {
+    final audioManager = context.read<AudioManager>();
+    return GestureDetector(
+      onTap: () => audioManager.playAudioFromFile(path),
+      child: const Icon(Icons.play_arrow),
+    );
   }
 }

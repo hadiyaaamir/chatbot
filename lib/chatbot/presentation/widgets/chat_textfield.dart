@@ -1,4 +1,3 @@
-import 'package:chatbot/audio/audio.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +42,7 @@ class _ChatTextfieldState extends State<ChatTextfield> {
                 ),
               ),
               const SizedBox(width: 5),
-              const RecordingButton(),
+              const _RecordingButton(),
             ],
           );
         },
@@ -112,6 +111,34 @@ class _SendButton extends StatelessWidget {
           icon: const Icon(Icons.send),
         ),
       ],
+    );
+  }
+}
+
+class _RecordingButton extends StatelessWidget {
+  const _RecordingButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChatbotBloc, ChatbotState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                context.read<ChatbotBloc>().add(
+                      state.isRecordingMessage
+                          ? ChatbotMessageRecordingStopped()
+                          : ChatbotMessageRecordingStarted(),
+                    );
+              },
+              shape: const CircleBorder(),
+              mini: true,
+              child: Icon(state.isRecordingMessage ? Icons.pause : Icons.mic),
+            ),
+          ],
+        );
+      },
     );
   }
 }
