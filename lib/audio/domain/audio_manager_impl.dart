@@ -35,6 +35,9 @@ class AudioManagerImpl extends AudioManager {
   }
 
   @override
+  bool get isRecording => audioRecorderApi.isRecording;
+
+  @override
   Future<void> playAudioFromFile(String filePath) async {
     await audioPlayerApi.playAudioFromFile(filePath);
   }

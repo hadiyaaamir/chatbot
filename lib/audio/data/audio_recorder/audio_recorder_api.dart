@@ -6,5 +6,7 @@ abstract class AudioRecorderApi {
   Future<void> startRecoding();
   Future<String?> stopRecording();
 
+  bool get isRecording;
+
   Future<void> dispose();
 }

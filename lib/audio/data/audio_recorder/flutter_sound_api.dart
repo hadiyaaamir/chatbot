@@ -12,6 +12,8 @@ class FlutterSoundApi extends AudioRecorderApi {
 
   @override
   Future<void> startRecoding() async {
+    if (_recorder.isRecording) return;
+
     final tempDir = await getTemporaryDirectory();
 
     String timestamp = DateTime.now().toIso8601String();
@@ -29,4 +31,7 @@ class FlutterSoundApi extends AudioRecorderApi {
   Future<void> dispose() async {
     _recorder.closeRecorder();
   }
+
+  @override
+  bool get isRecording => _recorder.isRecording;
 }
