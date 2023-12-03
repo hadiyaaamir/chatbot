@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:chatbot/audio/audio.dart';
+import 'package:audio_manager/src/data/data.dart';
 
 part 'audio_manager_impl.dart';
 
