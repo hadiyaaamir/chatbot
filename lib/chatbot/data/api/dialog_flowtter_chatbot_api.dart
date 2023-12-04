@@ -18,16 +18,19 @@ class DialogFlowtterChatbotApi extends ChatbotApi {
 
     if (response.message == null) return null;
 
+    final outputAudio = response.outputAudio != null
+        ? Audio(audio: response.outputAudio!)
+        : null;
+
     return response.message!.payload == null
         ? MessagePayload(text: response.text ?? MessagePayload.error().text)
-            .copyWith(audio: response.outputAudio)
+            .copyWith(audio: outputAudio)
         : MessagePayload.fromJson(response.message!.payload!)
-            .copyWith(audio: response.outputAudio);
+            .copyWith(audio: outputAudio);
   }
 
   @override
   Future<MessagePayload?> sendAudioMessage(String audioInput) {
-    // TODO: implement sendAudioMessage
     throw UnimplementedError();
   }
 }

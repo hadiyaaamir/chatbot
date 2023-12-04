@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -7,6 +8,21 @@ import 'package:path_provider/path_provider.dart';
 
 class JustAudioPlayerApi extends AudioPlayerApi {
   final AudioPlayer _audioPlayer = AudioPlayer();
+
+  JustAudioPlayerApi() {
+    _audioPlayer.playerStateStream.listen((playerState) {
+      if (playerState.processingState == ProcessingState.completed) {
+        _audioPlayerCompleteController.add(true);
+      }
+    });
+  }
+
+  final StreamController<bool> _audioPlayerCompleteController =
+      StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> get audioPlayerCompleteStream =>
+      _audioPlayerCompleteController.stream;
 
   @override
   Future<void> playAudioFromBytes(Uint8List audioBytes) async {
@@ -33,5 +49,11 @@ class JustAudioPlayerApi extends AudioPlayerApi {
   @override
   Future<void> pauseAudio() async {
     await _audioPlayer.pause();
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _audioPlayerCompleteController.close();
+    await _audioPlayer.dispose();
   }
 }

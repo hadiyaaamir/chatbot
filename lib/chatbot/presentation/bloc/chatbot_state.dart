@@ -14,6 +14,36 @@ class ChatbotState extends Equatable {
 
   final bool isRecordingMessage;
 
+  ChatbotState setAudioPlayingStatus({required MessagePayload targetMessage}) {
+    final List<ChatMessage> updatedMessages = messages.map((message) {
+      return message.message == targetMessage
+          ? message.playAudio()
+          : message.message.audio != null
+              ? message.stopAudio()
+              : message;
+    }).toList();
+
+    return copyWith(messages: updatedMessages);
+  }
+
+  ChatbotState setAudioStoppedStatus({required MessagePayload targetMessage}) {
+    final List<ChatMessage> updatedMessages = messages.map((message) {
+      return message.message == targetMessage && message.message.audio != null
+          ? message.stopAudio()
+          : message;
+    }).toList();
+
+    return copyWith(messages: updatedMessages);
+  }
+
+  ChatbotState setAllAudiosStoppedStatus() {
+    final List<ChatMessage> updatedMessages = messages.map((message) {
+      return message.message.audio != null ? message.stopAudio() : message;
+    }).toList();
+
+    return copyWith(messages: updatedMessages);
+  }
+
   ChatbotState copyWith({
     List<ChatMessage>? messages,
     ChatbotStatus? status,

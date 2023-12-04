@@ -80,17 +80,21 @@ class DialogflowGoogleApi extends ChatbotApi {
       final fulfillmentMessages = response.queryResult!.fulfillmentMessages!;
       final fulfillmentText = response.queryResult?.fulfillmentText;
 
+      final outputAudio = response.outputAudio != null
+          ? Audio(audio: response.outputAudio!)
+          : null;
+
       for (final message in fulfillmentMessages) {
         if (message.payload != null) {
           return MessagePayload.fromJson(
             message.payload as Map<String, dynamic>,
-          ).copyWith(audio: response.outputAudio);
+          ).copyWith(audio: outputAudio);
         }
       }
 
       return MessagePayload(
         text: fulfillmentText ?? MessagePayload.error().text,
-      ).copyWith(audio: response.outputAudio);
+      ).copyWith(audio: outputAudio);
     } on Exception catch (e) {
       return MessagePayload(text: 'Error occured: ${e.toString()}');
     }

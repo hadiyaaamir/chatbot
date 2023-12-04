@@ -22,6 +22,13 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     on<ChatbotMessageSent>(_onChatbotMessageSent);
     on<ChatbotMessageRecordingStarted>(_onChatbotMessageRecordingStarted);
     on<ChatbotMessageRecordingStopped>(_onChatbotMessageRecordingStopped);
+    on<ChatbotAudioMessagePlayed>(_onChatbotAudioMessagePlayed);
+    on<ChatbotAudioMessageStopped>(_onChatbotAudioMessageStopped);
+    on<ChatbotAllAudioMessagesStopped>(_onChatbotAllAudioMessagesStopped);
+
+    _audioManager.audioPlayerCompleteStream.listen((isStopped) {
+      if (isStopped) add(ChatbotAllAudioMessagesStopped());
+    });
   }
 
   final ChatbotRepository _chatbotRepository;
@@ -73,10 +80,10 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       final response = messagePayload.isTextMessage
           ? await _chatbotRepository.sendTextMessage(message)
           : await _chatbotRepository.sendAudioMessage(
-              await _audioManager.audioFromPath(messagePayload.audio!),
+              await _audioManager.audioFromPath(messagePayload.audio!.audio),
             );
 
-      final outputAudio = _audioManager.stringToByte(response?.audio);
+      final outputAudio = _audioManager.stringToByte(response?.audio?.audio);
       if (outputAudio != null) _audioManager.playAudioFromBytes(outputAudio);
 
       emit(
@@ -141,7 +148,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         await _onChatbotMessageSent(
           ChatbotMessageSent(
             message: ChatMessage(
-              message: MessagePayload(audio: output),
+              message: MessagePayload(audio: Audio(audio: output)),
             ),
           ),
           emit,
@@ -162,5 +169,38 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         ),
       );
     }
+  }
+
+  Future<void> _onChatbotAudioMessagePlayed(
+    ChatbotAudioMessagePlayed event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    final message = event.message;
+
+    if (message.audio == null) return;
+
+    emit(state.setAudioPlayingStatus(targetMessage: message));
+    await _audioManager.playAudioFromFile(message.audio!.audio);
+
+    // final result = await _audioManager.audioPlayerCompleteStream.first;
+    // print('result: $result');
+    // emit(state.setAudioStoppedStatus(targetMessage: message));
+  }
+
+  Future<void> _onChatbotAudioMessageStopped(
+    ChatbotAudioMessageStopped event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    final message = event.message;
+
+    await _audioManager.pauseAudio();
+    emit(state.setAudioStoppedStatus(targetMessage: message));
+  }
+
+  Future<void> _onChatbotAllAudioMessagesStopped(
+    ChatbotAllAudioMessagesStopped event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    emit(state.setAllAudiosStoppedStatus());
   }
 }

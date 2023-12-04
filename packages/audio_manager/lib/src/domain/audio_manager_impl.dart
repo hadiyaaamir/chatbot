@@ -20,6 +20,11 @@ class AudioManagerImpl extends AudioManager {
   }
 
   @override
+  Stream<bool> get audioPlayerCompleteStream {
+    return audioPlayerApi.audioPlayerCompleteStream;
+  }
+
+  @override
   Future<void> playAudioFromBytes(Uint8List audioBytes) async {
     await audioPlayerApi.playAudioFromBytes(audioBytes);
   }
@@ -49,6 +54,9 @@ class AudioManagerImpl extends AudioManager {
 
   @override
   Future<void> dispose() async {
-    await audioRecorderApi.dispose();
+    Future.wait([
+      audioPlayerApi.dispose(),
+      audioRecorderApi.dispose(),
+    ]);
   }
 }
