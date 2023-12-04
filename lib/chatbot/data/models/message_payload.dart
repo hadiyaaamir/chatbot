@@ -28,11 +28,14 @@ class MessagePayload extends Equatable {
   final bool onlySuggestions;
   final bool requireUsername;
 
-  final String? audio;
+  final Audio? audio;
 
   bool get isAudioMessage => text.isEmpty && audio != null;
   bool get isTextMessage => text.isNotEmpty;
   bool get isEmpty => text.isEmpty && audio == null;
+
+  MessagePayload playAudio() => copyWith(audio: audio?.startPlaying());
+  MessagePayload stopAudio() => copyWith(audio: audio?.stopPlaying());
 
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
@@ -89,7 +92,7 @@ class MessagePayload extends Equatable {
     List<Option>? options,
     bool? onlySuggestions,
     bool? requireUsername,
-    String? audio,
+    Audio? audio,
   }) {
     return MessagePayload(
       text: text ?? this.text,
@@ -110,5 +113,6 @@ class MessagePayload extends Equatable {
         options,
         onlySuggestions,
         requireUsername,
+        audio,
       ];
 }

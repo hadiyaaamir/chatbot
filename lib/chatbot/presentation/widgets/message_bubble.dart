@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:audio_manager/audio_manager.dart';
-
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -149,7 +147,7 @@ class _TextRectangle extends StatelessWidget {
                     message!.message.displayText ?? message!.message.text,
                     style: TextStyle(color: textColor),
                   )
-                : _AudioMessage(path: message!.message.audio!)
+                : _AudioMessage(message: message!.message)
             : Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -183,37 +181,21 @@ class _Triangle extends CustomPainter {
   }
 }
 
-class _AudioMessage extends StatefulWidget {
-  const _AudioMessage({required this.path});
+class _AudioMessage extends StatelessWidget {
+  const _AudioMessage({required this.message});
 
-  final String path;
-
-  @override
-  State<_AudioMessage> createState() => _AudioMessageState();
-}
-
-class _AudioMessageState extends State<_AudioMessage> {
-  bool isPlaying = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final MessagePayload message;
 
   @override
   Widget build(BuildContext context) {
-    final audioManager = context.read<AudioManager>();
     return GestureDetector(
-      onTap: () {
-        setState(() => isPlaying = !isPlaying);
-        if (!isPlaying) {
-          audioManager.pauseAudio();
-        } else {
-          audioManager.playAudioFromFile(widget.path);
-        }
-      },
+      onTap: () => context.read<ChatbotBloc>().add(
+            message.audio!.isPlaying
+                ? ChatbotAudioMessageStopped(message: message)
+                : ChatbotAudioMessagePlayed(message: message),
+          ),
       child: Icon(
-        isPlaying ? Icons.pause : Icons.play_arrow,
+        message.audio!.isPlaying ? Icons.pause : Icons.play_arrow,
         color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.bodyLarge?.fontSize,
       ),
