@@ -63,7 +63,7 @@ class MessagePayload extends Equatable {
         String optionType = optionsJson.keys.first;
         dynamic objectData = optionsJson[optionType];
 
-        final parser = typeParsers[optionType];
+        final parser = Option.getParser(optionType);
 
         if (parser != null) {
           options = objectData is List

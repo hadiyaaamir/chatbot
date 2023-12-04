@@ -176,15 +176,10 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit,
   ) async {
     final message = event.message;
-
     if (message.audio == null) return;
 
     emit(state.setAudioPlayingStatus(targetMessage: message));
     await _audioManager.playAudioFromFile(message.audio!.audio);
-
-    // final result = await _audioManager.audioPlayerCompleteStream.first;
-    // print('result: $result');
-    // emit(state.setAudioStoppedStatus(targetMessage: message));
   }
 
   Future<void> _onChatbotAudioMessageStopped(
