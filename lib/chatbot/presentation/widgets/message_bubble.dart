@@ -142,10 +142,12 @@ class _TextRectangle extends StatelessWidget {
           ),
         ),
         child: message != null
-            ? Text(
-                message!.message.displayText ?? message!.message.text,
-                style: TextStyle(color: textColor),
-              )
+            ? message!.message.isTextMessage
+                ? Text(
+                    message!.message.displayText ?? message!.message.text,
+                    style: TextStyle(color: textColor),
+                  )
+                : _AudioMessage(message: message!.message)
             : Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -176,5 +178,27 @@ class _Triangle extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class _AudioMessage extends StatelessWidget {
+  const _AudioMessage({required this.message});
+
+  final MessagePayload message;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.read<ChatbotBloc>().add(
+            message.audio!.isPlaying
+                ? ChatbotAudioMessageStopped(message: message)
+                : ChatbotAudioMessagePlayed(message: message),
+          ),
+      child: Icon(
+        message.audio!.isPlaying ? Icons.pause : Icons.play_arrow,
+        color: Theme.of(context).colorScheme.onPrimary,
+        size: Theme.of(context).textTheme.bodyLarge?.fontSize,
+      ),
+    );
   }
 }

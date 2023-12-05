@@ -6,4 +6,15 @@ abstract class Option extends Equatable {
   factory Option.fromJson(Map<String, dynamic> json) {
     throw UnimplementedError();
   }
+
+  static final Map<String, Function> _typeParsers = {
+    'events': (eventJson) => Event.fromJson(eventJson),
+    'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
+  };
+
+  static getParser(String key) {
+    final parser = _typeParsers[key];
+    return parser ??
+        (throw UnimplementedError('Parser not implemented for $key'));
+  }
 }
