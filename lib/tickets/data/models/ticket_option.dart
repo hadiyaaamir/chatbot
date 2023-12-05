@@ -27,7 +27,9 @@ class TicketOption extends Option {
       phone: json['phone'] as String? ?? '',
       quantity: json['quantity'] as int? ?? 0,
       paymentCompleted: json['paymentCompleted'] as bool? ?? false,
-      createdAt: DateTime.now(),
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(),
     );
   }
 
