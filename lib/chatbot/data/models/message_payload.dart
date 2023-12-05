@@ -1,8 +1,8 @@
 part of 'models.dart';
 
 class MessagePayload extends Equatable {
-  const MessagePayload(
-    this.text, {
+  const MessagePayload({
+    this.text = '',
     this.displayText,
     this.suggestions = const [],
     this.options,
@@ -11,7 +11,16 @@ class MessagePayload extends Equatable {
     this.audio,
   });
 
+  factory MessagePayload.error() {
+    return const MessagePayload(text: 'Unexpected error occured');
+  }
+
+  factory MessagePayload.fallback() {
+    return const MessagePayload(text: 'Sorry, can you please say that again?');
+  }
+
   final String text;
+
   final String? displayText;
 
   final List<ChatSuggestion> suggestions;
@@ -19,7 +28,14 @@ class MessagePayload extends Equatable {
   final bool onlySuggestions;
   final bool requireUsername;
 
-  final Uint8List? audio;
+  final Audio? audio;
+
+  bool get isAudioMessage => text.isEmpty && audio != null;
+  bool get isTextMessage => text.isNotEmpty;
+  bool get isEmpty => text.isEmpty && audio == null;
+
+  MessagePayload playAudio() => copyWith(audio: audio?.startPlaying());
+  MessagePayload stopAudio() => copyWith(audio: audio?.stopPlaying());
 
   static final Map<String, Function> typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
@@ -47,7 +63,7 @@ class MessagePayload extends Equatable {
         String optionType = optionsJson.keys.first;
         dynamic objectData = optionsJson[optionType];
 
-        final parser = typeParsers[optionType];
+        final parser = Option.getParser(optionType);
 
         if (parser != null) {
           options = objectData is List
@@ -60,7 +76,7 @@ class MessagePayload extends Equatable {
     }
 
     return MessagePayload(
-      json['text'] as String? ?? '',
+      text: json['text'] as String? ?? '',
       displayText: json['displayText'] as String?,
       suggestions: suggestions,
       options: options,
@@ -76,10 +92,10 @@ class MessagePayload extends Equatable {
     List<Option>? options,
     bool? onlySuggestions,
     bool? requireUsername,
-    Uint8List? audio,
+    Audio? audio,
   }) {
     return MessagePayload(
-      text ?? this.text,
+      text: text ?? this.text,
       displayText: displayText ?? this.displayText,
       suggestions: suggestions ?? this.suggestions,
       options: options ?? this.options,
@@ -97,5 +113,6 @@ class MessagePayload extends Equatable {
         options,
         onlySuggestions,
         requireUsername,
+        audio,
       ];
 }

@@ -61,7 +61,7 @@ class _SuggestionTile extends StatelessWidget {
               ChatbotMessageSent(
                 attachUsername: usernameRequired,
                 message: ChatMessage(
-                  message: MessagePayload(suggestion.messageText),
+                  message: MessagePayload(text: suggestion.messageText),
                 ),
               ),
             ),

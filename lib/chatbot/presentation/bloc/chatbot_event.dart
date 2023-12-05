@@ -20,3 +20,25 @@ class ChatbotMessageSent extends ChatbotEvent {
   @override
   List<Object> get props => [message, attachUsername];
 }
+
+class ChatbotMessageRecordingStarted extends ChatbotEvent {}
+
+class ChatbotMessageRecordingStopped extends ChatbotEvent {}
+
+class ChatbotAudioMessagePlayed extends ChatbotEvent {
+  const ChatbotAudioMessagePlayed({required this.message});
+  final MessagePayload message;
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ChatbotAudioMessageStopped extends ChatbotEvent {
+  const ChatbotAudioMessageStopped({required this.message});
+  final MessagePayload message;
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ChatbotAllAudioMessagesStopped extends ChatbotEvent {}
