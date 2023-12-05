@@ -32,12 +32,19 @@ class Event extends Option {
       id: json['id'] as String? ?? '',
       title: json['title'] as String? ?? '',
       image: json['image'] as String? ?? '',
-      date: DateTime.now(),
+      date: json['date'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['date'] * 1000)
+          : DateTime.now(),
       category: json['category'] as String? ?? '',
       city: json['city'] as String? ?? '',
       country: json['country'] as String? ?? '',
-      createdAt: DateTime.now(),
-      location: LatLng(),
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(),
+      location: LatLng(
+        latitude: double.parse(json['location'][0] as String),
+        longitude: double.parse(json['location'][1] as String),
+      ),
       price: json['price'] as int? ?? 0,
       startTime: DateTime.now(),
     );
