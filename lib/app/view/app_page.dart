@@ -9,10 +9,12 @@ class AppPage extends StatefulWidget {
 
 class _AppPageState extends State<AppPage> {
   late final AudioManager _audioManager;
+  late final EventBloc _eventBloc;
 
   @override
   void initState() {
     _audioManager = AudioManagerImpl()..initialise();
+    _eventBloc = EventBloc();
     super.initState();
   }
 
@@ -20,7 +22,10 @@ class _AppPageState extends State<AppPage> {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: _audioManager,
-      child: const AppView(),
+      child: BlocProvider.value(
+        value: _eventBloc,
+        child: const AppView(),
+      ),
     );
   }
 
