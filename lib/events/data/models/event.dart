@@ -13,6 +13,7 @@ class Event extends Option {
     required this.location,
     required this.price,
     required this.startTime,
+    required this.slots,
   });
 
   final String id;
@@ -26,6 +27,8 @@ class Event extends Option {
   final String country;
   final LatLng location;
   final DateTime createdAt;
+
+  final List<EventSlot> slots;
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
@@ -47,6 +50,7 @@ class Event extends Option {
       ),
       price: json['price'] as int? ?? 0,
       startTime: DateTime.now(),
+      slots: [EventSlot.fromJson(json), EventSlot.fromJson(json)],
     );
   }
 
@@ -63,5 +67,6 @@ class Event extends Option {
         country,
         location,
         createdAt,
+        slots,
       ];
 }
