@@ -11,9 +11,9 @@ class EventSlot extends Equatable {
       date: json['date'] != null
           ? DateTime.fromMillisecondsSinceEpoch(json['date'] * 1000)
           : DateTime.now(),
-      slots: json['slots'] != null
+      slots: json['timeSlots'] != null
           ? List<TimeSlot>.from(
-              (json['slots'] as List<dynamic>).map(
+              (json['timeSlots'] as List<dynamic>).map(
                 (slotJson) => TimeSlot.fromJson(slotJson),
               ),
             )
