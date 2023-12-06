@@ -1,7 +1,10 @@
 part of 'models.dart';
 
 class EventSlot extends Equatable {
-  const EventSlot({required this.date, required this.slots});
+  const EventSlot({
+    required this.date,
+    required this.slots,
+  });
 
   final DateTime date;
   final List<TimeSlot> slots;

@@ -42,3 +42,31 @@ class ChatbotAudioMessageStopped extends ChatbotEvent {
 }
 
 class ChatbotAllAudioMessagesStopped extends ChatbotEvent {}
+
+class ChatbotMessageEventSlotSelected extends ChatbotEvent {
+  const ChatbotMessageEventSlotSelected({
+    required this.event,
+    required this.selectedEvent,
+  });
+
+  final Event event;
+  final ChatEventSlot selectedEvent;
+
+  @override
+  List<Object> get props => [event, selectedEvent];
+}
+
+class ChatbotMessageEventTimeSlotSelected extends ChatbotEvent {
+  const ChatbotMessageEventTimeSlotSelected({
+    required this.event,
+    required this.selectedEvent,
+    required this.selectedTime,
+  });
+
+  final Event event;
+  final ChatEventSlot selectedEvent;
+  final ChatEventTimeSlot selectedTime;
+
+  @override
+  List<Object> get props => [event, selectedEvent, selectedTime];
+}

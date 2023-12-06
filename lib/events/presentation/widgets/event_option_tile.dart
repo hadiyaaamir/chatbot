@@ -21,6 +21,7 @@ class EventOptionTile extends OptionTile {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 EventDetailsBlock(event: event),
+                EventSlotsSelection(event: event),
                 const SizedBox(height: 10),
                 _BookTicketsButton(
                   usernameRequired: usernameRequired,
