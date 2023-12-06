@@ -26,28 +26,83 @@ class Event extends Option {
   final LatLng location;
   final DateTime createdAt;
 
-  final List<EventSlot> slots;
+  final List<ChatEventSlot> slots;
 
   int get numberOfDays => slots.length;
 
   String get dayRange {
     if (slots.isEmpty) return '';
 
-    DateTime smallestDate = slots.first.date;
-    DateTime largestDate = slots.first.date;
+    DateTime smallestDate = slots.first.date.dateSlot;
+    DateTime largestDate = slots.first.date.dateSlot;
 
     for (final slot in slots) {
-      if (slot.date.isBefore(smallestDate)) {
-        smallestDate = slot.date;
-      } else if (slot.date.isAfter(largestDate)) {
-        largestDate = slot.date;
+      if (slot.date.dateSlot.isBefore(smallestDate)) {
+        smallestDate = slot.date.dateSlot;
+      } else if (slot.date.dateSlot.isAfter(largestDate)) {
+        largestDate = slot.date.dateSlot;
       }
     }
 
-    final formattedSmallest = DateFormat('dd MMM yyyy').format(smallestDate);
-    final formattedLargest = DateFormat('dd MMM yyyy').format(largestDate);
+    return '${formatDate(smallestDate)} - ${formatDate(largestDate)}';
+  }
 
-    return '$formattedSmallest - $formattedLargest';
+  ChatEventSlot? get selectedSlot {
+    final selectedSlots = slots.where((element) => element.date.isSelected);
+    if (selectedSlots.isEmpty) return null;
+    return selectedSlots.first;
+  }
+
+  ChatEventTimeSlot? get selectedTimeSlot {
+    return selectedSlot?.selectedTimeSlot;
+  }
+
+  Event selectSlot({required ChatEventSlot eventSlot}) {
+    return copyWith(
+      slots: slots.map(
+        (slot) {
+          return slot.setDateSelected(slot == eventSlot);
+        },
+      ).toList(),
+    );
+  }
+
+  Event selectTimeSlot({
+    required ChatEventSlot eventSlot,
+    required ChatEventTimeSlot timeSlot,
+  }) {
+    return copyWith(
+      slots: slots.map((slot) {
+        return slot == eventSlot ? slot.setTimeSelected(timeSlot) : slot;
+      }).toList(),
+    );
+  }
+
+  Event copyWith({
+    String? id,
+    String? title,
+    String? image,
+    String? category,
+    int? price,
+    DateTime? startTime,
+    String? city,
+    String? country,
+    LatLng? location,
+    DateTime? createdAt,
+    List<ChatEventSlot>? slots,
+  }) {
+    return Event(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        image: image ?? this.image,
+        category: category ?? this.category,
+        city: city ?? this.city,
+        country: country ?? this.country,
+        createdAt: createdAt ?? this.createdAt,
+        location: location ?? this.location,
+        price: price ?? this.price,
+        startTime: startTime ?? this.startTime,
+        slots: slots ?? this.slots);
   }
 
   factory Event.fromJson(Map<String, dynamic> json) {
@@ -68,9 +123,11 @@ class Event extends Option {
       price: json['price'] as int? ?? 0,
       startTime: DateTime.now(),
       slots: json['slots'] != null
-          ? List<EventSlot>.from(
+          ? List<ChatEventSlot>.from(
               (json['slots'] as List<dynamic>).map(
-                (slotJson) => EventSlot.fromJson(slotJson),
+                (slotJson) => ChatEventSlot.fromEventSlot(
+                  EventSlot.fromJson(slotJson),
+                ),
               ),
             )
           : [],
