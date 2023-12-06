@@ -75,15 +75,17 @@ class _NameAndDateBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final range = event.dayRange;
+    final days = event.numberOfDays;
+    final daysString = '$days day${days > 1 ? 's' : ''}';
+
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(event.title, style: textTheme.titleMedium),
-        Text(
-          DateFormat('dd MMM yyyy').format(event.date),
-          style: textTheme.bodySmall,
-        ),
+        const SizedBox(height: 5),
+        Text('$range ($daysString)', style: textTheme.bodySmall),
       ],
     );
   }

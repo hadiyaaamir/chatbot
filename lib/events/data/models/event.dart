@@ -5,7 +5,6 @@ class Event extends Option {
     required this.id,
     required this.title,
     required this.image,
-    required this.date,
     required this.category,
     required this.city,
     required this.country,
@@ -19,7 +18,6 @@ class Event extends Option {
   final String id;
   final String title;
   final String image;
-  final DateTime date;
   final String category;
   final int price;
   final DateTime startTime;
@@ -30,14 +28,33 @@ class Event extends Option {
 
   final List<EventSlot> slots;
 
+  int get numberOfDays => slots.length;
+
+  String get dayRange {
+    if (slots.isEmpty) return '';
+
+    DateTime smallestDate = slots.first.date;
+    DateTime largestDate = slots.first.date;
+
+    for (final slot in slots) {
+      if (slot.date.isBefore(smallestDate)) {
+        smallestDate = slot.date;
+      } else if (slot.date.isAfter(largestDate)) {
+        largestDate = slot.date;
+      }
+    }
+
+    final formattedSmallest = DateFormat('dd MMM yyyy').format(smallestDate);
+    final formattedLargest = DateFormat('dd MMM yyyy').format(largestDate);
+
+    return '$formattedSmallest - $formattedLargest';
+  }
+
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
       id: json['id'] as String? ?? '',
       title: json['title'] as String? ?? '',
       image: json['image'] as String? ?? '',
-      date: json['date'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['date'] * 1000)
-          : DateTime.now(),
       category: json['category'] as String? ?? '',
       city: json['city'] as String? ?? '',
       country: json['country'] as String? ?? '',
@@ -50,7 +67,13 @@ class Event extends Option {
       ),
       price: json['price'] as int? ?? 0,
       startTime: DateTime.now(),
-      slots: [EventSlot.fromJson(json), EventSlot.fromJson(json)],
+      slots: json['slots'] != null
+          ? List<EventSlot>.from(
+              (json['slots'] as List<dynamic>).map(
+                (slotJson) => EventSlot.fromJson(slotJson),
+              ),
+            )
+          : [],
     );
   }
 
@@ -59,7 +82,6 @@ class Event extends Option {
         id,
         title,
         image,
-        date,
         category,
         price,
         startTime,
