@@ -18,7 +18,7 @@ class TicketOptionTile extends OptionTile {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  EventDetailsBlock(event: ticket.event),
+                  TicketDetailsBlock(ticket: ticket),
                   const DottedDivider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
