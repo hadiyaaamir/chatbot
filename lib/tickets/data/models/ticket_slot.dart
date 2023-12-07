@@ -9,7 +9,7 @@ class TicketSlot extends Equatable {
   factory TicketSlot.fromJson(Map<String, dynamic> json) {
     return TicketSlot(
       date: json['date'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(json['date'] * 1000)
+          ? DateTime.parse(json['date'] as String)
           : DateTime.now(),
       timeSlot: TimeSlot.fromJson(
         json['timeSlot'] as Map<String, dynamic>? ?? {},

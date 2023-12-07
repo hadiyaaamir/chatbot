@@ -21,7 +21,7 @@ class PaymentView extends StatelessWidget {
                 const DottedDivider(spaceBelow: 15),
                 _UserDetails(ticket: ticket),
                 const SizedBox(height: 30),
-                EventDetailsBlock(event: ticket.event, smallerPrice: true),
+                TicketDetailsBlock(ticket: ticket, smallerPrice: true),
                 const DottedDivider(spaceAbove: 15),
                 _QuantityTotalBlock(ticket: ticket),
                 const DottedDivider(spaceBelow: 20),
