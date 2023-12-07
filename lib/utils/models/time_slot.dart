@@ -9,17 +9,15 @@ class TimeSlot extends Equatable {
 
   factory TimeSlot.fromJson(Map<String, dynamic> json) {
     return TimeSlot(
-      startingTime: _parseTimeOfDay(json['startingTime'] as String? ?? "00:00"),
-      endingTime: _parseTimeOfDay(json['endingTime'] as String? ?? "00:00"),
+      startingTime: _timeFromDate(json['startingTime'] as String?),
+      endingTime: _timeFromDate(json['endingTime'] as String?),
     );
   }
 
-  static TimeOfDay _parseTimeOfDay(String timeString) {
-    final List<String> components = timeString.split(':');
-    final int hour = int.parse(components[0]);
-    final int minute = int.parse(components[1]);
-
-    return TimeOfDay(hour: hour, minute: minute);
+  static TimeOfDay _timeFromDate(String? timeString) {
+    return timeString == null
+        ? const TimeOfDay(hour: 0, minute: 0)
+        : TimeOfDay.fromDateTime(DateTime.parse(timeString).toLocal());
   }
 
   @override
@@ -28,6 +26,9 @@ class TimeSlot extends Equatable {
     final String end = _formatTimeOfDay(endingTime).toLowerCase();
     return '$start - $end';
   }
+
+  String get startingTimeString => _formatTimeOfDay(startingTime);
+  String get endingTimeString => _formatTimeOfDay(endingTime);
 
   String _formatTimeOfDay(TimeOfDay timeOfDay) {
     final String period = timeOfDay.period == DayPeriod.am ? 'am' : 'pm';
