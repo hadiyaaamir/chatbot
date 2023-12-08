@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:audio_manager/audio_manager.dart';
 
 import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:chatbot/events/events.dart';
+import 'package:chatbot/events/presentation/models/chat_event_slot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 
@@ -20,11 +22,16 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         super(const ChatbotInitial()) {
     on<ChatbotSubscription>(_onChatbotSubscribed);
     on<ChatbotMessageSent>(_onChatbotMessageSent);
+
     on<ChatbotMessageRecordingStarted>(_onChatbotMessageRecordingStarted);
     on<ChatbotMessageRecordingStopped>(_onChatbotMessageRecordingStopped);
+
     on<ChatbotAudioMessagePlayed>(_onChatbotAudioMessagePlayed);
     on<ChatbotAudioMessageStopped>(_onChatbotAudioMessageStopped);
     on<ChatbotAllAudioMessagesStopped>(_onChatbotAllAudioMessagesStopped);
+
+    on<ChatbotMessageEventSlotSelected>(_onMessageSlotSelected);
+    on<ChatbotMessageEventTimeSlotSelected>(_onMessageTimeSlotSelected);
 
     _audioManager.audioPlayerCompleteStream.listen((isStopped) {
       if (isStopped) add(ChatbotAllAudioMessagesStopped());
@@ -197,5 +204,44 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit,
   ) async {
     emit(state.setAllAudiosStoppedStatus());
+  }
+
+  Future<void> _onMessageSlotSelected(
+    ChatbotMessageEventSlotSelected event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    if (state.messages.isEmpty) return;
+
+    final latestMessage = state.messages.first;
+
+    if (latestMessage.message.options == null) return;
+    if (latestMessage.message.options!.isEmpty) return;
+    if (latestMessage.message.options!.first is! Event) return;
+
+    emit(
+      state.selectEventSlot(
+        event: event.event,
+        eventSlot: event.selectedEvent,
+      ),
+    );
+  }
+
+  Future<void> _onMessageTimeSlotSelected(
+    ChatbotMessageEventTimeSlotSelected event,
+    Emitter<ChatbotState> emit,
+  ) async {
+    if (state.messages.isEmpty) return;
+
+    final latestMessage = state.messages.first;
+    if (latestMessage.message.options == null) return;
+    if (latestMessage.message.options is! List<Event>) return;
+
+    emit(
+      state.selectEventTimeSlot(
+        event: event.event,
+        eventSlot: event.selectedEvent,
+        timeSlot: event.selectedTime,
+      ),
+    );
   }
 }

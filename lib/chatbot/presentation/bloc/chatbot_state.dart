@@ -44,6 +44,48 @@ class ChatbotState extends Equatable {
     return copyWith(messages: updatedMessages);
   }
 
+  ChatbotState selectEventSlot({
+    required Event event,
+    required ChatEventSlot eventSlot,
+  }) {
+    final latestMessage = messages.first;
+    final updatedMessages = [
+      latestMessage.copyWith(
+        message: latestMessage.message.copyWith(
+          options:
+              (latestMessage.message.options as List<dynamic>).map((option) {
+            return (option as Event) == event
+                ? event.selectSlot(eventSlot: eventSlot)
+                : option;
+          }).toList(),
+        ),
+      ),
+      ...messages..removeAt(0),
+    ];
+    return copyWith(messages: updatedMessages);
+  }
+
+  ChatbotState selectEventTimeSlot({
+    required Event event,
+    required ChatEventSlot eventSlot,
+    required ChatEventTimeSlot timeSlot,
+  }) {
+    final latestMessage = messages.first;
+    final updatedMessages = [
+      latestMessage.copyWith(
+        message: latestMessage.message.copyWith(
+          options: (latestMessage.message.options as List<Event>).map((option) {
+            return option == event
+                ? event.selectTimeSlot(eventSlot: eventSlot, timeSlot: timeSlot)
+                : option;
+          }).toList(),
+        ),
+      ),
+      ...messages..removeAt(0),
+    ];
+    return copyWith(messages: updatedMessages);
+  }
+
   ChatbotState copyWith({
     List<ChatMessage>? messages,
     ChatbotStatus? status,
