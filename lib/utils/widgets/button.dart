@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
   });
 
   final String label;
-  final Function() onPressed;
+  final Function()? onPressed;
   final Color? backgroundColor;
   final Color? foregroundColor;
 

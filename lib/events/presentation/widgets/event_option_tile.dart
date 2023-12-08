@@ -22,6 +22,8 @@ class EventOptionTile extends OptionTile {
               children: [
                 EventDetailsBlock(event: event),
                 const SizedBox(height: 10),
+                EventSlotsSelection(event: event),
+                const SizedBox(height: 10),
                 _BookTicketsButton(
                   usernameRequired: usernameRequired,
                   event: event,
@@ -48,17 +50,34 @@ class _BookTicketsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomButton(
       label: 'Book Tickets',
-      onPressed: () => context.read<ChatbotBloc>().add(
-            ChatbotMessageSent(
-              attachUsername: usernameRequired,
-              message: ChatMessage(
-                message: MessagePayload(
-                  text: 'I want to book tickets for event ${event.id}',
-                  displayText: 'I want to book tickets for ${event.title}',
-                ),
-              ),
-            ),
-          ),
+      onPressed: event.selectedSlot != null
+          ? () {
+              final selectedDate = event.selectedSlot?.date.dateSlot;
+              final stringDate =
+                  selectedDate != null ? formatDate(selectedDate) : '';
+
+              final selectedTime = event.selectedTimeSlot?.timeSlot;
+              final startTime =
+                  selectedTime != null ? selectedTime.startingTimeString : '';
+              final endTime =
+                  selectedTime != null ? selectedTime.endingTimeString : '';
+
+              return context.read<ChatbotBloc>().add(
+                    ChatbotMessageSent(
+                      attachUsername: usernameRequired,
+                      message: ChatMessage(
+                        message: MessagePayload(
+                          text: 'I want to book tickets for event ${event.id} '
+                              'for $stringDate from $startTime to $endTime',
+                          displayText:
+                              'I want to book tickets for ${event.title} '
+                              'for $stringDate from $startTime to $endTime',
+                        ),
+                      ),
+                    ),
+                  );
+            }
+          : null,
     );
   }
 }

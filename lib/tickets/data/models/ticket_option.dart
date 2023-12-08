@@ -9,6 +9,7 @@ class TicketOption extends Option {
     required this.quantity,
     required this.paymentCompleted,
     required this.createdAt,
+    required this.slot,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class TicketOption extends Option {
   final int quantity;
   final bool paymentCompleted;
   final DateTime createdAt;
+  final TicketSlot slot;
 
   factory TicketOption.fromJson(Map<String, dynamic> json) {
     return TicketOption(
@@ -27,7 +29,10 @@ class TicketOption extends Option {
       phone: json['phone'] as String? ?? '',
       quantity: json['quantity'] as int? ?? 0,
       paymentCompleted: json['paymentCompleted'] as bool? ?? false,
-      createdAt: DateTime.now(),
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(),
+      slot: TicketSlot.fromJson(json['slot'] as Map<String, dynamic>? ?? {}),
     );
   }
 
@@ -40,5 +45,6 @@ class TicketOption extends Option {
         quantity,
         paymentCompleted,
         createdAt,
+        slot,
       ];
 }

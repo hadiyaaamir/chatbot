@@ -37,11 +37,6 @@ class MessagePayload extends Equatable {
   MessagePayload playAudio() => copyWith(audio: audio?.startPlaying());
   MessagePayload stopAudio() => copyWith(audio: audio?.stopPlaying());
 
-  static final Map<String, Function> typeParsers = {
-    'events': (eventJson) => Event.fromJson(eventJson),
-    'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
-  };
-
   factory MessagePayload.fromJson(Map<String, dynamic> json) {
     List<ChatSuggestion> suggestions = [];
     List<Option>? options;
