@@ -1,4 +1,3 @@
-import 'package:chatbot/events/presentation/presentation.dart';
 import 'package:chatbot/tickets/tickets.dart';
 import 'package:chatbot/utils/widgets/button.dart';
 import 'package:chatbot/utils/widgets/dotted_divider.dart';
