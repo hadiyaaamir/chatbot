@@ -127,6 +127,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       await _audioManager.startRecording();
       emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
     } on Exception catch (e) {
+      print('Error recording voice message. $e');
       emit(
         state.copyWith(
           messages: [
@@ -151,7 +152,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       final output = await _audioManager.stopRecording();
       emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
 
-      if (output != null) {
+      if (output != null && output.isNotEmpty) {
         await _onChatbotMessageSent(
           ChatbotMessageSent(
             message: ChatMessage(
@@ -160,6 +161,16 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
           ),
           emit,
         );
+      } else if (output!.isEmpty) {
+        emit(state.copyWith(messages: [
+          const ChatMessage(
+            message: MessagePayload(
+              text:
+                  'Unable to record audio at the moment. Apologies for the incovenience.',
+            ),
+          ),
+          ...state.messages,
+        ]));
       }
     } on Exception catch (e) {
       emit(
