@@ -23,7 +23,8 @@ class EventOptionTile extends OptionTile {
                 EventDetailsBlock(event: event),
                 const SizedBox(height: 10),
                 EventSlotsSelection(event: event),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
+                _MoreInformationButton(event: event),
                 _BookTicketsButton(
                   usernameRequired: usernameRequired,
                   event: event,
@@ -33,6 +34,31 @@ class EventOptionTile extends OptionTile {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _MoreInformationButton extends StatelessWidget {
+  const _MoreInformationButton({required this.event});
+
+  final Event event;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      label: 'More Information',
+      backgroundColor: Theme.of(context).colorScheme.background,
+      outlineColor: Theme.of(context).colorScheme.inversePrimary,
+      onPressed: () => context.read<ChatbotBloc>().add(
+            ChatbotMessageSent(
+              message: ChatMessage(
+                message: MessagePayload(
+                  text: 'Tell me more about event ${event.id}',
+                  displayText: 'Tell me more about ${event.title}',
+                ),
+              ),
+            ),
+          ),
     );
   }
 }
