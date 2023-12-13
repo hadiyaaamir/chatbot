@@ -4,6 +4,7 @@ import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({super.key, required this.message});
@@ -143,10 +144,7 @@ class _TextRectangle extends StatelessWidget {
         ),
         child: message != null
             ? message!.message.isTextMessage
-                ? Text(
-                    message!.message.displayText ?? message!.message.text,
-                    style: TextStyle(color: textColor),
-                  )
+                ? _TextMessage(message: message!.message, textColor: textColor)
                 : _AudioMessage(message: message!.message)
             : Row(
                 mainAxisSize: MainAxisSize.min,
@@ -178,6 +176,39 @@ class _Triangle extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class _TextMessage extends StatelessWidget {
+  const _TextMessage({
+    required this.message,
+    required this.textColor,
+  });
+
+  final MessagePayload message;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          message.displayText ?? message.text,
+          style: TextStyle(color: textColor),
+        ),
+        if (message.urlText != null)
+          GestureDetector(
+            child: Text(
+              message.urlText!,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    decoration: TextDecoration.underline,
+                  ),
+            ),
+            onTap: () => launchUrl(Uri.parse(message.urlText!)),
+          ),
+      ],
+    );
   }
 }
 

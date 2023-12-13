@@ -1,12 +1,18 @@
 import 'package:audio_manager/src/data/data.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FlutterSoundApi extends AudioRecorderApi {
   late final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
 
   @override
   Future<void> initialise() async {
+    await Permission.microphone.request();
+    await Permission.manageExternalStorage.request();
+    await Permission.audio.request();
+    await Permission.mediaLibrary.request();
+
     await _recorder.openRecorder();
   }
 
@@ -24,7 +30,8 @@ class FlutterSoundApi extends AudioRecorderApi {
 
   @override
   Future<String?> stopRecording() async {
-    return await _recorder.stopRecorder();
+    final output = await _recorder.stopRecorder();
+    return output;
   }
 
   @override
