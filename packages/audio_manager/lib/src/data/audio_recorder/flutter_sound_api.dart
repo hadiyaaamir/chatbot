@@ -9,9 +9,9 @@ class FlutterSoundApi extends AudioRecorderApi {
   @override
   Future<void> initialise() async {
     await Permission.microphone.request();
-    // await Permission.manageExternalStorage.request();
+    await Permission.manageExternalStorage.request();
     await Permission.audio.request();
-    // await Permission.mediaLibrary.request();
+    await Permission.mediaLibrary.request();
 
     await _recorder.openRecorder();
   }
