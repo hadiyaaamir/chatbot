@@ -16,9 +16,10 @@ class ChatSuggestion extends Equatable {
     return ChatSuggestion(
       tileText: json['tileText'] as String? ?? '',
       messageText: json['messageText'] as String?,
+      sendMessageText: json['sendMessageText'] as String?,
     );
   }
 
   @override
-  List<Object?> get props => [tileText, messageText];
+  List<Object?> get props => [tileText, messageText, sendMessageText];
 }

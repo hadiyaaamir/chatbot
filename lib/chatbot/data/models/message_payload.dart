@@ -4,6 +4,7 @@ class MessagePayload extends Equatable {
   const MessagePayload({
     this.text = '',
     this.displayText,
+    this.urlText,
     this.suggestions = const [],
     this.options,
     this.onlySuggestions = false,
@@ -20,7 +21,7 @@ class MessagePayload extends Equatable {
   }
 
   final String text;
-
+  final String? urlText;
   final String? displayText;
 
   final List<ChatSuggestion> suggestions;
@@ -73,6 +74,7 @@ class MessagePayload extends Equatable {
     return MessagePayload(
       text: json['text'] as String? ?? '',
       displayText: json['displayText'] as String?,
+      urlText: json['urlText'] as String?,
       suggestions: suggestions,
       options: options,
       onlySuggestions: json['onlySuggestions'] as bool? ?? false,
@@ -83,6 +85,7 @@ class MessagePayload extends Equatable {
   MessagePayload copyWith({
     String? text,
     String? displayText,
+    String? urlText,
     List<ChatSuggestion>? suggestions,
     List<Option>? options,
     bool? onlySuggestions,
@@ -92,6 +95,7 @@ class MessagePayload extends Equatable {
     return MessagePayload(
       text: text ?? this.text,
       displayText: displayText ?? this.displayText,
+      urlText: urlText ?? this.urlText,
       suggestions: suggestions ?? this.suggestions,
       options: options ?? this.options,
       onlySuggestions: onlySuggestions ?? this.onlySuggestions,
@@ -104,6 +108,7 @@ class MessagePayload extends Equatable {
   List<Object?> get props => [
         text,
         displayText,
+        urlText,
         suggestions,
         options,
         onlySuggestions,

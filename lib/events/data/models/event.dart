@@ -6,24 +6,28 @@ class Event extends Option {
     required this.title,
     required this.image,
     required this.category,
+    required this.details,
     required this.city,
     required this.country,
     required this.createdAt,
     required this.location,
     required this.price,
-    required this.startTime,
     required this.slots,
   });
 
   final String id;
+
   final String title;
-  final String image;
   final String category;
   final int price;
-  final DateTime startTime;
+  final Details details;
+
+  final String image;
+
   final String city;
   final String country;
   final LatLng location;
+
   final DateTime createdAt;
 
   final List<ChatEventSlot> slots;
@@ -84,7 +88,7 @@ class Event extends Option {
     String? image,
     String? category,
     int? price,
-    DateTime? startTime,
+    Details? details,
     String? city,
     String? country,
     LatLng? location,
@@ -99,9 +103,9 @@ class Event extends Option {
         city: city ?? this.city,
         country: country ?? this.country,
         createdAt: createdAt ?? this.createdAt,
+        details: details ?? this.details,
         location: location ?? this.location,
         price: price ?? this.price,
-        startTime: startTime ?? this.startTime,
         slots: slots ?? this.slots);
   }
 
@@ -113,6 +117,7 @@ class Event extends Option {
       category: json['category'] as String? ?? '',
       city: json['city'] as String? ?? '',
       country: json['country'] as String? ?? '',
+      details: Details.fromJson(json['details'] as Map<String, dynamic>? ?? {}),
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
           : DateTime.now(),
@@ -121,7 +126,6 @@ class Event extends Option {
         longitude: double.parse(json['location'][1] as String),
       ),
       price: json['price'] as int? ?? 0,
-      startTime: DateTime.now(),
       slots: json['slots'] != null
           ? List<ChatEventSlot>.from(
               (json['slots'] as List<dynamic>).map(
@@ -141,7 +145,6 @@ class Event extends Option {
         image,
         category,
         price,
-        startTime,
         city,
         country,
         location,

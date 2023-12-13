@@ -14,6 +14,7 @@ dependencies:
   just_audio: ^0.9.36
   path_provider: ^2.1.1
   rxdart: ^0.27.7
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:
