@@ -25,16 +25,12 @@ class FlutterSoundApi extends AudioRecorderApi {
     String timestamp = DateTime.now().toIso8601String();
     final filePath = '${tempDir.path}/audio_record_$timestamp.wav';
 
-    print('recorder starting');
     await _recorder.startRecorder(toFile: filePath, codec: Codec.pcm16WAV);
-    print('recorder started');
   }
 
   @override
   Future<String?> stopRecording() async {
-    print('recorder stopping');
     final output = await _recorder.stopRecorder();
-    print('recorder stopped with output: $output');
     return output;
   }
 

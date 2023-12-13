@@ -127,7 +127,6 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       await _audioManager.startRecording();
       emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
     } on Exception catch (e) {
-      print('Error recording voice message. $e');
       emit(
         state.copyWith(
           messages: [
