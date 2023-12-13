@@ -150,6 +150,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
   ) async {
     try {
       final output = await _audioManager.stopRecording();
+
       emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
 
       if (output != null && output.isNotEmpty) {
