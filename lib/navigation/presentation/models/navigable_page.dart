@@ -11,11 +11,15 @@ class NavigablePage {
   final String label;
   final Widget page;
 
-  static List<NavigablePage> pages = [
+  static List<NavigablePage> items = [
     NavigablePage.chat(),
     NavigablePage.home(),
     NavigablePage.profile(),
   ];
+
+  static List<Widget> get pages {
+    return List.generate(items.length, (index) => items[index].page);
+  }
 
   static Widget errorPage = const Scaffold(
     body: Center(
