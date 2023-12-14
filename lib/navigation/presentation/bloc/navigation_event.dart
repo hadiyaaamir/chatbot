@@ -5,13 +5,12 @@ abstract class NavigationEvent extends Equatable {
 
   @override
   List<Object> get props => [];
-
 }
 
-class NavigationCustomEvent extends NavigationEvent {
-  const NavigationCustomEvent({required this.property});
-  final String property;
+class NavigationIndexChanged extends NavigationEvent {
+  const NavigationIndexChanged({required this.selectedIndex});
+  final int selectedIndex;
 
   @override
-  List<Object> get props => [property];
+  List<Object> get props => [selectedIndex];
 }

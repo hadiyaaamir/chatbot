@@ -1,27 +1,27 @@
 part of 'navigation_bloc.dart';
 
-
 class NavigationState extends Equatable {
+  const NavigationState({required this.currentIndex});
 
-  const NavigationState({
-    this.customProperty = 'Default Value',
-  });
+  final int currentIndex;
 
-  final String customProperty;
+  Widget get currentPage {
+    final pages = NavigablePage.pages;
+    return currentIndex < pages.length
+        ? pages[currentIndex].page
+        : NavigablePage.errorPage;
+  }
 
-  @override
-  List<Object> get props => [customProperty];
-
-  NavigationState copyWith({
-    String? customProperty,
-  }) {
+  NavigationState copyWith({int? currentIndex}) {
     return NavigationState(
-      customProperty: customProperty ?? this.customProperty,
+      currentIndex: currentIndex ?? this.currentIndex,
     );
   }
+
+  @override
+  List<Object> get props => [currentIndex];
 }
 
-
 class NavigationInitial extends NavigationState {
-  const NavigationInitial() : super();
+  const NavigationInitial({super.currentIndex = 1});
 }

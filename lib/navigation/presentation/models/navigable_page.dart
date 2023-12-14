@@ -17,6 +17,12 @@ class NavigablePage {
     NavigablePage.profile(),
   ];
 
+  static Widget errorPage = const Scaffold(
+    body: Center(
+      child: Text('Error: page not found'),
+    ),
+  );
+
   factory NavigablePage.chat() {
     return NavigablePage(
       page: const ChatbotPage(),
