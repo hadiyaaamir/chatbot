@@ -1,16 +1,24 @@
 part of 'view.dart';
 
-class ChatbotPage extends StatelessWidget {
+class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
-
-  static ChatbotPage? instance;
 
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(builder: (_) => const ChatbotPage());
   }
 
   @override
+  State<ChatbotPage> createState() => _ChatbotPageState();
+}
+
+class _ChatbotPageState extends State<ChatbotPage>
+    with AutomaticKeepAliveClientMixin<ChatbotPage> {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (context) => ChatbotBloc(
         audioManager: RepositoryProvider.of<AudioManager>(context),

@@ -1,13 +1,10 @@
 part of 'widgets.dart';
 
-class NavigationBottomBar extends StatefulWidget {
-  const NavigationBottomBar({super.key});
+class NavigationBottomBar extends StatelessWidget {
+  const NavigationBottomBar({super.key, required this.onNavigationTapped});
 
-  @override
-  State<NavigationBottomBar> createState() => _NavigationBottomBarState();
-}
+  final Function(int index) onNavigationTapped;
 
-class _NavigationBottomBarState extends State<NavigationBottomBar> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -21,13 +18,12 @@ class _NavigationBottomBarState extends State<NavigationBottomBar> {
             final page = items[index];
             return BottomNavigationBarItem(
               icon: Icon(page.icon),
+              activeIcon: Icon(page.activeIcon),
               label: page.label,
             );
           }),
           currentIndex: state.currentIndex,
-          onTap: (index) => context
-              .read<NavigationBloc>()
-              .add(NavigationIndexChanged(selectedIndex: index)),
+          onTap: onNavigationTapped,
         );
       },
     );
