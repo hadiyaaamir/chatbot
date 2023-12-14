@@ -7,9 +7,8 @@ class ChatbotView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(title: const Text('Chatbot'), centerTitle: true),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.only(right: 20, left: 20, top: 70, bottom: 5),
         child: Column(
           children: [
             const Messages(),
