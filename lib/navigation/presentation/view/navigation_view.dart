@@ -5,6 +5,22 @@ class NavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return BlocBuilder<NavigationBloc, NavigationState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: Column(
+            children: [
+              Expanded(
+                child: IndexedStack(
+                  index: state.currentIndex,
+                  children: NavigablePage.pages,
+                ),
+              ),
+              const NavigationBottomBar(),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

@@ -11,7 +11,7 @@ class AppView extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChatbotPage(),
+      home: const NavigationPage(),
     );
   }
 }

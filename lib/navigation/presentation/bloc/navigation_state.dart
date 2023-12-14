@@ -6,7 +6,7 @@ class NavigationState extends Equatable {
   final int currentIndex;
 
   Widget get currentPage {
-    final pages = NavigablePage.pages;
+    final pages = NavigablePage.items;
     return currentIndex < pages.length
         ? pages[currentIndex].page
         : NavigablePage.errorPage;
