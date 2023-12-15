@@ -48,7 +48,9 @@ class Event extends Option {
       }
     }
 
-    return '${formatDate(smallestDate)} - ${formatDate(largestDate)}';
+    return smallestDate == largestDate
+        ? formatDate(smallestDate)
+        : '${formatDate(smallestDate)} to ${formatDate(largestDate)}';
   }
 
   ChatEventSlot? get selectedSlot {

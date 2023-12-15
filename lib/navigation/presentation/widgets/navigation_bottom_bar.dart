@@ -7,13 +7,11 @@ class NavigationBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final items = NavigablePage.items;
 
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
         return BottomNavigationBar(
-          backgroundColor: colorScheme.onInverseSurface,
           items: List.generate(items.length, (index) {
             final page = items[index];
             return BottomNavigationBarItem(

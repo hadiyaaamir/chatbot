@@ -31,6 +31,7 @@ class CustomButton extends StatelessWidget {
         ),
         backgroundColor: backgroundColor ?? colorScheme.primaryContainer,
         foregroundColor: foregroundColor ?? colorScheme.onPrimaryContainer,
+        surfaceTintColor: Colors.transparent,
       ),
       onPressed: onPressed,
       child: Text(label),

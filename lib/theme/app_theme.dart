@@ -13,6 +13,12 @@ class AppTheme {
           backgroundColor: colors.coral,
           foregroundColor: colors.white,
         ),
+        cardTheme: CardTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          surfaceTintColor: colors.white,
+        ),
         inputDecorationTheme: InputDecorationTheme(
           fillColor: colors.lightGrey,
           filled: true,
@@ -39,6 +45,29 @@ class AppTheme {
           selectedLabelStyle: textStyles.labelMedium,
           unselectedIconTheme: const IconThemeData(size: 25),
           unselectedLabelStyle: textStyles.labelSmall,
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 40),
+            backgroundColor: colors.white,
+            foregroundColor: colors.coral,
+            surfaceTintColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            side: BorderSide(color: colors.coral, width: 1.5),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 40),
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: colors.coral,
+            foregroundColor: colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
       );
 }

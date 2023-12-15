@@ -15,7 +15,7 @@ class DottedDivider extends StatelessWidget {
         children: [
           SizedBox(height: spaceAbove),
           DottedLine(
-            dashColor: Theme.of(context).colorScheme.outlineVariant,
+            dashColor: Theme.of(context).colorScheme.outline,
             dashGapLength: 5,
           ),
           SizedBox(height: spaceBelow),

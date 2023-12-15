@@ -52,11 +52,10 @@ class _SuggestionTile extends StatelessWidget {
           side: BorderSide(color: Theme.of(context).colorScheme.outline),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
+          textStyle: Theme.of(context).textTheme.bodySmall,
         ),
-        child: Text(
-          suggestion.tileText,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        child: Text(suggestion.tileText),
         onPressed: () => context.read<ChatbotBloc>().add(
               ChatbotMessageSent(
                 attachUsername: usernameRequired,
