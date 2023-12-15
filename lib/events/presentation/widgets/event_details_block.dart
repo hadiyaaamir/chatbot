@@ -1,50 +1,60 @@
 part of 'widgets.dart';
 
 class EventDetailsBlock extends StatelessWidget {
-  const EventDetailsBlock({
-    super.key,
-    required this.event,
-    this.smallerPrice = false,
-  });
+  const EventDetailsBlock({super.key, required this.event});
 
   final Event event;
-  final bool smallerPrice;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
-          child: Row(
+    final range = event.dayRange;
+    final days = event.numberOfDays;
+    final daysString = '$days day${days > 1 ? 's' : ''}';
+
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('$range • $daysString', style: textTheme.bodyMedium),
+          const SizedBox(height: 5),
+          Text(event.title, style: textTheme.titleLarge),
+          const SizedBox(height: 10),
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _NameAndDateBlock(event: event),
-              _Price(price: event.price, smallerPrice: smallerPrice),
+              Expanded(child: _LocationDetails(event: event)),
+              _Price(price: event.price),
             ],
           ),
-        ),
-        _LocationDetails(event: event),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class _Price extends StatelessWidget {
-  const _Price({required this.price, required this.smallerPrice});
+  const _Price({required this.price});
 
   final int price;
-  final bool smallerPrice;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      '\$$price',
-      style: smallerPrice
-          ? Theme.of(context).textTheme.titleMedium
-          : Theme.of(context).textTheme.titleLarge,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Theme.of(context).colorScheme.secondaryContainer,
+      ),
+      child: Text(
+        '\$$price',
+        style: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.copyWith(color: Theme.of(context).colorScheme.primary),
+      ),
     );
   }
 }
@@ -59,33 +69,17 @@ class _LocationDetails extends StatelessWidget {
     return Row(
       children: [
         Icon(
-          Icons.location_on_outlined,
+          Icons.location_on_rounded,
+          color: Theme.of(context).colorScheme.outline,
           size: Theme.of(context).textTheme.bodyLarge?.fontSize,
         ),
-        Expanded(child: Text('${event.city}, ${event.country}')),
-      ],
-    );
-  }
-}
-
-class _NameAndDateBlock extends StatelessWidget {
-  const _NameAndDateBlock({required this.event});
-
-  final Event event;
-
-  @override
-  Widget build(BuildContext context) {
-    final range = event.dayRange;
-    final days = event.numberOfDays;
-    final daysString = '$days day${days > 1 ? 's' : ''}';
-
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(event.title, style: textTheme.titleMedium),
-        const SizedBox(height: 5),
-        Text('$range ($daysString)', style: textTheme.bodySmall),
+        const SizedBox(width: 2),
+        Expanded(
+          child: Text(
+            '${event.city}, ${event.country}',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ),
       ],
     );
   }

@@ -63,7 +63,7 @@ class _TextEntryAreaState extends State<_TextEntryArea> {
       cursorColor: Theme.of(context).colorScheme.onPrimaryContainer,
       enabled: widget.enabled,
       controller: _messageController,
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.titleSmall,
       decoration: InputDecoration(
         hintText: 'Message',
         suffixIcon: _SendButton(
@@ -95,6 +95,8 @@ class _SendButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return IconButton(
       onPressed: enabled
           ? () {
@@ -109,7 +111,7 @@ class _SendButton extends StatelessWidget {
               messageController.clear();
             }
           : null,
-      icon: const Icon(Icons.send),
+      icon: Icon(Icons.send, color: colorScheme.outlineVariant),
     );
   }
 }
