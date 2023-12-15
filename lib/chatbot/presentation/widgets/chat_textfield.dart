@@ -9,8 +9,6 @@ class ChatTextfield extends StatefulWidget {
 }
 
 class _ChatTextfieldState extends State<ChatTextfield> {
-  final TextEditingController _messageController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,17 +26,9 @@ class _ChatTextfieldState extends State<ChatTextfield> {
           return Row(
             children: [
               Expanded(
-                child: Stack(
-                  children: [
-                    _TextEntryArea(
-                      enabled: enabled,
-                      messageController: _messageController,
-                    ),
-                    _SendButton(
-                      attachUsername: attachUsername,
-                      messageController: _messageController,
-                    )
-                  ],
+                child: _TextEntryArea(
+                  enabled: enabled,
+                  attachUsername: attachUsername,
                 ),
               ),
               const SizedBox(width: 5),
@@ -46,6 +36,41 @@ class _ChatTextfieldState extends State<ChatTextfield> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _TextEntryArea extends StatefulWidget {
+  const _TextEntryArea({
+    required this.enabled,
+    required this.attachUsername,
+  });
+
+  final bool enabled;
+  final bool attachUsername;
+
+  @override
+  State<_TextEntryArea> createState() => _TextEntryAreaState();
+}
+
+class _TextEntryAreaState extends State<_TextEntryArea> {
+  final TextEditingController _messageController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      cursorColor: Theme.of(context).colorScheme.onPrimaryContainer,
+      enabled: widget.enabled,
+      controller: _messageController,
+      style: Theme.of(context).textTheme.bodyMedium,
+      decoration: InputDecoration(
+        hintText: 'Message',
+        suffixIcon: _SendButton(
+          enabled: widget.enabled,
+          attachUsername: widget.attachUsername,
+          messageController: _messageController,
+        ),
       ),
     );
   }
@@ -57,60 +82,34 @@ class _ChatTextfieldState extends State<ChatTextfield> {
   }
 }
 
-class _TextEntryArea extends StatelessWidget {
-  const _TextEntryArea({
-    required this.enabled,
-    required TextEditingController messageController,
-  }) : _messageController = messageController;
-
-  final bool enabled;
-  final TextEditingController _messageController;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      enabled: enabled,
-      controller: _messageController,
-      style: Theme.of(context).textTheme.bodyMedium,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-        ),
-      ),
-    );
-  }
-}
-
 class _SendButton extends StatelessWidget {
   const _SendButton({
+    required this.enabled,
     required this.attachUsername,
-    required TextEditingController messageController,
-  }) : _messageController = messageController;
+    required this.messageController,
+  });
 
+  final bool enabled;
   final bool attachUsername;
-  final TextEditingController _messageController;
+  final TextEditingController messageController;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        IconButton(
-          onPressed: () {
-            context.read<ChatbotBloc>().add(
-                  ChatbotMessageSent(
-                    attachUsername: attachUsername,
-                    message: ChatMessage(
-                      message: MessagePayload(text: _messageController.text),
+    return IconButton(
+      onPressed: enabled
+          ? () {
+              context.read<ChatbotBloc>().add(
+                    ChatbotMessageSent(
+                      attachUsername: attachUsername,
+                      message: ChatMessage(
+                        message: MessagePayload(text: messageController.text),
+                      ),
                     ),
-                  ),
-                );
-            _messageController.clear();
-          },
-          icon: const Icon(Icons.send),
-        ),
-      ],
+                  );
+              messageController.clear();
+            }
+          : null,
+      icon: const Icon(Icons.send),
     );
   }
 }
