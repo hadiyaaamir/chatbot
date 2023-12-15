@@ -18,7 +18,7 @@ class MessageBubble extends StatelessWidget {
         return message.sentMessage
             ? _Bubble(
                 bubbleColor: Theme.of(context).colorScheme.primary,
-                textColor: Colors.white,
+                textColor: Theme.of(context).colorScheme.onPrimary,
                 paddingLeft: kMessageBubbleEndPadding,
                 paddingRight: kMessageBubbleStartPadding,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -28,8 +28,8 @@ class MessageBubble extends StatelessWidget {
             : Column(
                 children: [
                   _Bubble(
-                    bubbleColor: Theme.of(context).colorScheme.primaryContainer,
-                    textColor: Colors.black,
+                    bubbleColor: Theme.of(context).colorScheme.inversePrimary,
+                    textColor: Theme.of(context).colorScheme.onBackground,
                     paddingLeft: kMessageBubbleStartPadding,
                     paddingRight: kMessageBubbleEndPadding,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -53,7 +53,7 @@ class LoadingMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _Bubble(
-      bubbleColor: Theme.of(context).colorScheme.primaryContainer,
+      bubbleColor: Theme.of(context).colorScheme.inversePrimary,
       textColor: Colors.black,
       paddingLeft: kMessageBubbleStartPadding,
       paddingRight: kMessageBubbleEndPadding,
@@ -126,7 +126,7 @@ class _TextRectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double borderRadius = 14;
+    const double borderRadius = 15;
 
     return Flexible(
       child: Container(
