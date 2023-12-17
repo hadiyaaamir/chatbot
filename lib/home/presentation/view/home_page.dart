@@ -17,7 +17,9 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocProvider(
-      create: (context) => HomeBloc(),
+      create: (context) => EventsBloc(
+        eventsRepository: EventsRepositoryImpl(eventsApi: MockEventsApi()),
+      )..add(EventsOnSubscribedEvent()),
       child: const HomeView(),
     );
   }

@@ -4,7 +4,6 @@ import 'package:audio_manager/audio_manager.dart';
 
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/events/events.dart';
-import 'package:chatbot/events/presentation/models/chat_event_slot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 
