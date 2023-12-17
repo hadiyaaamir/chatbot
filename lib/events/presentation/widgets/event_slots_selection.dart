@@ -19,7 +19,9 @@ class EventSlotsSelection extends StatelessWidget {
         const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.all(5),
-          child: Text('Select a Time Slot', style: textTheme.labelLarge),
+          child: event.selectedSlot != null
+              ? Text('Select a Time Slot', style: textTheme.labelLarge)
+              : const SizedBox(height: 0),
         ),
         _TimeSlotCards(event: event),
       ],

@@ -7,7 +7,8 @@ class AppTextStyles {
   final double smallFont = 11;
   final double regularFont = 13;
   final double largeFont = 14;
-  final double xLargeFont = 17;
+  final double xLargeFont = 18;
+  final double hugeFont = 24;
 
   Color get _lighterTextColor => colors.darkGrey;
 
@@ -20,6 +21,7 @@ class AppTextStyles {
         titleSmall: titleSmall,
         titleMedium: titleMedium,
         titleLarge: titleLarge,
+        headlineSmall: headlineSmall,
       );
 
   TextStyle get labelSmall => TextStyle(
@@ -55,6 +57,11 @@ class AppTextStyles {
   TextStyle get titleMedium => TextStyle(fontSize: largeFont);
   TextStyle get titleLarge => TextStyle(
         fontSize: xLargeFont,
+        fontWeight: FontWeight.w700,
+      );
+
+  TextStyle get headlineSmall => TextStyle(
+        fontSize: hugeFont,
         fontWeight: FontWeight.w700,
       );
 }

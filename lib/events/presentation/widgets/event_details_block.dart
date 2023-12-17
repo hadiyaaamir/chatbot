@@ -17,6 +17,7 @@ class EventDetailsBlock extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text('$range • $daysString', style: textTheme.bodyMedium),
           const SizedBox(height: 5),
@@ -67,13 +68,16 @@ class _LocationDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          Icons.location_on_rounded,
-          color: Theme.of(context).colorScheme.outline,
-          size: Theme.of(context).textTheme.bodyLarge?.fontSize,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
+          child: Icon(
+            Icons.location_on_rounded,
+            color: Theme.of(context).colorScheme.outline,
+            size: Theme.of(context).textTheme.bodyLarge?.fontSize,
+          ),
         ),
-        const SizedBox(width: 2),
         Expanded(
           child: Text(
             '${event.city}, ${event.country}',

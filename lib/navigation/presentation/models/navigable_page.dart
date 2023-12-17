@@ -1,5 +1,24 @@
 part of 'models.dart';
 
+enum NavigablePages { chat, home, profile }
+
+extension XNavigablePages on NavigablePages {
+  static final Map<NavigablePages, int> _indexes = {
+    NavigablePages.chat: 0,
+    NavigablePages.home: 1,
+    NavigablePages.profile: 2,
+  };
+
+  static final Map<NavigablePages, NavigablePage> _pages = {
+    NavigablePages.chat: NavigablePage.chat(),
+    NavigablePages.home: NavigablePage.home(),
+    NavigablePages.profile: NavigablePage.profile(),
+  };
+
+  int get index => _indexes[this] ?? 0;
+  NavigablePage get page => _pages[this] ?? NavigablePage.chat();
+}
+
 class NavigablePage {
   NavigablePage({
     required this.icon,
@@ -13,14 +32,16 @@ class NavigablePage {
   final String label;
   final Widget page;
 
-  static List<NavigablePage> items = [
-    NavigablePage.chat(),
-    NavigablePage.home(),
-    NavigablePage.profile(),
-  ];
+  static List<NavigablePage> items = List.generate(
+    NavigablePages.values.length,
+    (index) => NavigablePages.values[index].page,
+  ).toList();
 
   static List<Widget> get pages {
-    return List.generate(items.length, (index) => items[index].page);
+    return List.generate(
+      NavigablePages.values.length,
+      (index) => NavigablePages.values[index].page.page,
+    ).toList();
   }
 
   static Widget errorPage = const Scaffold(

@@ -15,6 +15,7 @@ class EventOptionTile extends OptionTile {
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
@@ -23,39 +24,60 @@ class EventOptionTile extends OptionTile {
             const SizedBox(height: 15),
             EventDetailsBlock(event: event),
             const DottedDivider(spaceAbove: 5),
-            ExpansionTile(
-              tilePadding: EdgeInsets.zero,
-              controlAffinity: ListTileControlAffinity.leading,
-              childrenPadding: EdgeInsets.zero,
-              collapsedIconColor: Theme.of(context).colorScheme.primary,
-              shape: const Border(),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      'Book Now',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                    ),
-                  ),
-                  Flexible(child: _MoreInformationButton(event: event)),
-                ],
-              ),
-              children: [
-                const SizedBox(height: 10),
-                EventSlotsSelection(event: event),
-                const SizedBox(height: 20),
-                _BookTicketsButton(
-                  usernameRequired: usernameRequired,
-                  event: event,
-                ),
-              ],
+            _ExpandibleBookingTile(
+              event: event,
+              usernameRequired: usernameRequired,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ExpandibleBookingTile extends StatelessWidget {
+  const _ExpandibleBookingTile({
+    required this.event,
+    required this.usernameRequired,
+  });
+
+  final Event event;
+  final bool usernameRequired;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      tilePadding: EdgeInsets.zero,
+      controlAffinity: ListTileControlAffinity.leading,
+      childrenPadding: EdgeInsets.zero,
+      collapsedIconColor: Theme.of(context).colorScheme.primary,
+      shape: const Border(),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text(
+              'Book Now',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+          ),
+          Flexible(
+            child: _MoreInformationButton(event: event),
+          ),
+        ],
+      ),
+      children: [
+        const SizedBox(height: 10),
+        EventSlotsSelection(event: event),
+        const SizedBox(height: 20),
+        _BookTicketsButton(
+          usernameRequired: usernameRequired,
+          event: event,
+        ),
+      ],
     );
   }
 }

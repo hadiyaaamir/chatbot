@@ -9,9 +9,19 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavigationBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NavigationBloc>(create: (context) => NavigationBloc()),
+        BlocProvider<ChatbotBloc>(
+          create: (context) => ChatbotBloc(
+            audioManager: RepositoryProvider.of<AudioManager>(context),
+            chatbotRepository: ChatbotRepositoryImpl(
+              chatbotApi: DialogflowGoogleApi(),
+            ),
+          )..add(ChatbotSubscription()),
+        ),
+      ],
       child: const NavigationView(),
-    );  
+    );
   }
 }

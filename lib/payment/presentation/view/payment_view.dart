@@ -124,7 +124,7 @@ class _QuantityTotalBlock extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             'Total: \$${ticket.event.price * ticket.quantity}',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ],
       ),

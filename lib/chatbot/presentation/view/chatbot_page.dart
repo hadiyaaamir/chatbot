@@ -19,14 +19,6 @@ class _ChatbotPageState extends State<ChatbotPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => ChatbotBloc(
-        audioManager: RepositoryProvider.of<AudioManager>(context),
-        chatbotRepository: ChatbotRepositoryImpl(
-          chatbotApi: DialogflowGoogleApi(),
-        ),
-      )..add(ChatbotSubscription()),
-      child: const ChatbotView(),
-    );
+    return const ChatbotView();
   }
 }
