@@ -2,6 +2,7 @@ import 'package:chatbot/events/events.dart';
 import 'package:chatbot/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class EventsList extends StatelessWidget {
   const EventsList({super.key});
@@ -12,27 +13,29 @@ class EventsList extends StatelessWidget {
       builder: (context, state) {
         List<Event> filteredEvents = state.filteredEvents.toList();
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  '${state.filter.text} Events',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                '${state.filter.text} Events',
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              Container(
-                constraints: const BoxConstraints(maxHeight: 415),
-                child: filteredEvents.isNotEmpty
-                    ? _NonEmptyList(filteredEvents: filteredEvents)
-                    : _EmptyList(currentFilter: state.filter.text),
-              )
-            ],
-          ),
+            ),
+            Container(
+              constraints: const BoxConstraints(maxHeight: 415),
+              child: state.status == EventsStatus.success
+                  ? filteredEvents.isNotEmpty
+                      ? _NonEmptyList(filteredEvents: filteredEvents)
+                      : _EmptyList(currentFilter: state.filter.text)
+                  : SpinKitThreeBounce(
+                      size: 12,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+            )
+          ],
         );
       },
     );
