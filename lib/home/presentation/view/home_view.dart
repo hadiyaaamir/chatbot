@@ -8,11 +8,14 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            EventsFilterButtons(),
-            EventsList(),
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              EventsFilterButtons(),
+              EventsList(),
+            ],
+          ),
         ),
       ),
     );
