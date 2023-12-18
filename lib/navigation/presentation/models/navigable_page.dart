@@ -15,8 +15,8 @@ extension XNavigablePages on NavigablePages {
     NavigablePages.profile: NavigablePage.profile(),
   };
 
-  int get index => _indexes[this] ?? 0;
-  NavigablePage get page => _pages[this] ?? NavigablePage.chat();
+  int get index => _indexes[this] ?? 1;
+  NavigablePage get page => _pages[this] ?? NavigablePage.home();
 }
 
 class NavigablePage {
@@ -31,6 +31,8 @@ class NavigablePage {
   final IconData activeIcon;
   final String label;
   final Widget page;
+
+  static int initialIndex = NavigablePages.home.index;
 
   static List<NavigablePage> items = List.generate(
     NavigablePages.values.length,

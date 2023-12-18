@@ -23,7 +23,7 @@ class EventTile extends StatelessWidget {
             const DottedDivider(spaceAbove: 5, spaceBelow: 10),
             Row(
               children: [
-                const Flexible(child: _MoreInfoButton()),
+                Flexible(child: _MoreInfoButton(event: event)),
                 const SizedBox(width: 10),
                 Flexible(child: _BookNowButton(event: event))
               ],
@@ -63,12 +63,28 @@ class _BookNowButton extends StatelessWidget {
 }
 
 class _MoreInfoButton extends StatelessWidget {
-  const _MoreInfoButton();
+  const _MoreInfoButton({required this.event});
+
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () {},
+      onPressed: () {
+        context.read<NavigationBloc>().add(
+              NavigationIndexChanged(selectedIndex: NavigablePages.chat.index),
+            );
+        context.read<ChatbotBloc>().add(
+              ChatbotMessageSent(
+                message: ChatMessage(
+                  message: MessagePayload(
+                    text: 'Tell me more about event ${event.id}',
+                    displayText: 'Tell me more about ${event.title}',
+                  ),
+                ),
+              ),
+            );
+      },
       child: const Text('Know More'),
     );
   }
