@@ -17,6 +17,8 @@ class HomeView extends StatelessWidget {
               EventsFilterButtons(),
               SizedBox(height: 10),
               EventsList(),
+              SizedBox(height: 20),
+              SuggestionMessages(),
             ],
           ),
         ),
