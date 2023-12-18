@@ -60,7 +60,7 @@ class _TextEntryAreaState extends State<_TextEntryArea> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      cursorColor: Theme.of(context).colorScheme.onPrimaryContainer,
+      // cursorColor: Theme.of(context).colorScheme.onPrimaryContainer,
       enabled: widget.enabled,
       controller: _messageController,
       style: Theme.of(context).textTheme.titleSmall,

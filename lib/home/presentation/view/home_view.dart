@@ -12,11 +12,29 @@ class HomeView extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
+              _SearchTextField(),
+              SizedBox(height: 20),
               EventsFilterButtons(),
+              SizedBox(height: 10),
               EventsList(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SearchTextField extends StatelessWidget {
+  const _SearchTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      style: Theme.of(context).textTheme.titleSmall,
+      decoration: const InputDecoration(
+        hintText: 'Search events',
+        prefixIcon: Icon(Icons.search),
       ),
     );
   }

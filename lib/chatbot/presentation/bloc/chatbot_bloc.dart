@@ -45,7 +45,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit,
   ) async {
     await _chatbotRepository.initialise();
-    await _sendHelloMessage(emit);
+    if (state.messages.isEmpty) await _sendHelloMessage(emit);
   }
 
   Future<void> _sendHelloMessage(Emitter<ChatbotState> emit) async {
@@ -65,6 +65,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit, {
     bool showSentMessage = true,
   }) async {
+    if (state.messages.isEmpty) await _chatbotRepository.initialise();
+
     final messagePayload = event.message.message;
 
     if (messagePayload.isEmpty) return;
