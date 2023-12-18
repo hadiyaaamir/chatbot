@@ -12,6 +12,7 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
       : _eventsRepository = eventsRepository,
         super(const EventsInitial()) {
     on<EventsOnSubscribedEvent>(_onSubscription);
+    on<EventsFilterChanged>(_onFilterChanged);
   }
 
   final EventsRepository _eventsRepository;
@@ -21,11 +22,15 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
     Emitter<EventsState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: EventsStatus.loading));
+      emit(state.copyWith(events: [], status: EventsStatus.loading));
       final events = await _eventsRepository.fetchEvents();
       emit(state.copyWith(events: events, status: EventsStatus.success));
     } catch (e) {
-      emit(state.copyWith(status: EventsStatus.failure));
+      emit(state.copyWith(events: [], status: EventsStatus.failure));
     }
+  }
+
+  void _onFilterChanged(EventsFilterChanged event, Emitter<EventsState> emit) {
+    emit(state.copyWith(filter: event.filter));
   }
 }
