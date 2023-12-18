@@ -8,3 +8,11 @@ abstract class EventsEvent extends Equatable {
 }
 
 class EventsOnSubscribedEvent extends EventsEvent {}
+
+final class EventsFilterChanged extends EventsEvent {
+  const EventsFilterChanged({required this.filter});
+  final EventsFilter filter;
+
+  @override
+  List<Object> get props => [filter];
+}

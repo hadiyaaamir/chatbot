@@ -6,7 +6,7 @@ class AppColors {
         onPrimary: white,
         inversePrimary: lightCoral,
         primaryContainer: lightGrey,
-        onPrimaryContainer: darkGrey,
+        onPrimaryContainer: darkerGrey,
         secondaryContainer: veryLightCoral,
         background: veryLightGrey,
         onBackground: veryDarkGrey,

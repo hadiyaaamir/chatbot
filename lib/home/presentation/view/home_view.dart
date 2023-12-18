@@ -7,9 +7,10 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
+            EventsFilterButtons(),
             EventsList(),
           ],
         ),
