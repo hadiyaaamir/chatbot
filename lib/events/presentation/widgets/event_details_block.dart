@@ -26,8 +26,8 @@ class EventDetailsBlock extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: _LocationDetails(event: event)),
-              _Price(price: event.price),
+              Expanded(child: LocationDetails(event: event)),
+              ColoredTextTag(text: '\$${event.price}'),
             ],
           ),
         ],
@@ -36,32 +36,8 @@ class EventDetailsBlock extends StatelessWidget {
   }
 }
 
-class _Price extends StatelessWidget {
-  const _Price({required this.price});
-
-  final int price;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Theme.of(context).colorScheme.secondaryContainer,
-      ),
-      child: Text(
-        '\$$price',
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.copyWith(color: Theme.of(context).colorScheme.primary),
-      ),
-    );
-  }
-}
-
-class _LocationDetails extends StatelessWidget {
-  const _LocationDetails({required this.event});
+class LocationDetails extends StatelessWidget {
+  const LocationDetails({super.key, required this.event});
 
   final Event event;
 
@@ -69,6 +45,7 @@ class _LocationDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
@@ -78,7 +55,7 @@ class _LocationDetails extends StatelessWidget {
             size: Theme.of(context).textTheme.bodyLarge?.fontSize,
           ),
         ),
-        Expanded(
+        Flexible(
           child: Text(
             '${event.city}, ${event.country}',
             style: Theme.of(context).textTheme.labelLarge,
