@@ -13,7 +13,7 @@ class EventsList extends StatelessWidget {
         List<Event> filteredEvents = state.filteredEvents.toList();
 
         return Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -80,14 +80,9 @@ class _EmptyList extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: OutlinedButton(
-                  onPressed: () => context.read<EventsBloc>().add(
-                        const EventsFilterChanged(filter: EventsFilter.all),
-                      ),
-                  // style: OutlinedButton.styleFrom(
-                  //   foregroundColor: Theme.of(context).colorScheme.secondary,
-                  //   // side: BorderSide(
-                  //   //     color: Theme.of(context).colorScheme.secondary),
-                  // ),
+                  onPressed: () => context
+                      .read<EventsBloc>()
+                      .add(const EventsFilterChanged(filter: EventsFilter.all)),
                   child: const Text('View All Events'),
                 ),
               ),

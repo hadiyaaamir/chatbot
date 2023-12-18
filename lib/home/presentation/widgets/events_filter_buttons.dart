@@ -9,13 +9,10 @@ class EventsFilterButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<EventsFilter> filters = EventsFilter.values.toList();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: List.generate(
-          filters.length,
-          (index) => _FilterButton(filter: filters[index]),
-        ),
+    return Row(
+      children: List.generate(
+        filters.length,
+        (index) => _FilterButton(filter: filters[index]),
       ),
     );
   }

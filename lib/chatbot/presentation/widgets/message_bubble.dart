@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -92,19 +90,12 @@ class _Bubble extends StatelessWidget {
         mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!sentMessage)
-            Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.rotationY(pi),
-              child: CustomPaint(painter: _Triangle(color: bubbleColor)),
-            ),
           _TextRectangle(
             message: message,
             sentMessage: sentMessage,
             backgroundColor: bubbleColor,
             textColor: textColor,
           ),
-          if (sentMessage) CustomPaint(painter: _Triangle(color: bubbleColor)),
         ],
       ),
     );
@@ -157,28 +148,6 @@ class _TextRectangle extends StatelessWidget {
   }
 }
 
-class _Triangle extends CustomPainter {
-  final Color color;
-
-  _Triangle({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()..color = color;
-
-    var path = Path();
-    path.lineTo(-5, 0);
-    path.lineTo(0, 10);
-    path.lineTo(5, 0);
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
 class _TextMessage extends StatelessWidget {
   const _TextMessage({
     required this.message,
@@ -191,6 +160,7 @@ class _TextMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           message.displayText ?? message.text,
@@ -199,10 +169,11 @@ class _TextMessage extends StatelessWidget {
         if (message.urlText != null)
           GestureDetector(
             child: Text(
-              message.urlText!,
+              'Event Directions',
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.secondary,
                     decoration: TextDecoration.underline,
+                    decorationColor: Theme.of(context).colorScheme.secondary,
                   ),
             ),
             onTap: () => launchUrl(Uri.parse(message.urlText!)),
