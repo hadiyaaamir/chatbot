@@ -8,26 +8,64 @@ class TicketOptionTile extends OptionTile {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _TicketHeader(ticket: ticket),
-            const DottedDivider(spaceAbove: 8, spaceBelow: 12),
-            _TicketFooter(ticket: ticket),
-            const SizedBox(height: 10),
-            if (!ticket.paymentCompleted) ...[
-              const DottedDivider(spaceBelow: 5),
-              _PaymentRow(ticket: ticket),
+    return ClipPath(
+      clipper: TicketClipper(holeRadius: 40, top: 75),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _TicketHeader(ticket: ticket),
+              const DottedDivider(spaceAbove: 8, spaceBelow: 12),
+              _TicketFooter(ticket: ticket),
+              const SizedBox(height: 10),
+              if (!ticket.paymentCompleted) ...[
+                const DottedDivider(spaceBelow: 5),
+                _PaymentRow(ticket: ticket),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
   }
+}
+
+class TicketClipper extends CustomClipper<Path> {
+  final double holeRadius;
+  final double top;
+
+  TicketClipper({required this.holeRadius, required this.top});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(0.0, top)
+      ..arcToPoint(
+        Offset(0, top + holeRadius),
+        clockwise: true,
+        radius: const Radius.circular(1),
+      )
+      ..lineTo(0.0, size.height)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width, top + holeRadius)
+      ..arcToPoint(
+        Offset(size.width, top),
+        clockwise: true,
+        radius: const Radius.circular(1),
+      );
+    path.lineTo(size.width, 0.0);
+
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TicketClipper oldClipper) => true;
 }
 
 class _PaymentRow extends StatelessWidget {

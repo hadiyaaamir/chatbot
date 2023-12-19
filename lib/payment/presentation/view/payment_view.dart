@@ -8,6 +8,20 @@ class PaymentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      body: const Center(),
+    );
+  }
+}
+
+class PaymentViewOld extends StatelessWidget {
+  const PaymentViewOld({super.key, required this.ticket});
+
+  final TicketOption ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(title: const Text('Complete Payment'), centerTitle: true),
       body: Center(
         child: SingleChildScrollView(
