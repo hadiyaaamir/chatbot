@@ -28,14 +28,25 @@ class PaymentView extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: const Text('Complete Payment'),
-        ),
-      ),
+      floatingActionButton: const _CompletePaymentButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class _CompletePaymentButton extends StatelessWidget {
+  const _CompletePaymentButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushReplacement(context, PaymentSuccessfulView.route());
+        },
+        child: const Text('Complete Payment'),
+      ),
     );
   }
 }
