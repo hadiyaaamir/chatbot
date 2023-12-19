@@ -76,6 +76,7 @@ class AppTheme {
           backgroundColor: colors.veryLightGrey,
           toolbarHeight: 40,
           surfaceTintColor: Colors.transparent,
+          centerTitle: true,
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
@@ -84,5 +85,6 @@ class AppTheme {
             ),
           ),
         ),
+        iconTheme: IconThemeData(color: colors.darkGrey),
       );
 }

@@ -21,7 +21,7 @@ class EventsList extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Text(
                 '${state.filter.text} Events',
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             Container(

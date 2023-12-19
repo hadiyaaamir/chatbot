@@ -18,10 +18,12 @@ class AppTextStyles {
         labelLarge: labelLarge,
         bodySmall: bodySmall,
         bodyMedium: bodyMedium,
+        bodyLarge: bodyLarge,
         titleSmall: titleSmall,
         titleMedium: titleMedium,
         titleLarge: titleLarge,
         headlineSmall: headlineSmall,
+        headlineMedium: headlineMedium,
       );
 
   TextStyle get labelSmall => TextStyle(
@@ -53,6 +55,12 @@ class AppTextStyles {
         fontWeight: FontWeight.w500,
       );
 
+  TextStyle get bodyLarge => TextStyle(
+        fontSize: largeFont,
+        color: _lighterTextColor,
+        fontWeight: FontWeight.w500,
+      );
+
   TextStyle get titleSmall => TextStyle(fontSize: regularFont);
   TextStyle get titleMedium => TextStyle(fontSize: largeFont);
   TextStyle get titleLarge => TextStyle(
@@ -61,6 +69,11 @@ class AppTextStyles {
       );
 
   TextStyle get headlineSmall => TextStyle(
+        fontSize: largeFont,
+        fontWeight: FontWeight.w700,
+      );
+
+  TextStyle get headlineMedium => TextStyle(
         fontSize: hugeFont,
         fontWeight: FontWeight.w700,
       );
