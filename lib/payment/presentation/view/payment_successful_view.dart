@@ -1,17 +1,20 @@
 part of 'view.dart';
 
 class PaymentSuccessfulView extends StatelessWidget {
-  const PaymentSuccessfulView({super.key});
+  const PaymentSuccessfulView({super.key, required this.ticket});
 
-  static Route<dynamic> route() {
+  final TicketOption ticket;
+
+  static Route<dynamic> route({required TicketOption ticket}) {
     return MaterialPageRoute<dynamic>(
-      builder: (_) => const PaymentSuccessfulView(),
+      builder: (_) => PaymentSuccessfulView(ticket: ticket),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final ChatbotBloc chatbotBloc = context.read<ChatbotBloc>();
 
     return Scaffold(
       body: Center(
@@ -35,12 +38,63 @@ class PaymentSuccessfulView extends StatelessWidget {
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: ElevatedButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Resume Exploring'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _ViewTicketButton(ticket: ticket, chatbotBloc: chatbotBloc),
+            const SizedBox(height: 5),
+            const _ResumeExploringButton(),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class _ViewTicketButton extends StatelessWidget {
+  const _ViewTicketButton({required this.ticket, required this.chatbotBloc});
+
+  final TicketOption ticket;
+  final ChatbotBloc chatbotBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      child: const Text('View Ticket'),
+      onPressed: () {
+        chatbotBloc.add(
+          ChatbotMessageSent(
+            message: ChatMessage(
+              message: MessagePayload(
+                text: 'Give me the card of ticket ${ticket.id}',
+                displayText: 'Show me my recently paid ticket',
+              ),
+            ),
+          ),
+        );
+        context.read<NavigationBloc>().add(
+              NavigationIndexChanged(selectedIndex: NavigablePages.chat.index),
+            );
+        Navigator.pop(context);
+      },
+    );
+  }
+}
+
+class _ResumeExploringButton extends StatelessWidget {
+  const _ResumeExploringButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () {
+        context.read<NavigationBloc>().add(
+              NavigationIndexChanged(selectedIndex: NavigablePages.home.index),
+            );
+        Navigator.pop(context);
+      },
+      child: const Text('Resume Exploring'),
     );
   }
 }

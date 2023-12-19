@@ -89,7 +89,13 @@ class _PaymentRow extends StatelessWidget {
         Flexible(
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(context, PaymentPage.route(ticket: ticket));
+              Navigator.push(
+                context,
+                PaymentPage.route(
+                  ticket: ticket,
+                  chatbotBloc: context.read<ChatbotBloc>(),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 35),
