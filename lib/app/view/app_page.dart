@@ -20,7 +20,20 @@ class _AppPageState extends State<AppPage> {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: _audioManager,
-      child: const AppView(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<NavigationBloc>(create: (context) => NavigationBloc()),
+          BlocProvider<ChatbotBloc>(
+            create: (context) => ChatbotBloc(
+              audioManager: RepositoryProvider.of<AudioManager>(context),
+              chatbotRepository: ChatbotRepositoryImpl(
+                chatbotApi: DialogflowGoogleApi(),
+              ),
+            )..add(ChatbotSubscription()),
+          ),
+        ],
+        child: const AppView(),
+      ),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:chatbot/utils/constants.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:googleapis/dialogflow/v2.dart';
@@ -44,6 +45,9 @@ class DialogflowGoogleApi extends ChatbotApi {
     return await _sendMessage(
       request: GoogleCloudDialogflowV2DetectIntentRequest(
         queryInput: queryInput,
+        queryParams: GoogleCloudDialogflowV2QueryParameters(
+          payload: {'username': kHardcodedUsername},
+        ),
       ),
     );
   }
@@ -61,6 +65,9 @@ class DialogflowGoogleApi extends ChatbotApi {
 
     return await _sendMessage(
       request: GoogleCloudDialogflowV2DetectIntentRequest(
+        queryParams: GoogleCloudDialogflowV2QueryParameters(
+          payload: {'username': kHardcodedUsername},
+        ),
         queryInput: queryInput,
         inputAudio: audioInput,
       ),

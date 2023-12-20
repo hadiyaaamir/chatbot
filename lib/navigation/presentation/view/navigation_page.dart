@@ -9,9 +9,6 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavigationBloc(),
-      child: const NavigationView(),
-    );  
+    return const NavigationView();
   }
 }

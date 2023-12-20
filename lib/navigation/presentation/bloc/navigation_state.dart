@@ -23,5 +23,5 @@ class NavigationState extends Equatable {
 }
 
 class NavigationInitial extends NavigationState {
-  const NavigationInitial({super.currentIndex = 1});
+  NavigationInitial() : super(currentIndex: NavigablePage.initialIndex);
 }

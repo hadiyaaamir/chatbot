@@ -7,12 +7,14 @@ class ChatbotState extends Equatable {
     required this.messages,
     required this.status,
     required this.isRecordingMessage,
+    this.isMuted = false,
   });
 
   final List<ChatMessage> messages;
   final ChatbotStatus status;
 
   final bool isRecordingMessage;
+  final bool isMuted;
 
   ChatbotState setAudioPlayingStatus({required MessagePayload targetMessage}) {
     final List<ChatMessage> updatedMessages = messages.map((message) {
@@ -86,20 +88,26 @@ class ChatbotState extends Equatable {
     return copyWith(messages: updatedMessages);
   }
 
+  ChatbotState toggleMute() {
+    return copyWith(isMuted: !isMuted);
+  }
+
   ChatbotState copyWith({
     List<ChatMessage>? messages,
     ChatbotStatus? status,
     bool? isRecordingMessage,
+    bool? isMuted,
   }) {
     return ChatbotState(
       messages: messages ?? this.messages,
       status: status ?? this.status,
       isRecordingMessage: isRecordingMessage ?? this.isRecordingMessage,
+      isMuted: isMuted ?? this.isMuted,
     );
   }
 
   @override
-  List<Object> get props => [messages, status, isRecordingMessage];
+  List<Object> get props => [messages, status, isRecordingMessage, isMuted];
 }
 
 class ChatbotInitial extends ChatbotState {

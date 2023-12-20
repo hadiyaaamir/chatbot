@@ -5,8 +5,24 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Home  Page')),
+    return Scaffold(
+      appBar: AppBar(),
+      body: const SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              EventsSearchTextField(),
+              SizedBox(height: 20),
+              EventsFilterButtons(),
+              SizedBox(height: 10),
+              EventsList(),
+              SizedBox(height: 20),
+              SuggestionMessages(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

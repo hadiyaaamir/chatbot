@@ -11,29 +11,73 @@ class EventOptionTile extends OptionTile {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Image.network(event.image, height: 150, fit: BoxFit.cover),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                EventDetailsBlock(event: event),
-                const SizedBox(height: 10),
-                EventSlotsSelection(event: event),
-                const SizedBox(height: 15),
-                _MoreInformationButton(event: event),
-                _BookTicketsButton(
-                  usernameRequired: usernameRequired,
-                  event: event,
-                ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(event.image, height: 180, fit: BoxFit.cover),
             ),
+            const SizedBox(height: 15),
+            EventDetailsBlock(event: event),
+            const DottedDivider(spaceAbove: 5),
+            _ExpandibleBookingTile(
+              event: event,
+              usernameRequired: usernameRequired,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ExpandibleBookingTile extends StatelessWidget {
+  const _ExpandibleBookingTile({
+    required this.event,
+    required this.usernameRequired,
+  });
+
+  final Event event;
+  final bool usernameRequired;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      tilePadding: EdgeInsets.zero,
+      controlAffinity: ListTileControlAffinity.leading,
+      childrenPadding: EdgeInsets.zero,
+      collapsedIconColor: Theme.of(context).colorScheme.primary,
+      shape: const Border(),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text(
+              'Book Now',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+          ),
+          Flexible(
+            child: _MoreInformationButton(event: event),
           ),
         ],
       ),
+      children: [
+        const SizedBox(height: 10),
+        EventSlotsSelection(event: event),
+        const SizedBox(height: 20),
+        _BookTicketsButton(
+          usernameRequired: usernameRequired,
+          event: event,
+        ),
+      ],
     );
   }
 }
@@ -45,10 +89,15 @@ class _MoreInformationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomButton(
-      label: 'More Information',
-      backgroundColor: Theme.of(context).colorScheme.background,
-      outlineColor: Theme.of(context).colorScheme.inversePrimary,
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return OutlinedButton.icon(
+      icon: const Icon(Icons.lightbulb_outline_rounded),
+      label: const Text('Know More'),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: colorScheme.secondary,
+        side: BorderSide(color: colorScheme.secondary, width: 1.5),
+      ),
       onPressed: () => context.read<ChatbotBloc>().add(
             ChatbotMessageSent(
               message: ChatMessage(
@@ -74,8 +123,7 @@ class _BookTicketsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomButton(
-      label: 'Book Tickets',
+    return ElevatedButton(
       onPressed: event.selectedSlot != null
           ? () {
               final selectedDate = event.selectedSlot?.date.dateSlot;
@@ -104,6 +152,7 @@ class _BookTicketsButton extends StatelessWidget {
                   );
             }
           : null,
+      child: const Text('Book Tickets'),
     );
   }
 }

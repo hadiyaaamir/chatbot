@@ -1,19 +1,15 @@
 part of 'widgets.dart';
 
 class NavigationBottomBar extends StatelessWidget {
-  const NavigationBottomBar({super.key, required this.onNavigationTapped});
-
-  final Function(int index) onNavigationTapped;
+  const NavigationBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final items = NavigablePage.items;
 
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
         return BottomNavigationBar(
-          backgroundColor: colorScheme.onInverseSurface,
           items: List.generate(items.length, (index) {
             final page = items[index];
             return BottomNavigationBarItem(
@@ -23,7 +19,9 @@ class NavigationBottomBar extends StatelessWidget {
             );
           }),
           currentIndex: state.currentIndex,
-          onTap: onNavigationTapped,
+          onTap: (index) => context.read<NavigationBloc>().add(
+                NavigationIndexChanged(selectedIndex: index),
+              ),
         );
       },
     );

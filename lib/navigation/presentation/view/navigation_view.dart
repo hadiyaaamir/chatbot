@@ -8,13 +8,19 @@ class NavigationView extends StatefulWidget {
 }
 
 class _NavigationViewState extends State<NavigationView> {
-  final PageController _controller = PageController(initialPage: 1);
+  late final PageController _controller;
 
-  void _handleNavigation(int index) {
-    _controller.jumpToPage(index);
-    context.read<NavigationBloc>().add(
-          NavigationIndexChanged(selectedIndex: index),
-        );
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = PageController(initialPage: NavigablePage.initialIndex);
+
+    context.read<NavigationBloc>().stream.listen((state) {
+      if (_controller.page != state.currentIndex.toDouble()) {
+        _controller.jumpToPage(state.currentIndex);
+      }
+    });
   }
 
   @override
@@ -24,12 +30,12 @@ class _NavigationViewState extends State<NavigationView> {
         return Scaffold(
           body: PageView(
             controller: _controller,
-            onPageChanged: _handleNavigation,
+            onPageChanged: (index) => context.read<NavigationBloc>().add(
+                  NavigationIndexChanged(selectedIndex: index),
+                ),
             children: NavigablePage.pages,
           ),
-          bottomNavigationBar: NavigationBottomBar(
-            onNavigationTapped: _handleNavigation,
-          ),
+          bottomNavigationBar: const NavigationBottomBar(),
         );
       },
     );

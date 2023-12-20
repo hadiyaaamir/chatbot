@@ -8,36 +8,99 @@ class TicketOptionTile extends OptionTile {
 
   @override
   Widget build(BuildContext context) {
+    return ClipPath(
+      clipper: TicketClipper(holeRadius: 40, top: 75),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _TicketHeader(ticket: ticket),
+              const DottedDivider(spaceAbove: 8, spaceBelow: 12),
+              _TicketFooter(ticket: ticket),
+              const SizedBox(height: 10),
+              if (!ticket.paymentCompleted) ...[
+                const DottedDivider(spaceBelow: 5),
+                _PaymentRow(ticket: ticket),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TicketClipper extends CustomClipper<Path> {
+  final double holeRadius;
+  final double top;
+
+  TicketClipper({required this.holeRadius, required this.top});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(0.0, top)
+      ..arcToPoint(
+        Offset(0, top + holeRadius),
+        clockwise: true,
+        radius: const Radius.circular(1),
+      )
+      ..lineTo(0.0, size.height)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width, top + holeRadius)
+      ..arcToPoint(
+        Offset(size.width, top),
+        clockwise: true,
+        radius: const Radius.circular(1),
+      );
+    path.lineTo(size.width, 0.0);
+
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(TicketClipper oldClipper) => true;
+}
+
+class _PaymentRow extends StatelessWidget {
+  const _PaymentRow({required this.ticket});
+
+  final TicketOption ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TicketDetailsBlock(ticket: ticket),
-                  const DottedDivider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      _PaidTag(paid: ticket.paymentCompleted),
-                      _QuantityAndTotal(
-                        price: ticket.event.price,
-                        quantity: ticket.quantity,
-                      ),
-                    ],
-                  ),
-                  if (!ticket.paymentCompleted) ...[
-                    const SizedBox(height: 15),
-                    PaymentButton(ticket: ticket),
-                  ],
-                ],
-              ),
+        ColoredTextTag(
+          text: 'Payment Pending',
+          backgroundColor: colorScheme.primaryContainer,
+          foregroundColor: colorScheme.onPrimaryContainer,
+        ),
+        const SizedBox(width: 20),
+        Flexible(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                PaymentPage.route(
+                  ticket: ticket,
+                  chatbotBloc: context.read<ChatbotBloc>(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(double.infinity, 35),
             ),
+            child: const Text('Pay Now'),
           ),
         ),
       ],
@@ -45,49 +108,108 @@ class TicketOptionTile extends OptionTile {
   }
 }
 
-class _QuantityAndTotal extends StatelessWidget {
-  const _QuantityAndTotal({required this.quantity, required this.price});
+class _TicketFooter extends StatelessWidget {
+  const _TicketFooter({required this.ticket});
 
-  final int quantity;
-  final int price;
+  final TicketOption ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _TitleAndDetailPair(
+            title: 'Date',
+            detail: formatDate(ticket.slot.date),
+          ),
+          _TitleAndDetailPair(
+            title: 'Starting Time',
+            detail: ticket.slot.timeSlot.startingTimeString,
+          ),
+          _TitleAndDetailPair(
+            title: 'Ending Time',
+            detail: ticket.slot.timeSlot.endingTimeString,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TicketHeader extends StatelessWidget {
+  const _TicketHeader({required this.ticket});
+
+  final TicketOption ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            ticket.event.image,
+            height: 60,
+            width: 60,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(width: 15),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _TitleAndQuantity(ticket: ticket),
+              const SizedBox(height: 5),
+              LocationDetails(event: ticket.event),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TitleAndQuantity extends StatelessWidget {
+  const _TitleAndQuantity({required this.ticket});
+
+  final TicketOption ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(ticket.event.title, style: textTheme.titleLarge),
+        ),
+        ColoredTextTag(text: '×${ticket.quantity}'),
+      ],
+    );
+  }
+}
+
+class _TitleAndDetailPair extends StatelessWidget {
+  const _TitleAndDetailPair({required this.title, required this.detail});
+
+  final String title;
+  final String detail;
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Quantity: $quantity', style: textTheme.bodySmall),
-        const SizedBox(height: 2),
-        Text('Total: \$${quantity * price}', style: textTheme.labelMedium),
+        Text(title, style: textTheme.labelLarge),
+        Text(detail, style: textTheme.titleSmall),
       ],
-    );
-  }
-}
-
-class _PaidTag extends StatelessWidget {
-  const _PaidTag({required this.paid});
-
-  final bool paid;
-
-  @override
-  Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: paid ? colorScheme.primary : colorScheme.error,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        color: paid ? colorScheme.primaryContainer : colorScheme.errorContainer,
-      ),
-      child: Text(
-        paid ? 'Paid' : 'Payment Pending',
-        style: textTheme.labelSmall,
-      ),
     );
   }
 }
