@@ -262,5 +262,6 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
 
   void _onMuteToggled(ChatbotMuteToggled event, Emitter<ChatbotState> emit) {
     emit(state.toggleMute());
+    if (state.isMuted) _audioManager.pauseAudio();
   }
 }
