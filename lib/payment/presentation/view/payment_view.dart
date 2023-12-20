@@ -69,13 +69,7 @@ class _CompletePaymentButton extends StatelessWidget {
                   .add(PaymentAttemptCompletionEvent(ticketId: ticket.id))
               : null,
           child: state.status == PaymentStatus.loading
-              ? SizedBox(
-                  height: 20,
-                  child: SpinKitThreeBounce(
-                    size: 12,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                )
+              ? const SizedBox(height: 20, child: CustomProgessIndicator())
               : const Text('Complete Payment'),
         ),
       );

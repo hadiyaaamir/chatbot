@@ -1,7 +1,7 @@
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
+import 'package:chatbot/utils/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -139,9 +139,7 @@ class _TextRectangle extends StatelessWidget {
                 : _AudioMessage(message: message!.message)
             : Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [
-                  SpinKitThreeBounce(size: 12, color: textColor),
-                ],
+                children: [CustomProgessIndicator(color: textColor)],
               ),
       ),
     );
