@@ -48,7 +48,7 @@ class JustAudioPlayerApi extends AudioPlayerApi {
 
   @override
   Future<void> pauseAudio() async {
-    await _audioPlayer.pause();
+    if (_audioPlayer.playing) await _audioPlayer.pause();
   }
 
   @override
