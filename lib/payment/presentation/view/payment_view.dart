@@ -8,126 +8,85 @@ class PaymentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Complete Payment'), centerTitle: true),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+      appBar: AppBar(),
+      body: BlocListener<PaymentBloc, PaymentState>(
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) {
+          if (state.status == PaymentStatus.failure) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text('Unexpected error occured')),
+              );
+          }
+          if (state.status == PaymentStatus.success) {
+            Navigator.pushReplacement(
+              context,
+              PaymentSuccessfulView.route(ticket: ticket),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const DottedDivider(),
-                _PaymentTicketHeader(ticket: ticket),
-                const DottedDivider(spaceBelow: 15),
-                _UserDetails(ticket: ticket),
-                const SizedBox(height: 30),
-                TicketDetailsBlock(ticket: ticket, smallerPrice: true),
-                const DottedDivider(spaceAbove: 15),
-                _QuantityTotalBlock(ticket: ticket),
-                const DottedDivider(spaceBelow: 20),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 40),
-                  child: CustomButton(label: 'Pay Now', onPressed: () {}),
-                ),
+                PaymentOverviewTile(ticket: ticket),
+                const SizedBox(height: 25),
+                const _PaymentViewHeading(text: 'Order Summary'),
+                const SizedBox(height: 8),
+                OrderDetailsTile(ticket: ticket),
+                const SizedBox(height: 25),
+                const _PaymentViewHeading(text: 'Personal Information'),
+                const SizedBox(height: 8),
+                PersonalInformationTile(ticket: ticket),
               ],
             ),
           ),
         ),
       ),
+      floatingActionButton: _CompletePaymentButton(ticket: ticket),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
 
-class _PaymentTicketHeader extends StatelessWidget {
-  const _PaymentTicketHeader({required this.ticket});
+class _CompletePaymentButton extends StatelessWidget {
+  const _CompletePaymentButton({required this.ticket});
 
   final TicketOption ticket;
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-
-    return Padding(
-      padding: const EdgeInsets.all(2),
-      child: Column(
-        children: [
-          Text('Ticket ID: ${ticket.id}', style: textTheme.titleSmall),
-          const SizedBox(height: 5),
-          Text(
-            'Issued on ${DateFormat('dd MMM yyyy').format(ticket.createdAt)}',
-            style: textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.outline,
-            ),
-          ),
-        ],
-      ),
-    );
+    return BlocBuilder<PaymentBloc, PaymentState>(builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: ElevatedButton(
+          onPressed: state.status != PaymentStatus.loading
+              ? () => context
+                  .read<PaymentBloc>()
+                  .add(PaymentAttemptCompletionEvent(ticketId: ticket.id))
+              : null,
+          child: state.status == PaymentStatus.loading
+              ? const SizedBox(height: 20, child: CustomProgessIndicator())
+              : const Text('Complete Payment'),
+        ),
+      );
+    });
   }
 }
 
-class _UserDetails extends StatelessWidget {
-  const _UserDetails({required this.ticket});
+class _PaymentViewHeading extends StatelessWidget {
+  const _PaymentViewHeading({required this.text});
 
-  final TicketOption ticket;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _LabelTextPair(label: 'Username', text: ticket.username),
-          const SizedBox(height: 5),
-          _LabelTextPair(label: 'Phone', text: ticket.phone),
-        ],
-      ),
-    );
-  }
-}
-
-class _LabelTextPair extends StatelessWidget {
-  const _LabelTextPair({
-    required this.label,
-    required this.text,
-  });
-
-  final String label;
   final String text;
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-
-    return Row(
-      children: [
-        Text('$label: ', style: textTheme.labelLarge),
-        Text(text, style: textTheme.bodyMedium),
-      ],
-    );
-  }
-}
-
-class _QuantityTotalBlock extends StatelessWidget {
-  const _QuantityTotalBlock({required this.ticket});
-
-  final TicketOption ticket;
-
-  @override
-  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text('Quantity: ${ticket.quantity}'),
-          const SizedBox(height: 5),
-          Text(
-            'Total: \$${ticket.event.price * ticket.quantity}',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Text(text, style: Theme.of(context).textTheme.titleLarge),
     );
   }
 }

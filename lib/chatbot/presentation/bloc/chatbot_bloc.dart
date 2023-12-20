@@ -4,7 +4,6 @@ import 'package:audio_manager/audio_manager.dart';
 
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/events/events.dart';
-import 'package:chatbot/events/presentation/models/chat_event_slot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:equatable/equatable.dart';
 
@@ -33,6 +32,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     on<ChatbotMessageEventSlotSelected>(_onMessageSlotSelected);
     on<ChatbotMessageEventTimeSlotSelected>(_onMessageTimeSlotSelected);
 
+    on<ChatbotMuteToggled>(_onMuteToggled);
+
     _audioManager.audioPlayerCompleteStream.listen((isStopped) {
       if (isStopped) add(ChatbotAllAudioMessagesStopped());
     });
@@ -46,7 +47,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit,
   ) async {
     await _chatbotRepository.initialise();
-    await _sendHelloMessage(emit);
+    if (state.messages.isEmpty) await _sendHelloMessage(emit);
   }
 
   Future<void> _sendHelloMessage(Emitter<ChatbotState> emit) async {
@@ -66,6 +67,8 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     Emitter<ChatbotState> emit, {
     bool showSentMessage = true,
   }) async {
+    if (state.messages.isEmpty) await _chatbotRepository.initialise();
+
     final messagePayload = event.message.message;
 
     if (messagePayload.isEmpty) return;
@@ -89,9 +92,10 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
           : await _chatbotRepository.sendAudioMessage(
               await _audioManager.audioFromPath(messagePayload.audio!.audio),
             );
-
-      final outputAudio = _audioManager.stringToByte(response?.audio?.audio);
-      if (outputAudio != null) _audioManager.playAudioFromBytes(outputAudio);
+      if (!state.isMuted) {
+        final outputAudio = _audioManager.stringToByte(response?.audio?.audio);
+        if (outputAudio != null) _audioManager.playAudioFromBytes(outputAudio);
+      }
 
       emit(
         state.copyWith(
@@ -254,5 +258,9 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
         timeSlot: event.selectedTime,
       ),
     );
+  }
+
+  void _onMuteToggled(ChatbotMuteToggled event, Emitter<ChatbotState> emit) {
+    emit(state.toggleMute());
   }
 }

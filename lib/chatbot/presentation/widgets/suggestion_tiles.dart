@@ -1,4 +1,5 @@
 import 'package:chatbot/chatbot/chatbot.dart';
+import 'package:chatbot/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 
 class SuggestionTiles extends StatelessWidget {
@@ -19,7 +20,7 @@ class SuggestionTiles extends StatelessWidget {
                       state.messages.first.message.suggestions.length,
                       (index) {
                         final message = state.messages.first.message;
-                        return _SuggestionTile(
+                        return SuggestionTile(
                           suggestion: message.suggestions[index],
                           usernameRequired: message.requireUsername,
                         );
@@ -33,14 +34,18 @@ class SuggestionTiles extends StatelessWidget {
   }
 }
 
-class _SuggestionTile extends StatelessWidget {
-  const _SuggestionTile({
+class SuggestionTile extends StatelessWidget {
+  const SuggestionTile({
+    super.key,
     required this.suggestion,
-    required this.usernameRequired,
+    this.usernameRequired = false,
+    this.navigateToChatbot = false,
   });
 
   final ChatSuggestion suggestion;
   final bool usernameRequired;
+
+  final bool navigateToChatbot;
 
   @override
   Widget build(BuildContext context) {
@@ -52,22 +57,30 @@ class _SuggestionTile extends StatelessWidget {
           side: BorderSide(color: Theme.of(context).colorScheme.outline),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          foregroundColor: Theme.of(context).colorScheme.onBackground,
+          textStyle: Theme.of(context).textTheme.bodySmall,
         ),
-        child: Text(
-          suggestion.tileText,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        onPressed: () => context.read<ChatbotBloc>().add(
-              ChatbotMessageSent(
-                attachUsername: usernameRequired,
-                message: ChatMessage(
-                  message: MessagePayload(
-                    text: suggestion.sendMessageText,
-                    displayText: suggestion.messageText,
+        child: Text(suggestion.tileText),
+        onPressed: () {
+          if (navigateToChatbot) {
+            context.read<NavigationBloc>().add(
+                  NavigationIndexChanged(
+                    selectedIndex: NavigablePages.chat.index,
+                  ),
+                );
+          }
+          context.read<ChatbotBloc>().add(
+                ChatbotMessageSent(
+                  attachUsername: usernameRequired,
+                  message: ChatMessage(
+                    message: MessagePayload(
+                      text: suggestion.sendMessageText,
+                      displayText: suggestion.messageText,
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+        },
       ),
     );
   }

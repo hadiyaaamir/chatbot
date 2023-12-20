@@ -18,7 +18,9 @@ class _MessagesState extends State<Messages> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: BlocListener<ChatbotBloc, ChatbotState>(
           listenWhen: (previous, current) =>
-              previous.messages.length != current.messages.length,
+              previous.messages.length != current.messages.length &&
+              current.messages.isNotEmpty &&
+              current.messages.first.sentMessage,
           listener: (context, state) {
             scrollToBottom();
           },

@@ -5,7 +5,10 @@ class PaymentPage extends StatelessWidget {
 
   final TicketOption ticket;
 
-  static Route<dynamic> route({required TicketOption ticket}) {
+  static Route<dynamic> route({
+    required TicketOption ticket,
+    required ChatbotBloc chatbotBloc,
+  }) {
     return MaterialPageRoute<dynamic>(
       builder: (_) => PaymentPage(ticket: ticket),
     );
@@ -13,6 +16,13 @@ class PaymentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaymentView(ticket: ticket);
+    return BlocProvider(
+      create: (context) => PaymentBloc(
+        paymentRepository: PaymentRepositoryImpl(
+          paymentApi: MockPaymentApi(),
+        ),
+      ),
+      child: PaymentView(ticket: ticket),
+    );
   }
 }

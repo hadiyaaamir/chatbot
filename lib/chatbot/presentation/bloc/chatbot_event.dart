@@ -70,3 +70,5 @@ class ChatbotMessageEventTimeSlotSelected extends ChatbotEvent {
   @override
   List<Object> get props => [event, selectedEvent, selectedTime];
 }
+
+class ChatbotMuteToggled extends ChatbotEvent {}

@@ -1,75 +1,7 @@
 part of 'widgets.dart';
 
 class EventDetailsBlock extends StatelessWidget {
-  const EventDetailsBlock({
-    super.key,
-    required this.event,
-    this.smallerPrice = false,
-  });
-
-  final Event event;
-  final bool smallerPrice;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _NameAndDateBlock(event: event),
-              _Price(price: event.price, smallerPrice: smallerPrice),
-            ],
-          ),
-        ),
-        _LocationDetails(event: event),
-      ],
-    );
-  }
-}
-
-class _Price extends StatelessWidget {
-  const _Price({required this.price, required this.smallerPrice});
-
-  final int price;
-  final bool smallerPrice;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '\$$price',
-      style: smallerPrice
-          ? Theme.of(context).textTheme.titleMedium
-          : Theme.of(context).textTheme.titleLarge,
-    );
-  }
-}
-
-class _LocationDetails extends StatelessWidget {
-  const _LocationDetails({required this.event});
-
-  final Event event;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          Icons.location_on_outlined,
-          size: Theme.of(context).textTheme.bodyLarge?.fontSize,
-        ),
-        Expanded(child: Text('${event.city}, ${event.country}')),
-      ],
-    );
-  }
-}
-
-class _NameAndDateBlock extends StatelessWidget {
-  const _NameAndDateBlock({required this.event});
+  const EventDetailsBlock({super.key, required this.event});
 
   final Event event;
 
@@ -80,12 +12,55 @@ class _NameAndDateBlock extends StatelessWidget {
     final daysString = '$days day${days > 1 ? 's' : ''}';
 
     final TextTheme textTheme = Theme.of(context).textTheme;
-    return Column(
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('$range • $daysString', style: textTheme.bodyMedium),
+          const SizedBox(height: 5),
+          Text(event.title, style: textTheme.titleLarge),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(child: LocationDetails(event: event)),
+              ColoredTextTag(text: '\$${event.price}'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LocationDetails extends StatelessWidget {
+  const LocationDetails({super.key, required this.event});
+
+  final Event event;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text(event.title, style: textTheme.titleMedium),
-        const SizedBox(height: 5),
-        Text('$range ($daysString)', style: textTheme.bodySmall),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
+          child: Icon(
+            Icons.location_on_rounded,
+            color: Theme.of(context).colorScheme.outline,
+            size: Theme.of(context).textTheme.bodyLarge?.fontSize,
+          ),
+        ),
+        Flexible(
+          child: Text(
+            '${event.city}, ${event.country}',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ),
       ],
     );
   }

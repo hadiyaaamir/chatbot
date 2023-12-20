@@ -7,11 +7,22 @@ class EventSlotsSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 5, bottom: 5),
+          child: Text('Select a Date', style: textTheme.labelLarge),
+        ),
         _DateSlotCards(event: event),
-        const SizedBox(height: 5),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: event.selectedSlot != null
+              ? Text('Select a Time Slot', style: textTheme.labelLarge)
+              : const SizedBox(height: 0),
+        ),
         _TimeSlotCards(event: event),
       ],
     );
@@ -59,7 +70,10 @@ class _TimeSlotCards extends StatelessWidget {
                 (index) {
                   final timeSlot = slot.timeSlots[index];
                   return _TimeSlotCard(
-                      event: event, slot: slot, timeSlot: timeSlot);
+                    event: event,
+                    slot: slot,
+                    timeSlot: timeSlot,
+                  );
                 },
               ),
             )
@@ -96,19 +110,22 @@ class _TimeSlotCard extends StatelessWidget {
             ),
           ),
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-          side: BorderSide(
-            color:
-                isSelected ? colorScheme.outline : colorScheme.primaryContainer,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color:
+            isSelected ? colorScheme.secondary : colorScheme.primaryContainer,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           child: Column(
             children: [
-              Text(time.toString(), style: textTheme.labelMedium),
+              Text(
+                time.toString(),
+                style: textTheme.labelMedium?.copyWith(
+                  color: isSelected
+                      ? colorScheme.onSecondary
+                      : colorScheme.onBackground,
+                ),
+              ),
             ],
           ),
         ),
@@ -136,24 +153,25 @@ class _DateSlotCard extends StatelessWidget {
             ChatbotMessageEventSlotSelected(event: event, selectedEvent: slot),
           ),
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-          side: BorderSide(
-            color: isSelected
-                ? colorScheme.onPrimaryContainer
-                : colorScheme.primaryContainer,
-            width: isSelected ? 1.5 : 1,
-          ),
-        ),
-        color: isSelected ? colorScheme.primaryContainer : null,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        color:
+            isSelected ? colorScheme.secondary : colorScheme.primaryContainer,
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
           child: Column(
             children: [
-              Text('${date.day}', style: textTheme.titleLarge),
               Text(
-                getMonth(date).toUpperCase(),
-                style: textTheme.labelSmall?.copyWith(fontSize: 10),
+                '${date.day}',
+                style: textTheme.titleLarge?.copyWith(
+                  color: isSelected ? colorScheme.onSecondary : null,
+                ),
+              ),
+              Text(
+                getMonth(date),
+                style: textTheme.labelMedium?.copyWith(
+                  color: isSelected ? colorScheme.onSecondary : null,
+                ),
               ),
             ],
           ),
