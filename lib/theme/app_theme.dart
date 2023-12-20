@@ -8,7 +8,7 @@ class AppTheme {
         useMaterial3: true,
         colorScheme: colors.colorSchemeLight,
         textTheme: textStyles.textTheme,
-        disabledColor: colors.veryLightGrey,
+        disabledColor: colors.grey,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: colors.coral,
           foregroundColor: colors.white,

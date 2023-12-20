@@ -32,7 +32,7 @@ class _ChatTextfieldState extends State<ChatTextfield> {
                 ),
               ),
               const SizedBox(width: 5),
-              const _RecordingButton(),
+              _RecordingButton(enabled: enabled),
             ],
           );
         },
@@ -60,7 +60,6 @@ class _TextEntryAreaState extends State<_TextEntryArea> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      // cursorColor: Theme.of(context).colorScheme.onPrimaryContainer,
       enabled: widget.enabled,
       controller: _messageController,
       style: Theme.of(context).textTheme.titleSmall,
@@ -111,13 +110,20 @@ class _SendButton extends StatelessWidget {
               messageController.clear();
             }
           : null,
-      icon: Icon(Icons.send, color: colorScheme.outlineVariant),
+      icon: Icon(
+        Icons.send,
+        color: enabled
+            ? colorScheme.outlineVariant
+            : Theme.of(context).disabledColor,
+      ),
     );
   }
 }
 
 class _RecordingButton extends StatelessWidget {
-  const _RecordingButton();
+  const _RecordingButton({required this.enabled});
+
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -126,13 +132,18 @@ class _RecordingButton extends StatelessWidget {
         return Row(
           children: [
             FloatingActionButton(
-              onPressed: () {
-                context.read<ChatbotBloc>().add(
-                      state.isRecordingMessage
-                          ? ChatbotMessageRecordingStopped()
-                          : ChatbotMessageRecordingStarted(),
-                    );
-              },
+              onPressed: enabled
+                  ? () {
+                      context.read<ChatbotBloc>().add(
+                            state.isRecordingMessage
+                                ? ChatbotMessageRecordingStopped()
+                                : ChatbotMessageRecordingStarted(),
+                          );
+                    }
+                  : null,
+              backgroundColor: enabled
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).disabledColor,
               shape: const CircleBorder(),
               mini: true,
               child: Icon(state.isRecordingMessage ? Icons.pause : Icons.mic),
