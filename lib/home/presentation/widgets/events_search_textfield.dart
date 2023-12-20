@@ -16,9 +16,10 @@ class _EventsSearchTextFieldState extends State<EventsSearchTextField> {
   Widget build(BuildContext context) {
     return BlocListener<EventsBloc, EventsState>(
       listenWhen: (previous, current) =>
-          previous.searchText != current.searchText &&
-          current.searchText.isEmpty,
-      listener: (context, state) => searchController.clear(),
+          previous.searchText != current.searchText,
+      listener: (context, state) {
+        if (state.searchText.isEmpty) searchController.clear();
+      },
       child: TextField(
         controller: searchController,
         style: Theme.of(context).textTheme.titleSmall,
@@ -26,9 +27,9 @@ class _EventsSearchTextFieldState extends State<EventsSearchTextField> {
           hintText: 'Search events',
           prefixIcon: Icon(Icons.search),
         ),
-        onChanged: (searchText) => context
-            .read<EventsBloc>()
-            .add(EventsSearchTextChanged(searchText: searchText)),
+        onChanged: (searchText) => context.read<EventsBloc>().add(
+              EventsSearchTextChanged(searchText: searchText),
+            ),
       ),
     );
   }
