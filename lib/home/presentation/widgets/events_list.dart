@@ -1,8 +1,8 @@
 import 'package:chatbot/events/events.dart';
 import 'package:chatbot/navigation/navigation.dart';
+import 'package:chatbot/utils/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class EventsList extends StatelessWidget {
   const EventsList({super.key});
@@ -33,10 +33,7 @@ class EventsList extends StatelessWidget {
                           currentFilter: state.filter.text,
                           searchText: state.searchText,
                         )
-                  : SpinKitThreeBounce(
-                      size: 12,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+                  : const CustomProgessIndicator(),
             )
           ],
         );
