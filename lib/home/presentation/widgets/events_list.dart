@@ -29,7 +29,10 @@ class EventsList extends StatelessWidget {
               child: state.status == EventsStatus.success
                   ? filteredEvents.isNotEmpty
                       ? _NonEmptyList(filteredEvents: filteredEvents)
-                      : _EmptyList(currentFilter: state.filter.text)
+                      : _EmptyList(
+                          currentFilter: state.filter.text,
+                          searchText: state.searchText,
+                        )
                   : SpinKitThreeBounce(
                       size: 12,
                       color: Theme.of(context).colorScheme.secondary,
@@ -62,9 +65,10 @@ class _NonEmptyList extends StatelessWidget {
 }
 
 class _EmptyList extends StatelessWidget {
-  const _EmptyList({required this.currentFilter});
+  const _EmptyList({required this.currentFilter, required this.searchText});
 
   final String currentFilter;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +76,9 @@ class _EmptyList extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'No $currentFilter Events currently available',
+          searchText.isEmpty
+              ? 'No $currentFilter Events currently available'
+              : 'No results found for \'$searchText\'',
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -82,18 +88,43 @@ class _EmptyList extends StatelessWidget {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: OutlinedButton(
-                  onPressed: () => context
-                      .read<EventsBloc>()
-                      .add(const EventsFilterChanged(filter: EventsFilter.all)),
-                  child: const Text('View All Events'),
-                ),
+                child: searchText.isEmpty
+                    ? const _ViewAllEventsButton()
+                    : const _ClearSearchButton(),
               ),
             ),
             const Flexible(flex: 1, child: SizedBox(width: 0)),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _ViewAllEventsButton extends StatelessWidget {
+  const _ViewAllEventsButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () => context
+          .read<EventsBloc>()
+          .add(const EventsFilterChanged(filter: EventsFilter.all)),
+      child: const Text('View All Events'),
+    );
+  }
+}
+
+class _ClearSearchButton extends StatelessWidget {
+  const _ClearSearchButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () => context
+          .read<EventsBloc>()
+          .add(const EventsSearchTextChanged(searchText: '')),
+      child: const Text('Clear Search'),
     );
   }
 }
