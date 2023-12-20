@@ -16,3 +16,11 @@ final class EventsFilterChanged extends EventsEvent {
   @override
   List<Object> get props => [filter];
 }
+
+class EventsSearchTextChanged extends EventsEvent {
+  const EventsSearchTextChanged({required this.searchText});
+  final String searchText;
+
+  @override
+  List<Object> get props => [searchText];
+}

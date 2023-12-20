@@ -13,6 +13,7 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
         super(const EventsInitial()) {
     on<EventsOnSubscribedEvent>(_onSubscription);
     on<EventsFilterChanged>(_onFilterChanged);
+    on<EventsSearchTextChanged>(_onSearchTextChanged);
   }
 
   final EventsRepository _eventsRepository;
@@ -32,5 +33,12 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
 
   void _onFilterChanged(EventsFilterChanged event, Emitter<EventsState> emit) {
     emit(state.copyWith(filter: event.filter));
+  }
+
+  void _onSearchTextChanged(
+    EventsSearchTextChanged event,
+    Emitter<EventsState> emit,
+  ) {
+    emit(state.copyWith(searchText: event.searchText));
   }
 }

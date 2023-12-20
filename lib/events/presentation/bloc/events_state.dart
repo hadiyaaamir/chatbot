@@ -7,28 +7,34 @@ class EventsState extends Equatable {
     required this.events,
     required this.filter,
     required this.status,
+    required this.searchText,
   });
 
   final List<Event> events;
   final EventsFilter filter;
   final EventsStatus status;
+  final String searchText;
 
   EventsState copyWith({
     List<Event>? events,
     EventsFilter? filter,
     EventsStatus? status,
+    String? searchText,
   }) {
     return EventsState(
       events: events ?? this.events,
       filter: filter ?? this.filter,
       status: status ?? this.status,
+      searchText: searchText ?? this.searchText,
     );
   }
 
-  Iterable<Event> get filteredEvents => filter.applyAll(events);
+  Iterable<Event> get filteredEvents => filter.applyAll(events).where((event) {
+        return event.title.toLowerCase().contains(searchText.toLowerCase());
+      }).toList();
 
   @override
-  List<Object> get props => [events, filter, status];
+  List<Object> get props => [events, filter, status, searchText];
 }
 
 final class EventsInitial extends EventsState {
@@ -37,5 +43,6 @@ final class EventsInitial extends EventsState {
           events: const [],
           filter: EventsFilter.all,
           status: EventsStatus.initial,
+          searchText: '',
         );
 }
