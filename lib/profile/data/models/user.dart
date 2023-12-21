@@ -9,6 +9,7 @@ class User extends Equatable {
     this.lastname = '',
     this.city = '',
     required this.country,
+    this.profilePicture = 'https://randomuser.me/api/portraits/men/0.jpg',
   });
 
   final String email;
@@ -18,8 +19,17 @@ class User extends Equatable {
   final String phoneNumber;
   final String city;
   final String country;
+  final String profilePicture;
 
   @override
-  List<Object?> get props =>
-      [email, username, firstname, lastname, phoneNumber, city, country];
+  List<Object?> get props => [
+        email,
+        username,
+        firstname,
+        lastname,
+        phoneNumber,
+        city,
+        country,
+        profilePicture,
+      ];
 }
