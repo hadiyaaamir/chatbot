@@ -16,6 +16,7 @@ class ProfileView extends StatelessWidget {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Image.network(state.currentUser!.profilePicture),
                             Text(state.currentUser!.firstname),
                             Text(state.currentUser!.lastname),
                             Text(state.currentUser!.username),

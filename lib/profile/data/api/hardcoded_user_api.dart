@@ -6,8 +6,9 @@ class HardcodedUserApi extends UserApi {
   @override
   Future<User> getCurrentUser(String username) async {
     if (_currentUser != null) return Future.value(_currentUser);
+
     await Future.delayed(const Duration(seconds: 1));
-    return const User(
+    return User(
       email: 'hadiyaaamir222@gmail.com',
       username: kHardcodedUsername,
       firstname: 'Hadiya',
@@ -15,6 +16,16 @@ class HardcodedUserApi extends UserApi {
       phoneNumber: '1234567743',
       city: 'Karachi',
       country: 'Pakistan',
+      profilePicture: _randomProfilePicture,
     );
+  }
+
+  String get _randomProfilePicture {
+    int number = Random().nextInt(100);
+
+    List<String> genders = ['men', 'women'];
+    String gender = genders[Random().nextInt(genders.length)];
+
+    return 'https://randomuser.me/api/portraits/$gender/$number.jpg';
   }
 }
