@@ -1,27 +1,24 @@
 part of 'profile_bloc.dart';
 
+enum ProfileStatus { initial, loading, success, failure }
 
 class ProfileState extends Equatable {
+  const ProfileState({this.currentUser, required this.status});
 
-  const ProfileState({
-    this.customProperty = 'Default Value',
-  });
-
-  final String customProperty;
+  final User? currentUser;
+  final ProfileStatus status;
 
   @override
-  List<Object> get props => [customProperty];
+  List<Object?> get props => [currentUser, status];
 
-  ProfileState copyWith({
-    String? customProperty,
-  }) {
+  ProfileState copyWith({User? currentUser, ProfileStatus? status}) {
     return ProfileState(
-      customProperty: customProperty ?? this.customProperty,
+      currentUser: currentUser ?? this.currentUser,
+      status: status ?? this.status,
     );
   }
 }
 
-
 class ProfileInitial extends ProfileState {
-  const ProfileInitial() : super();
+  const ProfileInitial({super.status = ProfileStatus.initial}) : super();
 }
