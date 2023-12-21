@@ -14,6 +14,7 @@ class HardcodedUserApi extends UserApi {
       firstname: 'Hadiya',
       lastname: 'Aamir',
       phoneNumber: '1234567743',
+      dateOfBirth: DateTime(2001, 1, 18),
       city: 'Karachi',
       country: 'Pakistan',
       profilePicture: _randomProfilePicture,

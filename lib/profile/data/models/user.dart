@@ -5,6 +5,7 @@ class User extends Equatable {
     required this.email,
     required this.username,
     required this.firstname,
+    required this.dateOfBirth,
     this.phoneNumber = '',
     this.lastname = '',
     this.city = '',
@@ -16,6 +17,7 @@ class User extends Equatable {
   final String username;
   final String firstname;
   final String lastname;
+  final DateTime dateOfBirth;
   final String phoneNumber;
   final String city;
   final String country;

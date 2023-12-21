@@ -16,7 +16,18 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return const ProfileView();
+    return Scaffold(
+      appBar: AppBar(),
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          return state.status == ProfileStatus.loading
+              ? const CustomProgessIndicator()
+              : state.currentUser == null
+                  ? const Center(child: Text('Error: User not found.'))
+                  : ProfileView(user: state.currentUser!);
+        },
+      ),
+    );
   }
 
   @override
