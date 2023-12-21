@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:chatbot/profile/profile.dart';
 import 'package:equatable/equatable.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,14 +9,24 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super(const ProfileInitial()) {
-    on<ProfileCustomEvent>(_onProfileEvent);
+  ProfileBloc({required UserRepository userRepository})
+      : _userRepository = userRepository,
+        super(const ProfileInitial()) {
+    on<ProfileSetUserEvent>(_onSetUser);
   }
 
-  FutureOr<void> _onProfileEvent(
-    ProfileCustomEvent event,
+  final UserRepository _userRepository;
+
+  Future<void> _onSetUser(
+    ProfileSetUserEvent event,
     Emitter<ProfileState> emit,
-  ) {
-    // TODO: Add Logic
+  ) async {
+    try {
+      emit(state.copyWith(status: ProfileStatus.loading));
+      final User user = await _userRepository.getCurrentUser(event.username);
+      emit(state.copyWith(currentUser: user, status: ProfileStatus.success));
+    } catch (e) {
+      emit(state.copyWith(status: ProfileStatus.failure));
+    }
   }
 }
