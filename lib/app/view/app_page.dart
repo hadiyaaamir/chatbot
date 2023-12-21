@@ -31,6 +31,11 @@ class _AppPageState extends State<AppPage> {
               ),
             )..add(ChatbotSubscription()),
           ),
+          BlocProvider(
+            create: (context) => ProfileBloc(
+              userRepository: UserRepositoryImpl(userApi: HardcodedUserApi()),
+            )..add(const ProfileSetUserEvent(username: kHardcodedUsername)),
+          ),
         ],
         child: const AppView(),
       ),
