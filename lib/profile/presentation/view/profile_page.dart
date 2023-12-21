@@ -16,10 +16,7 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => ProfileBloc(),
-      child: const ProfileView(),
-    );
+    return const ProfileView();
   }
 
   @override

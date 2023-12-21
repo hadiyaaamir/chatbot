@@ -5,8 +5,26 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Profile Page')),
+    return Scaffold(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          return Center(
+              child: state.status == ProfileStatus.loading
+                  ? const CustomProgessIndicator()
+                  : state.currentUser == null
+                      ? const Text('Error: User not found.')
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(state.currentUser!.firstname),
+                            Text(state.currentUser!.lastname),
+                            Text(state.currentUser!.username),
+                            Text(state.currentUser!.city),
+                            Text(state.currentUser!.country),
+                          ],
+                        ));
+        },
+      ),
     );
   }
 }

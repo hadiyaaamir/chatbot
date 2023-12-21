@@ -5,13 +5,12 @@ abstract class ProfileEvent extends Equatable {
 
   @override
   List<Object> get props => [];
-
 }
 
-class ProfileCustomEvent extends ProfileEvent {
-  const ProfileCustomEvent({required this.property});
-  final String property;
+class ProfileSetUserEvent extends ProfileEvent {
+  const ProfileSetUserEvent({required this.username});
+  final String username;
 
   @override
-  List<Object> get props => [property];
+  List<Object> get props => [username];
 }
