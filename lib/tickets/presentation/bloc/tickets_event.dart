@@ -7,4 +7,4 @@ abstract class TicketsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TicketsSubscriptionRequestedEvent extends TicketsEvent {}
+class TicketsFetchTicketsEvent extends TicketsEvent {}

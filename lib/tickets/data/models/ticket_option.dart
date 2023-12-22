@@ -36,6 +36,28 @@ class Ticket extends Option {
     );
   }
 
+  Ticket copyWith({
+    String? id,
+    Event? event,
+    String? username,
+    String? phone,
+    int? quantity,
+    bool? paymentCompleted,
+    DateTime? createdAt,
+    TicketSlot? slot,
+  }) {
+    return Ticket(
+      id: id ?? this.id,
+      event: event ?? this.event,
+      username: username ?? this.username,
+      phone: phone ?? this.phone,
+      quantity: quantity ?? this.quantity,
+      paymentCompleted: paymentCompleted ?? this.paymentCompleted,
+      createdAt: createdAt ?? this.createdAt,
+      slot: slot ?? this.slot,
+    );
+  }
+
   @override
   List<Object> get props => [
         id,
