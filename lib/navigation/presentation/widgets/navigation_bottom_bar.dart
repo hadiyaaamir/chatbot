@@ -10,6 +10,7 @@ class NavigationBottomBar extends StatelessWidget {
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
         return BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           items: List.generate(items.length, (index) {
             final page = items[index];
             return BottomNavigationBarItem(
