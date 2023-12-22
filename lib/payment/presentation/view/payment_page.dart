@@ -5,10 +5,7 @@ class PaymentPage extends StatelessWidget {
 
   final TicketOption ticket;
 
-  static Route<dynamic> route({
-    required TicketOption ticket,
-    required ChatbotBloc chatbotBloc,
-  }) {
+  static Route<dynamic> route({required TicketOption ticket}) {
     return MaterialPageRoute<dynamic>(
       builder: (_) => PaymentPage(ticket: ticket),
     );
