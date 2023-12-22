@@ -7,7 +7,7 @@ class TicketDetailsBlock extends StatelessWidget {
     this.smallerPrice = false,
   });
 
-  final TicketOption ticket;
+  final Ticket ticket;
   final bool smallerPrice;
 
   @override
@@ -35,7 +35,7 @@ class TicketDetailsBlock extends StatelessWidget {
 class _NameAndDateBlock extends StatelessWidget {
   const _NameAndDateBlock({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {

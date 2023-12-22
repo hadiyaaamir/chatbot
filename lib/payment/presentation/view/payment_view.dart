@@ -3,7 +3,7 @@ part of 'view.dart';
 class PaymentView extends StatelessWidget {
   const PaymentView({super.key, required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class PaymentView extends StatelessWidget {
 class _CompletePaymentButton extends StatelessWidget {
   const _CompletePaymentButton({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {

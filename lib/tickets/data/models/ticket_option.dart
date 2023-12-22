@@ -1,7 +1,7 @@
 part of 'models.dart';
 
-class TicketOption extends Option {
-  const TicketOption({
+class Ticket extends Option {
+  const Ticket({
     required this.id,
     required this.event,
     required this.username,
@@ -21,8 +21,8 @@ class TicketOption extends Option {
   final DateTime createdAt;
   final TicketSlot slot;
 
-  factory TicketOption.fromJson(Map<String, dynamic> json) {
-    return TicketOption(
+  factory Ticket.fromJson(Map<String, dynamic> json) {
+    return Ticket(
       id: json['id'] as String? ?? '',
       event: Event.fromJson(json['event'] as Map<String, dynamic>? ?? {}),
       username: json['username'] as String? ?? '',

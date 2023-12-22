@@ -3,7 +3,7 @@ part of 'widgets.dart';
 class OrderDetailsTile extends StatelessWidget {
   const OrderDetailsTile({super.key, required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
