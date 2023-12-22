@@ -3,9 +3,9 @@ part of 'view.dart';
 class PaymentSuccessfulView extends StatelessWidget {
   const PaymentSuccessfulView({super.key, required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
-  static Route<dynamic> route({required TicketOption ticket}) {
+  static Route<dynamic> route({required Ticket ticket}) {
     return MaterialPageRoute<dynamic>(
       builder: (_) => PaymentSuccessfulView(ticket: ticket),
     );
@@ -55,7 +55,7 @@ class PaymentSuccessfulView extends StatelessWidget {
 class _ViewTicketButton extends StatelessWidget {
   const _ViewTicketButton({required this.ticket, required this.chatbotBloc});
 
-  final TicketOption ticket;
+  final Ticket ticket;
   final ChatbotBloc chatbotBloc;
 
   @override

@@ -39,7 +39,7 @@ abstract class OptionTile extends StatelessWidget {
     if (option is Event) {
       return EventOptionTile(event: option, usernameRequired: usernameRequired);
     }
-    if (option is TicketOption) {
+    if (option is Ticket) {
       return TicketOptionTile(ticket: option);
     }
 

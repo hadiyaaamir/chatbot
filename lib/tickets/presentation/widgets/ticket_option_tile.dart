@@ -4,7 +4,7 @@ class TicketOptionTile extends OptionTile {
   const TicketOptionTile({super.key, required this.ticket})
       : super(option: ticket);
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class TicketClipper extends CustomClipper<Path> {
 class _PaymentRow extends StatelessWidget {
   const _PaymentRow({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class _PaymentRow extends StatelessWidget {
 class _TicketFooter extends StatelessWidget {
   const _TicketFooter({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class _TicketFooter extends StatelessWidget {
 class _TicketHeader extends StatelessWidget {
   const _TicketHeader({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +170,7 @@ class _TicketHeader extends StatelessWidget {
 class _TitleAndQuantity extends StatelessWidget {
   const _TitleAndQuantity({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
