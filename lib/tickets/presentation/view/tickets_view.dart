@@ -17,19 +17,28 @@ class TicketsView extends StatelessWidget {
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                          child: Text(
-                            'Booked Tickets',
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                        ),
+                        const _BookedTicketsTitle(),
                         _TicketsList(tickets: state.tickets),
                       ],
                     ),
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class _BookedTicketsTitle extends StatelessWidget {
+  const _BookedTicketsTitle();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+      child: Text(
+        'Booked Tickets',
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
     );
   }
