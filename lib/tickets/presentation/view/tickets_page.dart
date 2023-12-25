@@ -1,6 +1,6 @@
 part of 'view.dart';
 
-class TicketsPage extends StatefulWidget {
+class TicketsPage extends StatelessWidget {
   const TicketsPage({super.key});
 
   static Route<dynamic> route() {
@@ -10,14 +10,7 @@ class TicketsPage extends StatefulWidget {
   }
 
   @override
-  State<TicketsPage> createState() => _TicketsPageState();
-}
-
-class _TicketsPageState extends State<TicketsPage>
-    with AutomaticKeepAliveClientMixin<TicketsPage> {
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocProvider(
       create: (context) => TicketsBloc(
         ticketsRepository: TicketsRepositoryImpl(
@@ -28,7 +21,4 @@ class _TicketsPageState extends State<TicketsPage>
       child: const TicketsView(),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
