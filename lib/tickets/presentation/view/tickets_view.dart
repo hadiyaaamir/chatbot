@@ -7,22 +7,52 @@ class TicketsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: BlocBuilder<TicketsBloc, TicketsState>(
-          builder: (context, state) {
-            return Center(
-              child: state.status == TicketsStatus.loading
-                  ? const CustomProgessIndicator()
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const _BookedTicketsTitle(),
-                        _TicketsList(tickets: state.tickets),
-                      ],
-                    ),
-            );
-          },
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _BookedTicketsTitle(),
+              SizedBox(height: 10),
+              TicketsSearchTextField(),
+              SizedBox(height: 15),
+              _TicketsFilters(),
+              TicketsList(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TicketsFilters extends StatelessWidget {
+  const _TicketsFilters();
+
+  @override
+  Widget build(BuildContext context) {
+    final List<TicketsFilter> filters = TicketsFilter.values.toList();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: List.generate(
+          filters.length,
+          (index) => BlocBuilder<TicketsBloc, TicketsState>(
+            buildWhen: (previous, current) => previous.filter != current.filter,
+            builder: (context, state) {
+              return Expanded(
+                child: FilterButton(
+                  isSelected: state.filter == filters[index],
+                  label: filters[index].text,
+                  onPressed: () => context
+                      .read<TicketsBloc>()
+                      .add(TicketsFilterChanged(filter: filters[index])),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -35,28 +65,10 @@ class _BookedTicketsTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       child: Text(
         'Booked Tickets',
         style: Theme.of(context).textTheme.headlineMedium,
-      ),
-    );
-  }
-}
-
-class _TicketsList extends StatelessWidget {
-  const _TicketsList({required this.tickets});
-
-  final List<Ticket> tickets;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemBuilder: (context, index) => TicketOptionTile(
-          ticket: tickets[index],
-        ),
-        itemCount: tickets.length,
       ),
     );
   }
