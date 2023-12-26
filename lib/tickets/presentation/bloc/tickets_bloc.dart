@@ -12,6 +12,8 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
       : _ticketsRepository = ticketsRepository,
         super(const TicketsInitial()) {
     on<TicketsFetchTicketsEvent>(_fetchTickets);
+    on<TicketsFilterChanged>(_onFilterChanged);
+    on<TicketsSearchTextChanged>(_onSearchTextChanged);
   }
 
   final TicketsRepository _ticketsRepository;
@@ -27,5 +29,19 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
     } on Exception catch (_) {
       emit(state.copyWith(status: TicketsStatus.failure));
     }
+  }
+
+  void _onFilterChanged(
+    TicketsFilterChanged event,
+    Emitter<TicketsState> emit,
+  ) {
+    emit(state.copyWith(filter: event.filter));
+  }
+
+  void _onSearchTextChanged(
+    TicketsSearchTextChanged event,
+    Emitter<TicketsState> emit,
+  ) {
+    emit(state.copyWith(searchText: event.searchText));
   }
 }

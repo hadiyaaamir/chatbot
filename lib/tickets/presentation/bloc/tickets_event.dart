@@ -8,3 +8,19 @@ abstract class TicketsEvent extends Equatable {
 }
 
 class TicketsFetchTicketsEvent extends TicketsEvent {}
+
+final class TicketsFilterChanged extends TicketsEvent {
+  const TicketsFilterChanged({required this.filter});
+  final TicketsFilter filter;
+
+  @override
+  List<Object> get props => [filter];
+}
+
+class TicketsSearchTextChanged extends TicketsEvent {
+  const TicketsSearchTextChanged({required this.searchText});
+  final String searchText;
+
+  @override
+  List<Object> get props => [searchText];
+}
