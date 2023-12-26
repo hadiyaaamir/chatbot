@@ -27,7 +27,10 @@ class PaymentView extends StatelessWidget {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          padding: const EdgeInsets.symmetric(
+            horizontal: kPageHorizontalPadding,
+            vertical: 15,
+          ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +64,10 @@ class _CompletePaymentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentBloc, PaymentState>(builder: (context, state) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: kPageHorizontalPadding,
+          vertical: 10,
+        ),
         child: ElevatedButton(
           onPressed: state.status != PaymentStatus.loading
               ? () => context

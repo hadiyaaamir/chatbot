@@ -9,7 +9,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(),
       body: const SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: kPageHorizontalPadding),
           child: Column(
             children: [
               EventsSearchTextField(),

@@ -142,6 +142,13 @@ class Event extends Option {
     );
   }
 
+  bool matchesSearch(String searchText) {
+    searchText = searchText.toLowerCase();
+    return title.toLowerCase().contains(searchText) ||
+        city.toLowerCase().contains(searchText) ||
+        country.toLowerCase().contains(searchText);
+  }
+
   @override
   List<Object> get props => [
         id,

@@ -8,7 +8,7 @@ class TicketsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: kPageHorizontalPadding),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

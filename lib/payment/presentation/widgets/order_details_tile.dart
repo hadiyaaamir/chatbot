@@ -9,7 +9,10 @@ class OrderDetailsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+          vertical: 25,
+          horizontal: kPageHorizontalPadding,
+        ),
         child: Column(
           children: [
             LabelTextRow(

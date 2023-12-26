@@ -29,9 +29,10 @@ class EventsState extends Equatable {
     );
   }
 
-  Iterable<Event> get filteredEvents => filter.applyAll(events).where((event) {
-        return event.title.toLowerCase().contains(searchText.toLowerCase());
-      }).toList();
+  Iterable<Event> get filteredEvents => filter
+      .applyAll(events)
+      .where((event) => event.matchesSearch(searchText))
+      .toList();
 
   @override
   List<Object> get props => [events, filter, status, searchText];

@@ -58,6 +58,17 @@ class Ticket extends Option {
     );
   }
 
+  bool matchesSearch(String searchText) {
+    searchText = searchText.toLowerCase();
+    return event.title.toLowerCase().contains(searchText) ||
+        event.city.toLowerCase().contains(searchText) ||
+        event.country.toLowerCase().contains(searchText) ||
+        formatDate(slot.date).toLowerCase().contains(searchText) ||
+        getFullMonth(slot.date).toLowerCase().contains(searchText) ||
+        slot.timeSlot.startingTimeString.toLowerCase().contains(searchText) ||
+        slot.timeSlot.endingTimeString.toLowerCase().contains(searchText);
+  }
+
   @override
   List<Object> get props => [
         id,
