@@ -14,6 +14,7 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
     on<TicketsFetchTicketsEvent>(_fetchTickets);
     on<TicketsFilterChanged>(_onFilterChanged);
     on<TicketsSearchTextChanged>(_onSearchTextChanged);
+    on<TicketsShowPendingToggled>(_onShowPendingToggled);
   }
 
   final TicketsRepository _ticketsRepository;
@@ -43,5 +44,12 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
     Emitter<TicketsState> emit,
   ) {
     emit(state.copyWith(searchText: event.searchText));
+  }
+
+  Future<void> _onShowPendingToggled(
+    TicketsShowPendingToggled event,
+    Emitter<TicketsState> emit,
+  ) async {
+    emit(state.copyWith(showPending: !state.showPending));
   }
 }
