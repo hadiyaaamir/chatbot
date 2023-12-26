@@ -17,7 +17,10 @@ class TicketsList extends StatelessWidget {
                       currentFilter: state.filter.name,
                       searchText: state.searchText,
                     )
-                  : _NonEmptyList(tickets: tickets),
+                  : _NonEmptyList(
+                      tickets: tickets,
+                      searchText: state.searchText,
+                    ),
         );
       },
     );
@@ -25,14 +28,18 @@ class TicketsList extends StatelessWidget {
 }
 
 class _NonEmptyList extends StatelessWidget {
-  const _NonEmptyList({required this.tickets});
+  const _NonEmptyList({required this.tickets, required this.searchText});
 
   final List<Ticket> tickets;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemBuilder: (context, index) => TicketOptionTile(ticket: tickets[index]),
+      itemBuilder: (context, index) => TicketOptionTile(
+        ticket: tickets[index],
+        searchText: searchText,
+      ),
       itemCount: tickets.length,
     );
   }
