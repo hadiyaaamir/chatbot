@@ -17,12 +17,42 @@ class TicketsView extends StatelessWidget {
               SizedBox(height: 10),
               TicketsSearchTextField(),
               SizedBox(height: 15),
-              _TicketsFilters(),
+              Row(
+                children: [
+                  Expanded(child: _TicketsFilters()),
+                  SizedBox(width: 8),
+                  _ShowPendingButton(),
+                ],
+              ),
               TicketsList(),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ShowPendingButton extends StatelessWidget {
+  const _ShowPendingButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TicketsBloc, TicketsState>(
+      buildWhen: (previous, current) =>
+          previous.showPending != current.showPending,
+      builder: (context, state) {
+        return TextButton.icon(
+          icon: Icon(
+            state.showPending ? Icons.visibility : Icons.visibility_off,
+            size: 15,
+          ),
+          onPressed: () {
+            context.read<TicketsBloc>().add(TicketsShowPendingToggled());
+          },
+          label: const Text('Pending'),
+        );
+      },
     );
   }
 }
