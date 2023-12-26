@@ -1,9 +1,14 @@
 part of 'widgets.dart';
 
 class EventDetailsBlock extends StatelessWidget {
-  const EventDetailsBlock({super.key, required this.event});
+  const EventDetailsBlock({
+    super.key,
+    required this.event,
+    this.searchText = '',
+  });
 
   final Event event;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +26,17 @@ class EventDetailsBlock extends StatelessWidget {
         children: [
           Text('$range • $daysString', style: textTheme.bodyMedium),
           const SizedBox(height: 5),
-          Text(event.title, style: textTheme.titleLarge),
+          HighlightedSearchText(
+            searchText: searchText,
+            child: Text(event.title, style: textTheme.titleLarge),
+          ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: LocationDetails(event: event)),
+              Expanded(
+                child: LocationDetails(event: event, searchText: searchText),
+              ),
               ColoredTextTag(text: '\$${event.price}'),
             ],
           ),
@@ -37,9 +47,10 @@ class EventDetailsBlock extends StatelessWidget {
 }
 
 class LocationDetails extends StatelessWidget {
-  const LocationDetails({super.key, required this.event});
+  const LocationDetails({super.key, required this.event, this.searchText = ''});
 
   final Event event;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +67,12 @@ class LocationDetails extends StatelessWidget {
           ),
         ),
         Flexible(
-          child: Text(
-            '${event.city}, ${event.country}',
-            style: Theme.of(context).textTheme.labelLarge,
+          child: HighlightedSearchText(
+            searchText: searchText,
+            child: Text(
+              '${event.city}, ${event.country}',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
           ),
         ),
       ],

@@ -22,7 +22,10 @@ class EventsList extends StatelessWidget {
               constraints: const BoxConstraints(maxHeight: 415),
               child: state.status == EventsStatus.success
                   ? filteredEvents.isNotEmpty
-                      ? _NonEmptyList(filteredEvents: filteredEvents)
+                      ? _NonEmptyList(
+                          filteredEvents: filteredEvents,
+                          searchText: state.searchText,
+                        )
                       : _EmptyList(
                           currentFilter: state.filter.text,
                           searchText: state.searchText,
@@ -54,9 +57,10 @@ class _EventsTitle extends StatelessWidget {
 }
 
 class _NonEmptyList extends StatelessWidget {
-  const _NonEmptyList({required this.filteredEvents});
+  const _NonEmptyList({required this.filteredEvents, required this.searchText});
 
   final List<Event> filteredEvents;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class _NonEmptyList extends StatelessWidget {
       shrinkWrap: true,
       itemExtent: MediaQuery.of(context).size.width - 90,
       itemBuilder: (context, index) {
-        return EventTile(event: filteredEvents[index]);
+        return EventTile(event: filteredEvents[index], searchText: searchText);
       },
       itemCount: filteredEvents.length,
     );
