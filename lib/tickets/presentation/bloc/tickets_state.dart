@@ -29,18 +29,10 @@ class TicketsState extends Equatable {
     );
   }
 
-  Iterable<Ticket> get filteredTickets =>
-      filter.applyAll(tickets).where((ticket) {
-        return ticket.event.title
-                .toLowerCase()
-                .contains(searchText.toLowerCase()) ||
-            ticket.event.city
-                .toLowerCase()
-                .contains(searchText.toLowerCase()) ||
-            ticket.event.country
-                .toLowerCase()
-                .contains(searchText.toLowerCase());
-      }).toList();
+  Iterable<Ticket> get filteredTickets => filter
+      .applyAll(tickets)
+      .where((ticket) => ticket.matchesSearch(searchText))
+      .toList();
 
   @override
   List<Object> get props => [tickets, status, filter, searchText];
