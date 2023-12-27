@@ -11,16 +11,19 @@ class ImageCarouselSlider extends StatelessWidget {
     return CarouselSlider(
       items: images
           .map(
-            (image) => ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(image, height: 180, fit: BoxFit.cover),
+            (image) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 3),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(image, height: 180, fit: BoxFit.cover),
+              ),
             ),
           )
           .toList(),
       options: CarouselOptions(
         autoPlay: true,
-        enlargeCenterPage: true,
-        viewportFraction: 0.7,
+        viewportFraction: 1,
+        disableCenter: true,
       ),
     );
   }
