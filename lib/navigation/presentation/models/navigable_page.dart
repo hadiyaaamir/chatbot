@@ -57,7 +57,7 @@ class NavigablePage {
   factory NavigablePage.chat() {
     return NavigablePage(
       page: const ChatbotPage(),
-      label: 'Chatbot',
+      label: 'Assistant',
       icon: Icons.chat_bubble_outline_rounded,
       activeIcon: Icons.chat_bubble_rounded,
     );
@@ -75,7 +75,7 @@ class NavigablePage {
   factory NavigablePage.tickets() {
     return NavigablePage(
       page: const TicketsPage(),
-      label: 'Tickets',
+      label: 'My Tickets',
       icon: Icons.confirmation_num_outlined,
       activeIcon: Icons.confirmation_num,
     );
