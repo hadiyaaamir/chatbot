@@ -97,7 +97,7 @@ class _BookedTicketsTitle extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       child: Text(
-        'Booked Tickets',
+        'My Tickets',
         style: Theme.of(context).textTheme.headlineMedium,
       ),
     );

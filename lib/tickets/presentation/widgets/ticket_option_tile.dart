@@ -150,15 +150,7 @@ class _TicketHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            ticket.event.image,
-            height: 60,
-            width: 60,
-            fit: BoxFit.cover,
-          ),
-        ),
+        _EventImage(ticket: ticket),
         const SizedBox(width: 15),
         Expanded(
           child: Column(
@@ -172,6 +164,30 @@ class _TicketHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _EventImage extends StatelessWidget {
+  const _EventImage({
+    super.key,
+    required this.ticket,
+  });
+
+  final Ticket ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: ticket.event.images.isNotEmpty
+          ? Image.network(
+              ticket.event.images.first,
+              height: 60,
+              width: 60,
+              fit: BoxFit.cover,
+            )
+          : const SizedBox(height: 60, width: 60),
     );
   }
 }
