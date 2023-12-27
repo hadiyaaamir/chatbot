@@ -1,17 +1,19 @@
 part of 'models.dart';
 
-enum NavigablePages { chat, home, profile }
+enum NavigablePages { chat, home, tickets, profile }
 
 extension XNavigablePages on NavigablePages {
   static final Map<NavigablePages, int> _indexes = {
     NavigablePages.chat: 0,
     NavigablePages.home: 1,
-    NavigablePages.profile: 2,
+    NavigablePages.tickets: 2,
+    NavigablePages.profile: 3,
   };
 
   static final Map<NavigablePages, NavigablePage> _pages = {
     NavigablePages.chat: NavigablePage.chat(),
     NavigablePages.home: NavigablePage.home(),
+    NavigablePages.tickets: NavigablePage.tickets(),
     NavigablePages.profile: NavigablePage.profile(),
   };
 
@@ -67,6 +69,15 @@ class NavigablePage {
       label: 'Home',
       icon: Icons.home_outlined,
       activeIcon: Icons.home,
+    );
+  }
+
+  factory NavigablePage.tickets() {
+    return NavigablePage(
+      page: const TicketsPage(),
+      label: 'Tickets',
+      icon: Icons.confirmation_num_outlined,
+      activeIcon: Icons.confirmation_num,
     );
   }
 

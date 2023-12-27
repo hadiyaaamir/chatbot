@@ -17,6 +17,20 @@ class TicketSlot extends Equatable {
     );
   }
 
+  bool get isUpcoming {
+    final today = DateTime.now();
+    final todaysDateOnly = DateTime(today.year, today.month, today.day);
+    final dateOnly = DateTime(date.year, date.month, date.day);
+
+    if (dateOnly.isAfter(todaysDateOnly)) return true;
+
+    final currentTime = TimeOfDay.now();
+    if (timeSlot.startingTime.hour > currentTime.hour) return true;
+    if (timeSlot.startingTime.minute > currentTime.minute) return true;
+
+    return false;
+  }
+
   @override
   List<Object> get props => [date, timeSlot];
 }

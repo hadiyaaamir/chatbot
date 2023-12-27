@@ -3,9 +3,9 @@ part of 'view.dart';
 class PaymentPage extends StatelessWidget {
   const PaymentPage({super.key, required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
-  static Route<dynamic> route({required TicketOption ticket}) {
+  static Route<dynamic> route({required Ticket ticket}) {
     return MaterialPageRoute<dynamic>(
       builder: (_) => PaymentPage(ticket: ticket),
     );

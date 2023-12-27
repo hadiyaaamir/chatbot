@@ -3,13 +3,16 @@ part of 'widgets.dart';
 class OrderDetailsTile extends StatelessWidget {
   const OrderDetailsTile({super.key, required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+          vertical: 25,
+          horizontal: kPageHorizontalPadding,
+        ),
         child: Column(
           children: [
             LabelTextRow(

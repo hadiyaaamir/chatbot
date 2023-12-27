@@ -11,7 +11,10 @@ class ChatbotView extends StatelessWidget {
       ),
       resizeToAvoidBottomInset: true,
       body: Padding(
-        padding: const EdgeInsets.only(right: 20, left: 20, top: 5, bottom: 5),
+        padding: const EdgeInsets.symmetric(
+          horizontal: kPageHorizontalPadding,
+          vertical: 5,
+        ),
         child: Column(
           children: [
             const Messages(),

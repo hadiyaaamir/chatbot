@@ -123,10 +123,12 @@ class Event extends Option {
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
           : DateTime.now(),
-      location: LatLng(
-        latitude: double.parse(json['location'][0] as String),
-        longitude: double.parse(json['location'][1] as String),
-      ),
+      location: json['location'] != null
+          ? LatLng(
+              latitude: double.parse(json['location'][0] as String),
+              longitude: double.parse(json['location'][1] as String),
+            )
+          : LatLng(),
       price: json['price'] as int? ?? 0,
       slots: json['slots'] != null
           ? List<ChatEventSlot>.from(
@@ -138,6 +140,13 @@ class Event extends Option {
             )
           : [],
     );
+  }
+
+  bool matchesSearch(String searchText) {
+    searchText = searchText.toLowerCase();
+    return title.toLowerCase().contains(searchText) ||
+        city.toLowerCase().contains(searchText) ||
+        country.toLowerCase().contains(searchText);
   }
 
   @override
