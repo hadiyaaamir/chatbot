@@ -1,5 +1,6 @@
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/events/events.dart';
+import 'package:chatbot/events/presentation/widgets/image_carousel_slider.dart';
 import 'package:chatbot/navigation/navigation.dart';
 
 import 'package:chatbot/utils/helpers/date_helpers.dart';

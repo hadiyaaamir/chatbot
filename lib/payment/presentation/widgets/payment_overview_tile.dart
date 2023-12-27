@@ -12,15 +12,7 @@ class PaymentOverviewTile extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                ticket.event.image,
-                height: 100,
-                width: 100,
-                fit: BoxFit.cover,
-              ),
-            ),
+            _EventImage(ticket: ticket),
             const SizedBox(width: 15),
             Expanded(
               child: Column(
@@ -47,6 +39,27 @@ class PaymentOverviewTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _EventImage extends StatelessWidget {
+  const _EventImage({required this.ticket});
+
+  final Ticket ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: ticket.event.images.isNotEmpty
+          ? Image.network(
+              ticket.event.images.first,
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+            )
+          : const SizedBox(height: 100, width: 100),
     );
   }
 }
