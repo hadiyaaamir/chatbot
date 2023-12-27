@@ -3,13 +3,16 @@ part of 'widgets.dart';
 class PersonalInformationTile extends StatelessWidget {
   const PersonalInformationTile({super.key, required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: kPageHorizontalPadding,
+        ),
         child: Column(
           children: [
             const LabelTextRow(label: 'Username', text: kHardcodedUsername),

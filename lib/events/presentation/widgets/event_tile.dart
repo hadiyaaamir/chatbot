@@ -1,9 +1,10 @@
 part of 'widgets.dart';
 
 class EventTile extends StatelessWidget {
-  const EventTile({super.key, required this.event});
+  const EventTile({super.key, required this.event, required this.searchText});
 
   final Event event;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,13 @@ class EventTile extends StatelessWidget {
               child: Image.network(event.image, height: 180, fit: BoxFit.cover),
             ),
             const SizedBox(height: 15),
-            SizedBox(height: 95, child: EventDetailsBlock(event: event)),
+            SizedBox(
+              height: 95,
+              child: EventDetailsBlock(
+                event: event,
+                searchText: searchText,
+              ),
+            ),
             const DottedDivider(spaceAbove: 5, spaceBelow: 10),
             Row(
               children: [

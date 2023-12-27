@@ -7,4 +7,5 @@ part 'mock_events_api.dart';
 
 abstract class EventsApi {
   Future<List<Event>> fetchEvents();
+  Future<Event> fetchEvent({required String eventId});
 }

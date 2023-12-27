@@ -7,3 +7,7 @@ String formatDate(DateTime date) {
 String getMonth(DateTime date) {
   return DateFormat('MMM').format(date);
 }
+
+String getFullMonth(DateTime date) {
+  return DateFormat('MMMM').format(date);
+}

@@ -1,10 +1,14 @@
 part of 'widgets.dart';
 
 class TicketOptionTile extends OptionTile {
-  const TicketOptionTile({super.key, required this.ticket})
-      : super(option: ticket);
+  const TicketOptionTile({
+    super.key,
+    required this.ticket,
+    this.searchText = '',
+  }) : super(option: ticket);
 
-  final TicketOption ticket;
+  final Ticket ticket;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +21,9 @@ class TicketOptionTile extends OptionTile {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _TicketHeader(ticket: ticket),
+              _TicketHeader(ticket: ticket, searchText: searchText),
               const DottedDivider(spaceAbove: 8, spaceBelow: 12),
-              _TicketFooter(ticket: ticket),
+              _TicketFooter(ticket: ticket, searchText: searchText),
               const SizedBox(height: 10),
               if (!ticket.paymentCompleted) ...[
                 const DottedDivider(spaceBelow: 5),
@@ -71,7 +75,7 @@ class TicketClipper extends CustomClipper<Path> {
 class _PaymentRow extends StatelessWidget {
   const _PaymentRow({required this.ticket});
 
-  final TicketOption ticket;
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -103,9 +107,10 @@ class _PaymentRow extends StatelessWidget {
 }
 
 class _TicketFooter extends StatelessWidget {
-  const _TicketFooter({required this.ticket});
+  const _TicketFooter({required this.ticket, required this.searchText});
 
-  final TicketOption ticket;
+  final Ticket ticket;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -115,14 +120,17 @@ class _TicketFooter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _TitleAndDetailPair(
+            searchText: searchText,
             title: 'Date',
             detail: formatDate(ticket.slot.date),
           ),
           _TitleAndDetailPair(
+            searchText: searchText,
             title: 'Starting Time',
             detail: ticket.slot.timeSlot.startingTimeString,
           ),
           _TitleAndDetailPair(
+            searchText: searchText,
             title: 'Ending Time',
             detail: ticket.slot.timeSlot.endingTimeString,
           ),
@@ -133,9 +141,10 @@ class _TicketFooter extends StatelessWidget {
 }
 
 class _TicketHeader extends StatelessWidget {
-  const _TicketHeader({required this.ticket});
+  const _TicketHeader({required this.ticket, required this.searchText});
 
-  final TicketOption ticket;
+  final Ticket ticket;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -156,9 +165,9 @@ class _TicketHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _TitleAndQuantity(ticket: ticket),
+              _TitleAndQuantity(ticket: ticket, searchText: searchText),
               const SizedBox(height: 5),
-              LocationDetails(event: ticket.event),
+              LocationDetails(event: ticket.event, searchText: searchText),
             ],
           ),
         ),
@@ -168,9 +177,10 @@ class _TicketHeader extends StatelessWidget {
 }
 
 class _TitleAndQuantity extends StatelessWidget {
-  const _TitleAndQuantity({required this.ticket});
+  const _TitleAndQuantity({required this.ticket, required this.searchText});
 
-  final TicketOption ticket;
+  final Ticket ticket;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +190,10 @@ class _TitleAndQuantity extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          child: Text(ticket.event.title, style: textTheme.titleLarge),
+          child: HighlightedSearchText(
+            searchText: searchText,
+            child: Text(ticket.event.title, style: textTheme.titleLarge),
+          ),
         ),
         ColoredTextTag(text: '×${ticket.quantity}'),
       ],
@@ -189,10 +202,15 @@ class _TitleAndQuantity extends StatelessWidget {
 }
 
 class _TitleAndDetailPair extends StatelessWidget {
-  const _TitleAndDetailPair({required this.title, required this.detail});
+  const _TitleAndDetailPair({
+    required this.title,
+    required this.detail,
+    required this.searchText,
+  });
 
   final String title;
   final String detail;
+  final String searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -201,8 +219,14 @@ class _TitleAndDetailPair extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: textTheme.labelLarge),
-        Text(detail, style: textTheme.titleSmall),
+        HighlightedSearchText(
+          searchText: searchText,
+          child: Text(title, style: textTheme.labelLarge),
+        ),
+        HighlightedSearchText(
+          searchText: searchText,
+          child: Text(detail, style: textTheme.titleSmall),
+        ),
       ],
     );
   }

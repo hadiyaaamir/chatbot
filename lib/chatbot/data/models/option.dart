@@ -9,7 +9,7 @@ abstract class Option extends Equatable {
 
   static final Map<String, Function> _typeParsers = {
     'events': (eventJson) => Event.fromJson(eventJson),
-    'tickets': (ticketJson) => TicketOption.fromJson(ticketJson),
+    'tickets': (ticketJson) => Ticket.fromJson(ticketJson),
   };
 
   static getParser(String key) {
