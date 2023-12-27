@@ -4,7 +4,7 @@ class Event extends Option {
   const Event({
     required this.id,
     required this.title,
-    required this.image,
+    required this.images,
     required this.category,
     required this.details,
     required this.city,
@@ -22,7 +22,7 @@ class Event extends Option {
   final int price;
   final Details details;
 
-  final String image;
+  final List<String> images;
 
   final String city;
   final String country;
@@ -87,7 +87,7 @@ class Event extends Option {
   Event copyWith({
     String? id,
     String? title,
-    String? image,
+    List<String>? images,
     String? category,
     int? price,
     Details? details,
@@ -100,7 +100,7 @@ class Event extends Option {
     return Event(
         id: id ?? this.id,
         title: title ?? this.title,
-        image: image ?? this.image,
+        images: images ?? this.images,
         category: category ?? this.category,
         city: city ?? this.city,
         country: country ?? this.country,
@@ -115,7 +115,9 @@ class Event extends Option {
     return Event(
       id: json['id'] as String? ?? '',
       title: json['title'] as String? ?? '',
-      image: json['image'] as String? ?? '',
+      images: json['images'] != null
+          ? (json['images'] as List<dynamic>).cast<String>()
+          : [],
       category: json['category'] as String? ?? '',
       city: json['city'] as String? ?? '',
       country: json['country'] as String? ?? '',
@@ -153,7 +155,7 @@ class Event extends Option {
   List<Object> get props => [
         id,
         title,
-        image,
+        images,
         category,
         price,
         city,

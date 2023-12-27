@@ -17,10 +17,7 @@ class EventOptionTile extends OptionTile {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(event.image, height: 180, fit: BoxFit.cover),
-            ),
+            ImageCarouselSlider(images: event.images),
             const SizedBox(height: 15),
             EventDetailsBlock(event: event),
             const DottedDivider(spaceAbove: 5),
