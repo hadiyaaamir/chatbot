@@ -5,13 +5,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 class FlutterSoundApi extends AudioRecorderApi {
   late final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  late String lastRecordedFilePath;
 
   @override
   Future<void> initialise() async {
     await Permission.microphone.request();
-    await Permission.manageExternalStorage.request();
-    await Permission.audio.request();
-    await Permission.mediaLibrary.request();
+    await Permission.storage.request();
 
     await _recorder.openRecorder();
   }
@@ -20,18 +19,18 @@ class FlutterSoundApi extends AudioRecorderApi {
   Future<void> startRecoding() async {
     if (_recorder.isRecording) return;
 
-    final tempDir = await getTemporaryDirectory();
-
+    String directory = (await getTemporaryDirectory()).path;
     String timestamp = DateTime.now().toIso8601String();
-    final filePath = '${tempDir.path}/audio_record_$timestamp.wav';
+    final filePath = '$directory/audio_record_$timestamp.wav';
 
+    lastRecordedFilePath = filePath;
     await _recorder.startRecorder(toFile: filePath, codec: Codec.pcm16WAV);
   }
 
   @override
   Future<String?> stopRecording() async {
-    final output = await _recorder.stopRecorder();
-    return output;
+    await _recorder.stopRecorder();
+    return lastRecordedFilePath;
   }
 
   @override
