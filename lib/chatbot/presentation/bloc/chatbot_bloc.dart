@@ -90,7 +90,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       final response = messagePayload.isTextMessage
           ? await _chatbotRepository.sendTextMessage(message)
           : await _chatbotRepository.sendAudioMessage(
-              await _audioManager.audioFromPath(messagePayload.audio!.audio),
+              messagePayload.audio!.audio,
             );
       if (!state.isMuted) {
         final outputAudio = _audioManager.stringToByte(response?.audio?.audio);
@@ -157,10 +157,11 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
       emit(state.copyWith(isRecordingMessage: _audioManager.isRecording));
 
       if (output != null && output.isNotEmpty) {
+        final audioString = await _audioManager.audioFromPath(output);
         await _onChatbotMessageSent(
           ChatbotMessageSent(
             message: ChatMessage(
-              message: MessagePayload(audio: Audio(audio: output)),
+              message: MessagePayload(audio: Audio(audio: audioString)),
             ),
           ),
           emit,
@@ -201,7 +202,7 @@ class ChatbotBloc extends Bloc<ChatbotEvent, ChatbotState> {
     if (message.audio == null) return;
 
     emit(state.setAudioPlayingStatus(targetMessage: message));
-    await _audioManager.playAudioFromFile(message.audio!.audio);
+    await _audioManager.playAudioFromString(message.audio!.audio);
   }
 
   Future<void> _onChatbotAudioMessageStopped(
