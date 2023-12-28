@@ -25,6 +25,12 @@ class AudioManagerImpl extends AudioManager {
   }
 
   @override
+  Future<void> playAudioFromString(String audio) async {
+    final audioBytes = stringToByte(audio);
+    if (audioBytes != null) await playAudioFromBytes(audioBytes);
+  }
+
+  @override
   Future<void> playAudioFromBytes(Uint8List audioBytes) async {
     await audioPlayerApi.playAudioFromBytes(audioBytes);
   }
