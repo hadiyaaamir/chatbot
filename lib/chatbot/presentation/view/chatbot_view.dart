@@ -6,9 +6,7 @@ class ChatbotView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: const [MuteButton()],
-      ),
+      appBar: AppBar(actions: const [MuteButton()]),
       resizeToAvoidBottomInset: true,
       body: Padding(
         padding: const EdgeInsets.symmetric(

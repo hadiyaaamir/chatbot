@@ -54,6 +54,7 @@ class _ExpandibleBookingTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
+            flex: 2,
             child: Text(
               'Book Now',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -62,6 +63,7 @@ class _ExpandibleBookingTile extends StatelessWidget {
             ),
           ),
           Flexible(
+            flex: 3,
             child: _MoreInformationButton(event: event),
           ),
         ],
