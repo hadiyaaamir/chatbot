@@ -60,6 +60,7 @@ class _TextEntryAreaState extends State<_TextEntryArea> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       enabled: widget.enabled,
       controller: _messageController,
       style: Theme.of(context).textTheme.titleSmall,
