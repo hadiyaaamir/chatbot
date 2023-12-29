@@ -17,7 +17,7 @@ class TicketsPage extends StatelessWidget {
           ticketsApi: MockTicketsApi(),
           eventsApi: MockEventsApi(),
         ),
-      )..add(TicketsFetchTicketsEvent()),
+      )..add(const TicketsFetchTicketsEvent(username: kHardcodedUsername)),
       child: const TicketsView(),
     );
   }
