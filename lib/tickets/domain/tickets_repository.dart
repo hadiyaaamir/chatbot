@@ -6,5 +6,5 @@ abstract class TicketsRepository {
   final TicketsApi ticketsApi;
   final EventsApi eventsApi;
 
-  Future<List<Ticket>> fetchTickets();
+  Future<List<Ticket>> fetchTickets({required String username});
 }

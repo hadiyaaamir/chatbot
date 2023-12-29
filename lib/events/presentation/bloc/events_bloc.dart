@@ -27,7 +27,6 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
       final events = await _eventsRepository.fetchEvents();
       emit(state.copyWith(events: events, status: EventsStatus.success));
     } catch (e) {
-      print('event error: $e');
       emit(state.copyWith(events: [], status: EventsStatus.failure));
     }
   }

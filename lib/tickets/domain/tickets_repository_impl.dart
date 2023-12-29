@@ -4,7 +4,7 @@ class TicketsRepositoryImpl extends TicketsRepository {
   TicketsRepositoryImpl({required super.ticketsApi, required super.eventsApi});
 
   @override
-  Future<List<Ticket>> fetchTickets() {
-    return ticketsApi.fetchTickets(eventsApi: eventsApi);
+  Future<List<Ticket>> fetchTickets({required String username}) {
+    return ticketsApi.fetchTickets(eventsApi: eventsApi, username: username);
   }
 }
