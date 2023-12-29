@@ -8,8 +8,9 @@ part 'tickets_event.dart';
 part 'tickets_state.dart';
 
 class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
-  TicketsBloc({required TicketsRepository ticketsRepository})
-      : _ticketsRepository = ticketsRepository,
+  TicketsBloc({
+    required TicketsRepository ticketsRepository,
+  })  : _ticketsRepository = ticketsRepository,
         super(const TicketsInitial()) {
     on<TicketsFetchTicketsEvent>(_fetchTickets);
     on<TicketsFilterChanged>(_onFilterChanged);
@@ -25,7 +26,9 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
   ) async {
     try {
       emit(state.copyWith(status: TicketsStatus.loading));
-      final tickets = await _ticketsRepository.fetchTickets();
+      final tickets = await _ticketsRepository.fetchTickets(
+        username: event.username,
+      );
       emit(state.copyWith(tickets: tickets, status: TicketsStatus.success));
     } on Exception catch (_) {
       emit(state.copyWith(status: TicketsStatus.failure));
