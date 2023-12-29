@@ -14,30 +14,27 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: BlocListener<ChatbotBloc, ChatbotState>(
-          listenWhen: (previous, current) =>
-              previous.messages.length != current.messages.length &&
-              current.messages.isNotEmpty &&
-              current.messages.first.sentMessage,
-          listener: (context, state) {
-            scrollToBottom();
+      child: BlocListener<ChatbotBloc, ChatbotState>(
+        listenWhen: (previous, current) =>
+            previous.messages.length != current.messages.length &&
+            current.messages.isNotEmpty &&
+            current.messages.first.sentMessage,
+        listener: (context, state) {
+          scrollToBottom();
+        },
+        child: BlocBuilder<ChatbotBloc, ChatbotState>(
+          builder: (context, state) {
+            return ListView.builder(
+              controller: _scrollController,
+              padding: EdgeInsets.zero,
+              reverse: true,
+              shrinkWrap: true,
+              itemBuilder: (context, index) => MessageBubble(
+                message: state.messages[index],
+              ),
+              itemCount: state.messages.length,
+            );
           },
-          child: BlocBuilder<ChatbotBloc, ChatbotState>(
-            builder: (context, state) {
-              return ListView.builder(
-                controller: _scrollController,
-                padding: EdgeInsets.zero,
-                reverse: true,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => MessageBubble(
-                  message: state.messages[index],
-                ),
-                itemCount: state.messages.length,
-              );
-            },
-          ),
         ),
       ),
     );
