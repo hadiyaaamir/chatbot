@@ -25,6 +25,12 @@ class JustAudioPlayerApi extends AudioPlayerApi {
       _audioPlayerCompleteController.stream;
 
   @override
+  Duration get duration => _audioPlayer.duration ?? Duration.zero;
+
+  @override
+  Stream<Duration> get position => _audioPlayer.positionStream;
+
+  @override
   Future<void> playAudioFromBytes(Uint8List audioBytes) async {
     final filePath = await _saveAudioToFile(audioBytes);
     await playAudioFromFile(filePath);
