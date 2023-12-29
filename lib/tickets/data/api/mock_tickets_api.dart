@@ -4,9 +4,12 @@ class MockTicketsApi extends TicketsApi {
   String baseUrl = 'https://65575a02bd4bcef8b6127c07.mockapi.io/tickets';
 
   @override
-  Future<List<Ticket>> fetchTickets({required EventsApi eventsApi}) async {
+  Future<List<Ticket>> fetchTickets({
+    required EventsApi eventsApi,
+    required String username,
+  }) async {
     try {
-      final response = await http.get(Uri.parse(baseUrl));
+      final response = await http.get(Uri.parse('$baseUrl?username=$username'));
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);
 

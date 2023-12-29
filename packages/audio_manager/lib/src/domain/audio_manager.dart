@@ -19,6 +19,8 @@ abstract class AudioManager {
   Future<void> dispose();
 
   Stream<bool> get audioPlayerCompleteStream;
+
+  Future<void> playAudioFromString(String audio);
   Future<void> playAudioFromBytes(Uint8List audioBytes);
   Future<void> playAudioFromFile(String filePath);
   Future<void> pauseAudio();

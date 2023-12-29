@@ -169,10 +169,7 @@ class _TicketHeader extends StatelessWidget {
 }
 
 class _EventImage extends StatelessWidget {
-  const _EventImage({
-    super.key,
-    required this.ticket,
-  });
+  const _EventImage({required this.ticket});
 
   final Ticket ticket;
 
