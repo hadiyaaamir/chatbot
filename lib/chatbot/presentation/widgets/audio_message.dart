@@ -50,32 +50,44 @@ class _AudioProgressIndicator extends StatelessWidget {
     final AudioManager audioManager = context.read<AudioManager>();
 
     final currentPositionStream = audioManager.currentAudioPosition;
-    final Duration duration = audioManager.currentAudioDuration;
+    final duration = audioManager.currentAudioDuration.inMilliseconds;
 
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return StreamBuilder(
       stream: currentPositionStream,
       builder: (context, snapshot) {
-        final currentPosition = snapshot.data ?? Duration.zero;
-        final progress =
-            currentPosition.inMilliseconds / duration.inMilliseconds;
+        final currentPosition = (snapshot.data ?? Duration.zero).inMilliseconds;
+        final progress = currentPosition / duration;
 
-        return isPlaying && duration != Duration.zero
-            ? SizedBox(
-                width: 100,
-                height: 2,
-                child: LinearProgressIndicator(
-                  value: progress,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    colorScheme.onPrimary,
+        return isPlaying && duration != 0
+            ? GestureDetector(
+                onTapDown: (details) {
+                  final tappedWidth = details.localPosition.dx;
+                  final indicatorWidth = context.size!.width;
+                  final double seekPosition = tappedWidth / indicatorWidth;
+
+                  final Duration seekTime = Duration(
+                    milliseconds: (seekPosition * duration).round(),
+                  );
+
+                  audioManager.currentAudioSeek(position: seekTime);
+                },
+                child: SizedBox(
+                  width: 100,
+                  height: 3,
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      colorScheme.onPrimary,
+                    ),
+                    backgroundColor: colorScheme.inversePrimary,
                   ),
-                  backgroundColor: colorScheme.inversePrimary,
                 ),
               )
             : Container(
                 width: 100,
-                height: 2,
+                height: 3,
                 color: colorScheme.inversePrimary,
               );
       },
