@@ -31,6 +31,11 @@ class JustAudioPlayerApi extends AudioPlayerApi {
   Stream<Duration> get position => _audioPlayer.positionStream;
 
   @override
+  Future<void> seek({required Duration position}) async {
+    await _audioPlayer.seek(position);
+  }
+
+  @override
   Future<void> playAudioFromBytes(Uint8List audioBytes) async {
     final filePath = await _saveAudioToFile(audioBytes);
     await playAudioFromFile(filePath);

@@ -27,6 +27,7 @@ abstract class AudioManager {
 
   Duration get currentAudioDuration;
   Stream<Duration> get currentAudioPosition;
+  Future<void> currentAudioSeek({required Duration position});
 
   Future<void> startRecording();
   Future<String?> stopRecording();
