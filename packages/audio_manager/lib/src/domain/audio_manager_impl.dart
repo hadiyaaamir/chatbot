@@ -46,6 +46,17 @@ class AudioManagerImpl extends AudioManager {
   }
 
   @override
+  Duration get currentAudioDuration => audioPlayerApi.duration;
+
+  @override
+  Stream<Duration> get currentAudioPosition => audioPlayerApi.position;
+
+  @override
+  Future<void> currentAudioSeek({required Duration position}) async {
+    await audioPlayerApi.seek(position: position);
+  }
+
+  @override
   Future<void> startRecording() async {
     await audioRecorderApi.startRecoding();
   }

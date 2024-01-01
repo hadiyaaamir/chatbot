@@ -1,8 +1,11 @@
+import 'package:audio_manager/audio_manager.dart';
 import 'package:chatbot/chatbot/chatbot.dart';
 import 'package:chatbot/utils/constants.dart';
 import 'package:chatbot/utils/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+part 'audio_message.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({super.key, required this.message});
@@ -177,28 +180,6 @@ class _TextMessage extends StatelessWidget {
             onTap: () => launchUrl(Uri.parse(message.urlText!)),
           ),
       ],
-    );
-  }
-}
-
-class _AudioMessage extends StatelessWidget {
-  const _AudioMessage({required this.message});
-
-  final MessagePayload message;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.read<ChatbotBloc>().add(
-            message.audio!.isPlaying
-                ? ChatbotAudioMessageStopped(message: message)
-                : ChatbotAudioMessagePlayed(message: message),
-          ),
-      child: Icon(
-        message.audio!.isPlaying ? Icons.pause : Icons.play_arrow,
-        color: Theme.of(context).colorScheme.onPrimary,
-        size: Theme.of(context).textTheme.bodyLarge?.fontSize,
-      ),
     );
   }
 }

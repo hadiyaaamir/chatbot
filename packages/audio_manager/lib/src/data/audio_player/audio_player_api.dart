@@ -9,5 +9,9 @@ abstract class AudioPlayerApi {
   Future<void> playAudioFromFile(String filePath);
   Future<void> pauseAudio();
 
+  Duration get duration;
+  Stream<Duration> get position;
+  Future<void> seek({required Duration position});
+
   Future<void> dispose();
 }
