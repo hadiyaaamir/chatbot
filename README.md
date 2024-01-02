@@ -8,17 +8,17 @@ This app is designed to revolutionize the ticket booking experience, combining i
 
 ## 🛠️ Technlogies Used
 
-### DialogFlow ES 💬 
+### 1. DialogFlow ES 💬 
 DialogFlow is a Conversational AI platform provided by Google Cloud. It serves as the backbone for our chat assistant, enabling natural language interactions.
 
 Utilizing the Google Inline Editor as a webhook helps manage API calls to generate responses dynamically based on data and complete ticket bookings. 
 
 Note: DialogFlow requires credentials and keys, which are not exposed on GitHub for security reasons.
 
-### Flutter 📱 
+### 2. Flutter 📱 
 Flutter powers the creation of the app, seamlessly translating the data received from DialogFlow into UI objects. 
 
-### mockapi.io 🗂️ 
+### 3. mockapi.io 🗂️ 
 This is an example application, and utilises dummy data. Mockapi.io was used to facilitate the creation of mock apis.
 
 
