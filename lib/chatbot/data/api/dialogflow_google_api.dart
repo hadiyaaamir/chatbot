@@ -13,6 +13,9 @@ class DialogflowGoogleApi extends ChatbotApi {
 
   late String _sessionId;
 
+  final String botId = 'ticketbookingbot-kjmn';
+  final String botName = 'TicketBookingBot';
+
   Future<Map<String, dynamic>> _loadCredentials() async {
     final String jsonString = await rootBundle.loadString(
       'assets/dialog_flow_auth.json',
@@ -22,7 +25,7 @@ class DialogflowGoogleApi extends ChatbotApi {
 
   @override
   Future<void> initialise() async {
-    _sessionId = 'projects/flutterbot-griv/agent/sessions/FlutterBot';
+    _sessionId = 'projects/$botId/agent/sessions/$botName';
 
     final credentials = await _loadCredentials();
 
