@@ -12,7 +12,7 @@ https://github.com/hadiyaaamir/chatbot/assets/63019067/0f7ff322-4522-4a1c-bfca-c
 
 <br>
 
-## 🛠️ Technlogies Used
+## 🛠️ Technologies Used
 
 ### 1. DialogFlow ES 💬 
 DialogFlow is a Conversational AI platform provided by Google Cloud. It serves as the backbone for our chat assistant, enabling natural language interactions.
