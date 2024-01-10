@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:chatbot/chatbot/chatbot.dart';
-import 'package:chatbot/utils/constants.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:googleapis/dialogflow/v2.dart';
@@ -48,9 +47,6 @@ class DialogflowGoogleApi extends ChatbotApi {
     return await _sendMessage(
       request: GoogleCloudDialogflowV2DetectIntentRequest(
         queryInput: queryInput,
-        queryParams: GoogleCloudDialogflowV2QueryParameters(
-          payload: {'username': kHardcodedUsername},
-        ),
       ),
     );
   }
@@ -68,9 +64,6 @@ class DialogflowGoogleApi extends ChatbotApi {
 
     return await _sendMessage(
       request: GoogleCloudDialogflowV2DetectIntentRequest(
-        queryParams: GoogleCloudDialogflowV2QueryParameters(
-          payload: {'username': kHardcodedUsername},
-        ),
         queryInput: queryInput,
         inputAudio: audioInput,
       ),
@@ -83,8 +76,8 @@ class DialogflowGoogleApi extends ChatbotApi {
     try {
       final response = await _resource.detectIntent(request, _sessionId);
 
-      if (response.queryResult == null ||
-          response.queryResult?.fulfillmentMessages == null) return null;
+      if (response.queryResult == null) return null;
+      if (response.queryResult?.fulfillmentMessages == null) return null;
       if (response.queryResult!.fulfillmentMessages!.isEmpty) return null;
 
       final fulfillmentMessages = response.queryResult!.fulfillmentMessages!;
@@ -94,19 +87,28 @@ class DialogflowGoogleApi extends ChatbotApi {
           ? Audio(audio: response.outputAudio!)
           : null;
 
-      for (final message in fulfillmentMessages) {
-        if (message.payload != null) {
-          return MessagePayload.fromJson(
-            message.payload as Map<String, dynamic>,
-          ).copyWith(audio: outputAudio);
-        }
-      }
+      final payloadJson = getPayloadJson(messages: fulfillmentMessages);
 
-      return MessagePayload(
-        text: fulfillmentText ?? MessagePayload.error().text,
-      ).copyWith(audio: outputAudio);
+      final message = payloadJson != null
+          ? MessagePayload.fromJson(payloadJson)
+          : MessagePayload(
+              text: fulfillmentText ?? MessagePayload.error().text,
+            );
+
+      return message.copyWith(audio: outputAudio);
     } on Exception catch (e) {
       return MessagePayload(text: 'Error occured: ${e.toString()}');
     }
+  }
+
+  Map<String, dynamic>? getPayloadJson({
+    required List<GoogleCloudDialogflowV2IntentMessage> messages,
+  }) {
+    for (final message in messages) {
+      if (message.payload != null) {
+        return message.payload as Map<String, dynamic>;
+      }
+    }
+    return null;
   }
 }
