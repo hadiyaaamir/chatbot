@@ -24,7 +24,10 @@ class EventDetailsBlock extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('$range • $daysString', style: textTheme.bodyMedium),
+          HighlightedSearchText(
+            searchText: searchText,
+            child: Text('$range • $daysString', style: textTheme.bodyMedium),
+          ),
           const SizedBox(height: 5),
           HighlightedSearchText(
             searchText: searchText,

@@ -148,7 +148,9 @@ class Event extends Option {
     searchText = searchText.toLowerCase();
     return title.toLowerCase().contains(searchText) ||
         city.toLowerCase().contains(searchText) ||
-        country.toLowerCase().contains(searchText);
+        country.toLowerCase().contains(searchText) ||
+        numberOfDays.toString().contains(searchText) ||
+        dayRange.toLowerCase().contains(searchText);
   }
 
   @override

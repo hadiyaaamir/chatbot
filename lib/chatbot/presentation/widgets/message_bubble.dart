@@ -17,26 +17,10 @@ class MessageBubble extends StatelessWidget {
     return BlocBuilder<ChatbotBloc, ChatbotState>(
       builder: (context, state) {
         return message.sentMessage
-            ? _Bubble(
-                bubbleColor: Theme.of(context).colorScheme.primary,
-                textColor: Theme.of(context).colorScheme.onPrimary,
-                paddingLeft: kMessageBubbleEndPadding,
-                paddingRight: kMessageBubbleStartPadding,
-                mainAxisAlignment: MainAxisAlignment.end,
-                message: message,
-                sentMessage: message.sentMessage,
-              )
+            ? _SentMessageBubble(message: message)
             : Column(
                 children: [
-                  _Bubble(
-                    bubbleColor: Theme.of(context).colorScheme.inversePrimary,
-                    textColor: Theme.of(context).colorScheme.onBackground,
-                    paddingLeft: kMessageBubbleStartPadding,
-                    paddingRight: kMessageBubbleEndPadding,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    message: message,
-                    sentMessage: message.sentMessage,
-                  ),
+                  _ReceivedMessageBubble(message: message),
                   OptionTiles(
                     options: message.message.options,
                     usernameRequired: message.message.requireUsername,
@@ -58,8 +42,49 @@ class LoadingMessageBubble extends StatelessWidget {
       textColor: Colors.black,
       paddingLeft: kMessageBubbleStartPadding,
       paddingRight: kMessageBubbleEndPadding,
+      borderRadiusRight: kBubbleBorderRadius,
+      borderRadiusLeft: kBubbleSharpBorderRadius,
       mainAxisAlignment: MainAxisAlignment.start,
-      sentMessage: false,
+    );
+  }
+}
+
+class _SentMessageBubble extends StatelessWidget {
+  const _SentMessageBubble({required this.message});
+
+  final ChatMessage? message;
+
+  @override
+  Widget build(BuildContext context) {
+    return _Bubble(
+      bubbleColor: Theme.of(context).colorScheme.primary,
+      textColor: Theme.of(context).colorScheme.onPrimary,
+      paddingLeft: kMessageBubbleEndPadding,
+      paddingRight: kMessageBubbleStartPadding,
+      borderRadiusRight: kBubbleSharpBorderRadius,
+      borderRadiusLeft: kBubbleBorderRadius,
+      mainAxisAlignment: MainAxisAlignment.end,
+      message: message,
+    );
+  }
+}
+
+class _ReceivedMessageBubble extends StatelessWidget {
+  const _ReceivedMessageBubble({required this.message});
+
+  final ChatMessage? message;
+
+  @override
+  Widget build(BuildContext context) {
+    return _Bubble(
+      bubbleColor: Theme.of(context).colorScheme.inversePrimary,
+      textColor: Theme.of(context).colorScheme.onBackground,
+      paddingLeft: kMessageBubbleStartPadding,
+      paddingRight: kMessageBubbleEndPadding,
+      borderRadiusRight: kBubbleBorderRadius,
+      borderRadiusLeft: kBubbleSharpBorderRadius,
+      mainAxisAlignment: MainAxisAlignment.start,
+      message: message,
     );
   }
 }
@@ -70,9 +95,10 @@ class _Bubble extends StatelessWidget {
     required this.textColor,
     required this.paddingLeft,
     required this.paddingRight,
+    required this.borderRadiusRight,
+    required this.borderRadiusLeft,
     required this.mainAxisAlignment,
     this.message,
-    required this.sentMessage,
   });
 
   final Color bubbleColor;
@@ -80,10 +106,11 @@ class _Bubble extends StatelessWidget {
 
   final double paddingLeft;
   final double paddingRight;
+  final double borderRadiusRight;
+  final double borderRadiusLeft;
   final MainAxisAlignment mainAxisAlignment;
 
   final ChatMessage? message;
-  final bool sentMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +122,8 @@ class _Bubble extends StatelessWidget {
         children: [
           _TextRectangle(
             message: message,
-            sentMessage: sentMessage,
+            borderRadiusRight: borderRadiusRight,
+            borderRadiusLeft: borderRadiusLeft,
             backgroundColor: bubbleColor,
             textColor: textColor,
           ),
@@ -108,13 +136,17 @@ class _Bubble extends StatelessWidget {
 class _TextRectangle extends StatelessWidget {
   const _TextRectangle({
     this.message,
-    required this.sentMessage,
+    required this.borderRadiusRight,
+    required this.borderRadiusLeft,
     required this.backgroundColor,
     required this.textColor,
   });
 
   final ChatMessage? message;
-  final bool sentMessage;
+
+  final double borderRadiusRight;
+  final double borderRadiusLeft;
+
   final Color backgroundColor;
   final Color textColor;
 
@@ -128,10 +160,10 @@ class _TextRectangle extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.only(
-            topLeft:
-                sentMessage ? const Radius.circular(borderRadius) : Radius.zero,
-            topRight:
-                sentMessage ? Radius.zero : const Radius.circular(borderRadius),
+            topLeft: Radius.circular(borderRadiusLeft),
+            // sentMessage ? const Radius.circular(borderRadius) : Radius.zero,
+            topRight: Radius.circular(borderRadiusRight),
+            // sentMessage ? Radius.zero : const Radius.circular(borderRadius),
             bottomLeft: const Radius.circular(borderRadius),
             bottomRight: const Radius.circular(borderRadius),
           ),
